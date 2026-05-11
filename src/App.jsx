@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback } from "react";
+﻿﻿import { useState, useEffect, useRef, useCallback } from "react";
 
 // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 //  150+ QUESTION BANK
@@ -3007,145 +3007,359 @@ const QUIZ_QS = [
   {q:"What is the NVI (Non-Virtual Interface) pattern?",opts:["Non-virtual classes only","Public non-virtual functions call private virtual functions ΓÇö base controls pre/post","Virtual functions must be non-public","Same as CRTP"],ans:1,exp:"NVI: public non-virtual interface calls private virtual customization points. Base maintains invariants."},
 ];
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-//  MAIN APP
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-export default function App() {
-  const [tab, setTab] = useState("practice");
-  const [filter, setFilter] = useState("all");
-  const [openQ, setOpenQ] = useState(null);
-  const [summaryTopic, setSummaryTopic] = useState(null);
-  const [quizState, setQuizState] = useState(null);
-  const [aiOpen, setAiOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [bookmarks, setBookmarks] = useState(new Set());
 
-  const topics = ["all","oop","inherit","poly","template","stl","exception","file"];
-  const topicLabels = {all:"All",oop:"OOP Core",inherit:"Inheritance",poly:"Polymorphism",template:"Templates",stl:"STL",exception:"Exceptions",file:"File I/O"};
-  const topicColors = {oop:"#7c3aed",inherit:"#00d4ff",poly:"#f59e0b",template:"#10b981",stl:"#ef4444",exception:"#fbbf24",file:"#6366f1"};
 
-  const filtered = QUESTIONS.filter(q => {
-    const topicOk = filter === "all" || q.topic === filter;
-    const searchOk = !searchTerm || q.q.toLowerCase().includes(searchTerm.toLowerCase());
-    return topicOk && searchOk;
+// ─── QUIZ SECTION ───────────────────────────────────────────────
+function QuizSection({questions}){
+  const [phase,setPhase]=useState('setup');
+  const [qs,setQs]=useState([]);
+  const [cur,setCur]=useState(0);
+  const [sel,setSel]=useState(null);
+  const [answered,setAnswered]=useState(false);
+  const [score,setScore]=useState(0);
+  const [log,setLog]=useState([]);
+  const [timeLeft,setTimeLeft]=useState(90);
+  const [numQ,setNumQ]=useState(15);
+  const [timed,setTimed]=useState(true);
+  const timerRef=useRef(null);
+
+  const start=()=>{const s=[...questions].sort(()=>Math.random()-.5).slice(0,numQ);setQs(s);setCur(0);setSel(null);setAnswered(false);setScore(0);setLog([]);setTimeLeft(90);setPhase('quiz');};
+  useEffect(()=>{if(phase!=='quiz'||answered||!timed)return;clearInterval(timerRef.current);timerRef.current=setInterval(()=>setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);handleAns(-1);return 0;}return t-1;}),1000);return()=>clearInterval(timerRef.current);},[phase,cur,answered]);
+  const handleAns=(i)=>{clearInterval(timerRef.current);if(answered)return;setSel(i);setAnswered(true);const ok=i===qs[cur].ans;if(ok)setScore(s=>s+1);setLog(l=>[...l,{q:qs[cur],sel:i,ok}]);};
+  const next=()=>{if(cur+1>=qs.length){setPhase('result');return;}setCur(c=>c+1);setSel(null);setAnswered(false);setTimeLeft(90);};
+
+  const card={background:'#0c1425',border:'1px solid #1e2d4a',borderRadius:14,padding:28};
+
+  if(phase==='setup') return(
+    <div style={{maxWidth:560,margin:'0 auto'}}>
+      <div style={{fontSize:'1.6rem',fontWeight:800,letterSpacing:'-.02em',marginBottom:22}}>C++ OOP Test Series</div>
+      <div style={{...card,marginBottom:16}}>
+        <div style={{marginBottom:20}}>
+          <div style={{fontSize:11,color:'#64748b',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:10}}>Number of Questions</div>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+            {[10,15,20,30].map(n=><button key={n} onClick={()=>setNumQ(n)} style={{padding:'8px 20px',borderRadius:8,fontFamily:'inherit',fontSize:13,fontWeight:600,cursor:'pointer',background:numQ===n?'rgba(0,212,255,.12)':'transparent',color:numQ===n?'#00d4ff':'#64748b',border:`1px solid ${numQ===n?'#00d4ff':'#1e2d4a'}`}}>{n}</button>)}
+          </div>
+        </div>
+        <div style={{marginBottom:24}}>
+          <div style={{fontSize:11,color:'#64748b',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:10}}>Timer Mode</div>
+          <div style={{display:'flex',gap:8}}>
+            {[[true,'Timed (90s)'],[false,'Untimed']].map(([v,l])=><button key={l} onClick={()=>setTimed(v)} style={{padding:'8px 18px',borderRadius:8,fontFamily:'inherit',fontSize:13,fontWeight:600,cursor:'pointer',background:timed===v?'rgba(0,212,255,.12)':'transparent',color:timed===v?'#00d4ff':'#64748b',border:`1px solid ${timed===v?'#00d4ff':'#1e2d4a'}`}}>{l}</button>)}
+          </div>
+        </div>
+        <button onClick={start} style={{width:'100%',padding:14,borderRadius:10,background:'linear-gradient(135deg,#7c3aed,#00d4ff)',color:'#fff',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'0.95rem',fontWeight:700}}>Start Test &rarr;</button>
+      </div>
+      <div style={{...card,padding:18}}>
+        <div style={{fontSize:'0.72rem',fontWeight:700,color:'#64748b',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:10}}>Topics Covered</div>
+        {['OOP Core — constructors, RAII, operators','Inheritance — virtual, LSP, diamond problem','Polymorphism — vtable, CRTP, dispatch','Templates — SFINAE, variadic, concepts','STL — containers, algorithms, lambdas','Exception Handling — safety guarantees'].map((t,i)=><div key={i} style={{fontSize:13,color:'#7da8c4',padding:'5px 0',borderBottom:'1px solid rgba(0,212,255,.04)'}}>&bull; {t}</div>)}
+      </div>
+    </div>
+  );
+
+  if(phase==='result'){
+    const pct=Math.round(score/qs.length*100);
+    const rc=pct>=85?'#10b981':pct>=65?'#f59e0b':'#ef4444';
+    return(
+      <div style={{maxWidth:680,margin:'0 auto'}}>
+        <div style={{...card,textAlign:'center',marginBottom:20}}>
+          <div style={{fontSize:'1.35rem',fontWeight:800,letterSpacing:'-.02em',marginBottom:6}}>{pct>=85?'Outstanding!':pct>=65?'Great Job!':'Keep Practicing'}</div>
+          <div style={{width:110,height:110,borderRadius:'50%',border:`5px solid ${rc}`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',margin:'16px auto 20px',boxShadow:`0 0 28px ${rc}40`}}>
+            <span style={{fontFamily:'monospace',fontSize:'1.9rem',fontWeight:800,color:rc}}>{pct}%</span>
+            <span style={{fontSize:10,color:'#64748b'}}>score</span>
+          </div>
+          <div style={{display:'flex',gap:28,justifyContent:'center',marginBottom:24}}>
+            {[[score,'Correct','#10b981'],[qs.length-score,'Wrong','#ef4444'],[qs.length,'Total','#00d4ff']].map(([v,l,c])=><div key={l} style={{textAlign:'center'}}><div style={{fontFamily:'monospace',fontSize:'1.5rem',fontWeight:800,color:c}}>{v}</div><div style={{fontSize:10,color:'#64748b',textTransform:'uppercase',letterSpacing:'.06em'}}>{l}</div></div>)}
+          </div>
+          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
+            <button onClick={start} style={{padding:'11px 24px',borderRadius:9,background:'linear-gradient(135deg,#7c3aed,#00d4ff)',color:'#fff',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}>Try Again</button>
+            <button onClick={()=>setPhase('setup')} style={{padding:'11px 24px',borderRadius:9,background:'transparent',color:'#00d4ff',border:'1px solid rgba(0,212,255,.3)',cursor:'pointer',fontFamily:'inherit',fontSize:14,fontWeight:700}}>&larr; Setup</button>
+          </div>
+        </div>
+        <div style={{fontSize:'0.72rem',fontWeight:700,color:'#64748b',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:12}}>Answer Review</div>
+        {log.map((item,i)=>(
+          <div key={i} style={{background:'#0c1425',border:`1px solid ${item.ok?'rgba(16,185,129,.2)':'rgba(239,68,68,.15)'}`,borderRadius:10,padding:'14px 16px',marginBottom:10}}>
+            <div style={{fontSize:13,fontWeight:600,marginBottom:8}}>{item.ok?'✓':'✗'} Q{i+1}: {item.q.q}</div>
+            {!item.ok&&<div style={{fontSize:12,color:'#10b981',marginBottom:4}}>Correct: {item.q.opts[item.q.ans]}</div>}
+            <div style={{fontSize:12,color:'#64748b',lineHeight:1.65}}>{item.q.exp}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const q=qs[cur];const prog=Math.round(cur/qs.length*100);
+  return(
+    <div style={{maxWidth:640,margin:'0 auto'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16,gap:10,flexWrap:'wrap'}}>
+        <div style={{flex:1,minWidth:200}}>
+          <div style={{display:'flex',justifyContent:'space-between',fontSize:11.5,color:'#64748b',marginBottom:5}}><span>Question {cur+1} / {qs.length}</span><span>{prog}%</span></div>
+          <div style={{height:4,borderRadius:99,background:'#1e2d4a',overflow:'hidden'}}><div style={{height:'100%',width:`${prog}%`,background:'linear-gradient(90deg,#7c3aed,#00d4ff)',borderRadius:99,transition:'width .4s ease'}}/></div>
+        </div>
+        {timed&&<div style={{fontFamily:'monospace',fontSize:'1.1rem',fontWeight:600,padding:'7px 16px',borderRadius:8,border:`1px solid ${timeLeft<=20?'rgba(239,68,68,.35)':'rgba(245,158,11,.25)'}`,background:timeLeft<=20?'rgba(239,68,68,.08)':'rgba(245,158,11,.07)',color:timeLeft<=20?'#ef4444':'#f59e0b',animation:timeLeft<=10?'glow 1s infinite':'none'}}>0:{String(timeLeft).padStart(2,'0')}</div>}
+      </div>
+      <div style={{background:'#0c1425',border:'1px solid #1e2d4a',borderRadius:12,padding:24,marginBottom:14}}>
+        <div style={{fontWeight:700,fontSize:'0.95rem',lineHeight:1.6,marginBottom:20,color:'#e2e8f0'}}>Q{cur+1}. {q.q}</div>
+        <div style={{display:'flex',flexDirection:'column',gap:9}}>
+          {q.opts.map((opt,i)=>{
+            let bc='#1e2d4a',bg='rgba(0,212,255,.02)',col='#e2e8f0';
+            if(answered){if(i===q.ans){bc='#10b981';bg='rgba(16,185,129,.08)';col='#6ee7b7';}else if(i===sel){bc='#ef4444';bg='rgba(239,68,68,.07)';col='#f87171';}}else if(sel===i){bc='#00d4ff';bg='rgba(0,212,255,.07)';col='#00d4ff';}
+            return(<div key={i} onClick={()=>!answered&&handleAns(i)} style={{padding:'12px 16px',borderRadius:9,border:`1px solid ${bc}`,background:bg,color:col,cursor:answered?'default':'pointer',display:'flex',alignItems:'center',gap:12,fontSize:14,transition:'all .15s'}}>
+              <span style={{width:24,height:24,borderRadius:5,background:'rgba(0,212,255,.08)',border:'1px solid rgba(0,212,255,.2)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'monospace',fontSize:10,fontWeight:700,color:'#00d4ff',flexShrink:0}}>{String.fromCharCode(65+i)}</span>{opt}
+            </div>);
+          })}
+        </div>
+        {answered&&<div style={{marginTop:14,padding:'12px 14px',borderRadius:8,background:sel===q.ans?'rgba(16,185,129,.06)':'rgba(239,68,68,.06)',border:`1px solid ${sel===q.ans?'rgba(16,185,129,.2)':'rgba(239,68,68,.2)'}`}}><span style={{fontWeight:700,color:sel===q.ans?'#10b981':'#ef4444'}}>{sel===q.ans?'Correct!':'Wrong'}</span><p style={{fontSize:13,color:'#64748b',marginTop:5,lineHeight:1.6}}>{q.exp}</p></div>}
+      </div>
+      <div style={{display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+        <button onClick={()=>setPhase('setup')} style={{padding:'9px 18px',borderRadius:8,background:'transparent',color:'#64748b',border:'1px solid #1e2d4a',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>End Test</button>
+        {answered&&<button onClick={next} style={{padding:'9px 22px',borderRadius:8,background:'linear-gradient(135deg,#7c3aed,#00d4ff)',color:'#fff',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:13,fontWeight:700}}>{cur+1>=qs.length?'See Results':'Next'} &rarr;</button>}
+      </div>
+    </div>
+  );
+}
+
+// ─── AI TUTOR ───────────────────────────────────────────────────
+function AITutor(){
+  const [messages,setMessages]=useState([{role:'assistant',content:"Hi! I'm your C++ OOP AI Tutor. Ask me anything about C++!\n\nTry: \"Explain vtable with example\" or \"What is CRTP?\""}]);
+  const [input,setInput]=useState('');
+  const [loading,setLoading]=useState(false);
+  const bottomRef=useRef(null);
+  const SUGG=['Explain vtable and vptr','What is CRTP and when to use it?','Difference: move vs copy semantics','How does shared_ptr work internally?','What is SFINAE? Show enable_if example','Explain the 4 exception safety levels','What is Rule of Five?','Show diamond problem and virtual inheritance fix'];
+  useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:'smooth'});},[messages]);
+  const send=async(msg)=>{
+    if(!msg.trim()||loading)return;
+    const um={role:'user',content:msg};
+    setMessages(m=>[...m,um]);setInput('');setLoading(true);
+    try{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'You are an expert C++ OOP tutor. Be precise. Use code examples in ```cpp blocks. Keep answers under 350 words. Explain WHY step by step.',messages:[...messages.map(m=>({role:m.role,content:m.content})),um]})});
+      const d=await r.json();
+      setMessages(m=>[...m,{role:'assistant',content:d.content?.[0]?.text||'No response.'}]);
+    }catch{setMessages(m=>[...m,{role:'assistant',content:'Connection error. Please try again.'}]);}
+    setLoading(false);
+  };
+  const fmt=(text)=>{
+    const pts=text.split(/(```[\s\S]*?```|`[^`]+`|\*\*[^*]+\*\*)/g);
+    return pts.map((p,i)=>{
+      if(p.startsWith('```')&&p.endsWith('```')){const code=p.slice(p.indexOf('\n')+1,-3);return<pre key={i} style={{background:'#060d1f',border:'1px solid #1e2d4a',borderRadius:8,padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:'0.74rem',lineHeight:1.65,overflowX:'auto',margin:'8px 0',color:'#c9d5e8'}}>{code}</pre>;}
+      if(p.startsWith('`')&&p.endsWith('`'))return<code key={i} style={{fontFamily:'monospace',background:'rgba(0,212,255,.1)',color:'#00d4ff',padding:'1px 5px',borderRadius:3,fontSize:'.85em'}}>{p.slice(1,-1)}</code>;
+      if(p.startsWith('**')&&p.endsWith('**'))return<strong key={i} style={{color:'#00d4ff'}}>{p.slice(2,-2)}</strong>;
+      return<span key={i}>{p.split('\n').map((l,j,a)=><span key={j}>{l}{j<a.length-1&&<br/>}</span>)}</span>;
+    });
+  };
+  return(
+    <div style={{maxWidth:780,margin:'0 auto'}}>
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:'1.5rem',fontWeight:800,letterSpacing:'-.02em',marginBottom:5}}>C++ OOP AI Tutor</div>
+        <div style={{fontSize:13,color:'#64748b'}}>Powered by Claude &middot; Ask anything about C++, OOP, templates, STL, design patterns</div>
+      </div>
+      {messages.length<=1&&(
+        <div style={{display:'flex',gap:7,flexWrap:'wrap',marginBottom:16}}>
+          {SUGG.map((s,i)=><button key={i} onClick={()=>send(s)} style={{padding:'7px 13px',borderRadius:20,background:'rgba(0,212,255,.06)',border:'1px solid rgba(0,212,255,.15)',color:'#7da8c4',fontFamily:'inherit',fontSize:12,cursor:'pointer',transition:'all .18s'}} onMouseEnter={e=>{e.currentTarget.style.background='rgba(0,212,255,.12)';e.currentTarget.style.color='#00d4ff';}} onMouseLeave={e=>{e.currentTarget.style.background='rgba(0,212,255,.06)';e.currentTarget.style.color='#7da8c4';}}>{s}</button>)}
+        </div>
+      )}
+      <div style={{background:'#0a0e1a',border:'1px solid #1e2d4a',borderRadius:14,overflow:'hidden'}}>
+        <div style={{height:460,overflowY:'auto',padding:'20px 20px 8px'}}>
+          {messages.map((m,i)=>(
+            <div key={i} style={{marginBottom:18,display:'flex',flexDirection:'column',alignItems:m.role==='user'?'flex-end':'flex-start'}}>
+              <div style={{maxWidth:'85%',padding:'12px 16px',fontSize:'0.87rem',lineHeight:1.7,color:'#e2e8f0',borderRadius:m.role==='user'?'12px 12px 2px 12px':'2px 12px 12px 12px',background:m.role==='user'?'linear-gradient(135deg,rgba(124,58,237,.25),rgba(0,212,255,.15))':'rgba(15,22,41,.95)',border:m.role==='user'?'1px solid rgba(124,58,237,.3)':'1px solid #1e2d4a'}}>
+                {m.role==='assistant'&&<div style={{fontSize:'0.62rem',color:'#00d4ff',fontWeight:700,letterSpacing:'.1em',marginBottom:6,textTransform:'uppercase'}}>AI Tutor</div>}
+                {fmt(m.content)}
+              </div>
+            </div>
+          ))}
+          {loading&&<div style={{display:'flex',gap:5,padding:'8px 0'}}>{[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:'50%',background:'#00d4ff',animation:`bounce 1.2s ${i*.2}s infinite`}}/>)}</div>}
+          <div ref={bottomRef}/>
+        </div>
+        <div style={{padding:'12px 16px',borderTop:'1px solid #1e2d4a',display:'flex',gap:10}}>
+          <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&!e.shiftKey&&send(input)} placeholder="Ask about C++ OOP... (Enter to send)" style={{flex:1,background:'rgba(0,212,255,.04)',border:'1px solid #1e2d4a',borderRadius:9,padding:'10px 14px',color:'#e2e8f0',fontFamily:'inherit',fontSize:14,outline:'none'}}/>
+          <button onClick={()=>send(input)} disabled={loading||!input.trim()} style={{padding:'10px 20px',borderRadius:9,border:'none',cursor:loading||!input.trim()?'not-allowed':'pointer',background:loading||!input.trim()?'#1e2d4a':'linear-gradient(135deg,#7c3aed,#00d4ff)',color:'#fff',fontFamily:'inherit',fontSize:13,fontWeight:700,transition:'all .2s',opacity:loading||!input.trim()?.6:1}}>{loading?'...':'Send'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+// ─── TOPIC META (no emojis to avoid encoding issues) ───────────
+const TM={all:{label:'All',color:'#00d4ff',icon:'*'},oop:{label:'OOP Core',color:'#7c3aed',icon:'#'},inherit:{label:'Inheritance',color:'#00d4ff',icon:'^'},poly:{label:'Polymorphism',color:'#f59e0b',icon:'@'},template:{label:'Templates',color:'#10b981',icon:'<>'},stl:{label:'STL',color:'#ef4444',icon:'~'},exception:{label:'Exceptions',color:'#fbbf24',icon:'!'},file:{label:'File I/O',color:'#6366f1',icon:'[]'}};
+
+// ─── SMALL COMPONENTS ───────────────────────────────────────────
+const Pill=({t,active,onClick,count})=>{
+  const m=TM[t]||TM.all;
+  return(<button onClick={onClick} style={{padding:'5px 13px',borderRadius:99,fontSize:'0.7rem',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.05em',cursor:'pointer',border:'1px solid',borderColor:active?m.color:'#1e2d4a',background:active?`${m.color}18`:'#0c1425',color:active?m.color:'#64748b',transition:'all .2s'}}>{m.label}{count!=null?<span style={{opacity:.6,marginLeft:4}}>({count})</span>:null}</button>);
+};
+
+const Tag=({children,color,bg})=>(<span style={{fontSize:'0.6rem',fontWeight:700,padding:'2px 8px',borderRadius:99,textTransform:'uppercase',letterSpacing:'0.06em',border:`1px solid ${color}40`,background:bg||`${color}15`,color}}>{children}</span>);
+
+// ─── QUESTION CARD ───────────────────────────────────────────────
+function QCard({q,isOpen,onToggle,isBookmarked,onBookmark}){
+  const tc=TM[q.topic]?.color||'#00d4ff';
+  return(
+    <div style={{background:'#0c1425',border:`1px solid ${isOpen?'rgba(0,212,255,.3)':'#1e2d4a'}`,borderRadius:12,overflow:'hidden',transition:'all .2s',boxShadow:isOpen?'0 0 24px rgba(0,212,255,.08)':'none'}}>
+      <div onClick={onToggle} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'15px 18px',cursor:'pointer'}}>
+        <span style={{fontFamily:'monospace',fontSize:'0.65rem',color:'#475569',minWidth:28,paddingTop:3}}>#{q.id}</span>
+        <div style={{flex:1}}>
+          <div style={{display:'flex',gap:5,flexWrap:'wrap',marginBottom:7}}>
+            <Tag color={tc}>{TM[q.topic]?.label}</Tag>
+            {q.type==='output'?<Tag color='#6ee7b7' bg='rgba(16,185,129,.1)'>Output</Tag>:<Tag color='#f9a8d4' bg='rgba(236,72,153,.1)'>Theory</Tag>}
+            {q.diff==='hard'?<Tag color='#f87171' bg='rgba(239,68,68,.1)'>Hard</Tag>:<Tag color='#fbbf24' bg='rgba(245,158,11,.1)'>Medium</Tag>}
+          </div>
+          <div style={{fontSize:'0.88rem',fontWeight:600,lineHeight:1.55,color:'#e2e8f0'}}>{q.q}</div>
+        </div>
+        <div style={{display:'flex',gap:6,alignItems:'center',flexShrink:0}}>
+          <button onClick={e=>{e.stopPropagation();onBookmark();}} style={{background:'none',border:'none',cursor:'pointer',fontSize:16,color:isBookmarked?'#f59e0b':'#334155',transition:'color .2s'}}>&#9733;</button>
+          <span style={{color:'#475569',transition:'transform .3s',display:'inline-block',fontSize:11,transform:isOpen?'rotate(180deg)':'none'}}>&#9660;</span>
+        </div>
+      </div>
+      {isOpen&&(
+        <div style={{padding:'0 18px 18px 58px',borderTop:'1px solid #1e2d4a',paddingTop:16}}>
+          {q.code&&<pre style={{background:'#060d1f',border:'1px solid #1e2d4a',borderRadius:9,padding:'12px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:'0.75rem',lineHeight:1.65,overflowX:'auto',margin:'0 0 14px',color:'#c9d5e8'}} dangerouslySetInnerHTML={{__html:q.code}}/>}
+          {q.type==='output'&&(
+            <div style={{background:'rgba(0,212,255,.05)',border:'1px solid rgba(0,212,255,.15)',borderRadius:9,padding:'10px 14px',marginBottom:12}}>
+              <div style={{fontSize:'0.62rem',fontWeight:700,color:'#00d4ff',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:5}}>Expected Output</div>
+              <span style={{fontFamily:'monospace',fontSize:'0.9rem',color:'#00d4ff'}}>{q.output}</span>
+            </div>
+          )}
+          <div style={{background:'rgba(16,185,129,.05)',border:'1px solid rgba(16,185,129,.15)',borderRadius:9,padding:'12px 14px'}}>
+            <div style={{fontSize:'0.62rem',fontWeight:700,color:'#10b981',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:7}}>Answer / Explanation</div>
+            <div style={{fontSize:'0.84rem',color:'#94a3b8',lineHeight:1.8,whiteSpace:'pre-line'}}>{q.answer_text||q.explanation}</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ─── MAIN APP ───────────────────────────────────────────────────
+export default function App(){
+  const [tab,setTab]=useState('practice');
+  const [filter,setFilter]=useState('all');
+  const [openQ,setOpenQ]=useState(null);
+  const [summaryTopic,setSummaryTopic]=useState(null);
+  const [searchTerm,setSearchTerm]=useState('');
+  const [diffFilter,setDiffFilter]=useState('all');
+  const [bookmarks,setBookmarks]=useState(()=>{try{return new Set(JSON.parse(localStorage.getItem('cpp_bm')||'[]'));}catch{return new Set();}});
+
+  const toggleBm=useCallback((id)=>{setBookmarks(b=>{const n=new Set(b);n.has(id)?n.delete(id):n.add(id);localStorage.setItem('cpp_bm',JSON.stringify([...n]));return n;});},[]);
+
+  const filtered=QUESTIONS.filter(q=>{
+    if(filter!=='all'&&filter!=='__bm__'&&q.topic!==filter)return false;
+    if(filter==='__bm__'&&!bookmarks.has(q.id))return false;
+    if(diffFilter!=='all'&&q.diff!==diffFilter)return false;
+    if(searchTerm&&!q.q.toLowerCase().includes(searchTerm.toLowerCase()))return false;
+    return true;
   });
 
-  return (
-    <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Segoe UI',system-ui,sans-serif",position:"relative"}}>
-      {/* BG */}
-      <div style={{position:"fixed",inset:0,background:"radial-gradient(ellipse 80% 50% at 20% 10%,rgba(124,58,237,0.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 90%,rgba(0,212,255,0.05) 0%,transparent 60%)",pointerEvents:"none",zIndex:0}}/>
-      <div style={{position:"fixed",inset:0,backgroundImage:"linear-gradient(rgba(0,212,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.02) 1px,transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none",zIndex:0}}/>
+  const NAV=[['practice','Practice'],['summaries','Summaries'],['test','Test'],['ai','AI Tutor']];
+  const topicCounts=Object.keys(TM).reduce((a,k)=>{a[k]=k==='all'?QUESTIONS.length:QUESTIONS.filter(q=>q.topic===k).length;return a;},{});
 
-      {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:50,background:"rgba(10,14,26,0.95)",backdropFilter:"blur(16px)",borderBottom:"1px solid #1e2d4a",padding:"0 24px",display:"flex",alignItems:"center",height:56,gap:8}}>
-        <div style={{fontFamily:"Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:"#00d4ff",marginRight:16}}>C++<span style={{color:"#e2e8f0"}}> OOP</span></div>
-        {[["practice","≡ƒôÜ Practice"],["summaries","≡ƒôû Summaries"],["test","≡ƒÄ» Tests"],["ai","≡ƒñû AI Tutor"]].map(([id,label])=>(
-          <button key={id} onClick={()=>setTab(id)} style={{background:tab===id?"rgba(0,212,255,0.1)":"none",border:"none",borderBottom:tab===id?"2px solid #00d4ff":"2px solid transparent",color:tab===id?"#00d4ff":"#64748b",fontFamily:"inherit",fontSize:"0.75rem",fontWeight:600,padding:"0 14px",height:"100%",cursor:"pointer",letterSpacing:"0.05em",textTransform:"uppercase",transition:"all 0.2s"}}>
-            {label}
-          </button>
+  const S={
+    page:{minHeight:'100vh',background:'#060b18',color:'#e2e8f0',fontFamily:"'Inter',system-ui,sans-serif"},
+    bg1:{position:'fixed',inset:0,background:'radial-gradient(ellipse 80% 50% at 20% 10%,rgba(124,58,237,.07),transparent 60%),radial-gradient(ellipse 60% 40% at 80% 90%,rgba(0,212,255,.05),transparent 60%)',pointerEvents:'none',zIndex:0},
+    bg2:{position:'fixed',inset:0,backgroundImage:'linear-gradient(rgba(0,212,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.018) 1px,transparent 1px)',backgroundSize:'44px 44px',pointerEvents:'none',zIndex:0},
+    nav:{position:'sticky',top:0,zIndex:100,height:58,background:'rgba(6,11,24,.94)',backdropFilter:'blur(20px)',borderBottom:'1px solid #1e2d4a',display:'flex',alignItems:'center',padding:'0 20px',gap:2},
+    brand:{fontWeight:800,fontSize:'1.05rem',color:'#00d4ff',marginRight:20,letterSpacing:'-.02em'},
+    content:{position:'relative',zIndex:1,maxWidth:1100,margin:'0 auto',padding:'28px 20px'},
+  };
+
+  return(
+    <div style={S.page}>
+      <div style={S.bg1}/><div style={S.bg2}/>
+      <nav style={S.nav}>
+        <div style={S.brand}>C++ <span style={{color:'#e2e8f0'}}>OOP</span></div>
+        {NAV.map(([id,label])=>(
+          <button key={id} onClick={()=>setTab(id)} style={{height:'100%',padding:'0 14px',background:'none',border:'none',borderBottom:`2px solid ${tab===id?'#00d4ff':'transparent'}`,color:tab===id?'#00d4ff':'#64748b',fontFamily:'inherit',fontSize:'0.72rem',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.06em',cursor:'pointer',transition:'all .2s'}}>{label}</button>
         ))}
-        <div style={{marginLeft:"auto",fontSize:"11px",color:"#64748b",fontFamily:"monospace"}}>
-          {QUESTIONS.length} questions
+        <div style={{marginLeft:'auto',display:'flex',gap:14,alignItems:'center'}}>
+          <span style={{fontSize:11,color:'#475569',fontFamily:'monospace'}}>{QUESTIONS.length} questions</span>
+          {bookmarks.size>0&&<span style={{fontSize:11,color:'#f59e0b',fontFamily:'monospace'}}>&#9733; {bookmarks.size}</span>}
         </div>
       </nav>
 
-      <div style={{position:"relative",zIndex:1,maxWidth:1100,margin:"0 auto",padding:"28px 20px"}}>
+      <div style={S.content}>
 
-        {/* ΓöÇΓöÇ PRACTICE TAB ΓöÇΓöÇ */}
-        {tab==="practice" && (
+        {/* PRACTICE */}
+        {tab==='practice'&&(
           <>
-            <div style={{marginBottom:20,display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
-              <input value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} placeholder="≡ƒöì Search questions..." style={{background:"rgba(0,212,255,0.04)",border:"1px solid #1e2d4a",borderRadius:8,padding:"8px 14px",color:"#e2e8f0",fontFamily:"inherit",fontSize:13,outline:"none",minWidth:200,flex:1}}/>
-              <span style={{fontSize:12,color:"#64748b",fontFamily:"monospace",whiteSpace:"nowrap"}}>{filtered.length} shown</span>
-            </div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:24}}>
-              {topics.map(t=>(
-                <button key={t} onClick={()=>setFilter(t)} style={{background:filter===t?"rgba(0,212,255,0.12)":"#0f1629",border:filter===t?"1px solid #00d4ff":"1px solid #1e2d4a",color:filter===t?"#00d4ff":"#64748b",fontFamily:"inherit",fontSize:"0.7rem",fontWeight:600,padding:"5px 12px",borderRadius:20,cursor:"pointer",transition:"all 0.18s",textTransform:"uppercase",letterSpacing:"0.05em"}}>
-                  {topicLabels[t]} {t!=="all"&&<span style={{opacity:0.6}}>({QUESTIONS.filter(q=>q.topic===t).length})</span>}
-                </button>
+            {/* Stats bar */}
+            <div style={{display:'flex',gap:16,flexWrap:'wrap',padding:'14px 20px',background:'linear-gradient(135deg,rgba(124,58,237,.07),rgba(0,212,255,.04))',border:'1px solid #1e2d4a',borderRadius:12,marginBottom:22,alignItems:'center'}}>
+              {[[QUESTIONS.length,'Questions'],[QUESTIONS.filter(q=>q.diff==='hard').length,'Hard'],[QUESTIONS.filter(q=>q.type==='output').length,'Output Qs'],[bookmarks.size,'Saved'],[Object.keys(TM).length-1,'Topics']].map(([n,l])=>(
+                <div key={l} style={{textAlign:'center',minWidth:56}}>
+                  <div style={{fontSize:'1.25rem',fontWeight:800,fontFamily:'monospace',background:'linear-gradient(135deg,#00d4ff,#7c3aed)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{n}</div>
+                  <div style={{fontSize:10,color:'#475569',textTransform:'uppercase',letterSpacing:'.06em',marginTop:1}}>{l}</div>
+                </div>
               ))}
+              <div style={{marginLeft:'auto',display:'flex',gap:6}}>
+                {['all','medium','hard'].map(d=>(
+                  <button key={d} onClick={()=>setDiffFilter(d)} style={{padding:'4px 12px',borderRadius:99,fontSize:'0.67rem',fontWeight:700,textTransform:'uppercase',cursor:'pointer',border:'1px solid',borderColor:diffFilter===d?'#00d4ff':'#1e2d4a',background:diffFilter===d?'rgba(0,212,255,.1)':'transparent',color:diffFilter===d?'#00d4ff':'#64748b'}}>{d}</button>
+                ))}
+              </div>
             </div>
-            <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {filtered.map((q,i)=>{
-                const isOpen = openQ===q.id;
-                const isBookmarked = bookmarks.has(q.id);
-                const tc = topicColors[q.topic]||"#00d4ff";
-                return (
-                  <div key={q.id} style={{background:"#0f1629",border:`1px solid ${isOpen?"rgba(0,212,255,0.35)":"#1e2d4a"}`,borderRadius:12,overflow:"hidden",transition:"all 0.2s",boxShadow:isOpen?"0 0 20px rgba(0,212,255,0.1)":"none"}}>
-                    <div onClick={()=>setOpenQ(isOpen?null:q.id)} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"16px 18px",cursor:"pointer"}}>
-                      <span style={{fontFamily:"monospace",fontSize:"0.68rem",color:"#64748b",minWidth:30,paddingTop:2}}>#{q.id}</span>
-                      <div style={{flex:1}}>
-                        <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:7}}>
-                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:`${tc}18`,color:tc,border:`1px solid ${tc}30`}}>{topicLabels[q.topic]}</span>
-                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.type==="output"?"rgba(16,185,129,0.1)":"rgba(236,72,153,0.1)",color:q.type==="output"?"#6ee7b7":"#f9a8d4",border:`1px solid ${q.type==="output"?"rgba(16,185,129,0.2)":"rgba(236,72,153,0.2)"}`}}>{q.type==="output"?"ΓÜÖ Output":"≡ƒôû Theory"}</span>
-                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.diff==="hard"?"rgba(239,68,68,0.1)":"rgba(245,158,11,0.1)",color:q.diff==="hard"?"#f87171":"#fbbf24",border:`1px solid ${q.diff==="hard"?"rgba(239,68,68,0.2)":"rgba(245,158,11,0.2)"}`}}>{q.diff==="hard"?"≡ƒö┤ Hard":"≡ƒƒí Medium"}</span>
-                        </div>
-                        <div style={{fontSize:"0.9rem",fontWeight:600,lineHeight:1.5,color:"#e2e8f0"}}>{q.q}</div>
-                      </div>
-                      <div style={{display:"flex",gap:6,alignItems:"center",flexShrink:0}}>
-                        <button onClick={e=>{e.stopPropagation();setBookmarks(b=>{const n=new Set(b);n.has(q.id)?n.delete(q.id):n.add(q.id);return n;})}} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,opacity:isBookmarked?1:0.3,color:"#f59e0b"}}>Γÿà</button>
-                        <span style={{color:"#64748b",transition:"transform 0.3s",transform:isOpen?"rotate(180deg)":"none",fontSize:12}}>Γû╝</span>
-                      </div>
-                    </div>
-                    {isOpen&&(
-                      <div style={{padding:"0 18px 18px 60px",borderTop:"1px solid #1e2d4a",paddingTop:16}}>
-                        {q.code&&<pre style={{background:"#060d1f",border:"1px solid #1e2d4a",borderRadius:8,padding:14,fontFamily:"'JetBrains Mono',Consolas,monospace",fontSize:"0.75rem",lineHeight:1.6,overflowX:"auto",margin:"0 0 12px 0",color:"#e2e8f0"}} dangerouslySetInnerHTML={{__html:q.code}}/>}
-                        {q.type==="output"&&(
-                          <div style={{background:"rgba(0,212,255,0.05)",border:"1px solid rgba(0,212,255,0.15)",borderRadius:8,padding:"10px 14px",marginBottom:10}}>
-                            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#00d4ff",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:6}}>Expected Output</div>
-                            <div style={{fontFamily:"monospace",fontSize:"0.9rem",color:"#00d4ff"}}>{q.output}</div>
-                          </div>
-                        )}
-                        <div style={{background:"rgba(16,185,129,0.05)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:8,padding:"12px 14px"}}>
-                          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#10b981",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:7}}>Γ£ª Answer</div>
-                          <div style={{fontSize:"0.84rem",color:"#94a3b8",lineHeight:1.75,whiteSpace:"pre-line"}}>{q.answer_text||q.explanation}</div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+
+            {/* Search */}
+            <div style={{display:'flex',gap:10,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
+              <div style={{position:'relative',flex:1,minWidth:200}}>
+                <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#475569',fontSize:13}}>&#128269;</span>
+                <input value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} placeholder="Search questions..."
+                  style={{width:'100%',padding:'9px 14px 9px 36px',background:'rgba(0,212,255,.03)',border:'1px solid #1e2d4a',borderRadius:9,color:'#e2e8f0',fontFamily:'inherit',fontSize:13.5,outline:'none'}}/>
+              </div>
+              <span style={{fontSize:11.5,color:'#475569',fontFamily:'monospace'}}>{filtered.length} shown</span>
+            </div>
+
+            {/* Topic pills */}
+            <div style={{display:'flex',gap:7,flexWrap:'wrap',marginBottom:12}}>
+              {Object.keys(TM).map(t=><Pill key={t} t={t} active={filter===t} count={t!=='all'?topicCounts[t]:null} onClick={()=>setFilter(t)}/>)}
+            </div>
+            {bookmarks.size>0&&(
+              <div style={{marginBottom:14}}>
+                <button onClick={()=>setFilter(filter==='__bm__'?'all':'__bm__')} style={{padding:'5px 13px',borderRadius:99,fontSize:'0.7rem',fontWeight:700,cursor:'pointer',border:`1px solid ${filter==='__bm__'?'#f59e0b':'#1e2d4a'}`,background:filter==='__bm__'?'rgba(245,158,11,.1)':'transparent',color:filter==='__bm__'?'#f59e0b':'#64748b'}}>&#9733; Bookmarks ({bookmarks.size})</button>
+              </div>
+            )}
+
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {filtered.map(q=><QCard key={q.id} q={q} isOpen={openQ===q.id} onToggle={()=>setOpenQ(openQ===q.id?null:q.id)} isBookmarked={bookmarks.has(q.id)} onBookmark={()=>toggleBm(q.id)}/>)}
             </div>
           </>
         )}
 
-        {/* ΓöÇΓöÇ SUMMARIES TAB ΓöÇΓöÇ */}
-        {tab==="summaries" && (
+        {/* SUMMARIES */}
+        {tab==='summaries'&&(
           <>
             <div style={{marginBottom:24}}>
-              <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}}>≡ƒôû Topic Summaries & Key Points</div>
-              <div style={{color:"#64748b",fontSize:13}}>Comprehensive theory summaries for quick revision before your exam.</div>
+              <div style={{fontSize:'1.5rem',fontWeight:800,letterSpacing:'-.02em',marginBottom:6}}>Topic Summaries</div>
+              <div style={{color:'#64748b',fontSize:13}}>Key revision points for each topic.</div>
             </div>
-            {!summaryTopic ? (
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:14}}>
+            {!summaryTopic?(
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(230px,1fr))',gap:14}}>
                 {Object.entries(SUMMARIES).map(([key,s])=>(
-                  <button key={key} onClick={()=>setSummaryTopic(key)} style={{padding:22,borderRadius:14,background:"#0f1629",border:`1px solid rgba(0,212,255,0.1)`,cursor:"pointer",textAlign:"left",fontFamily:"inherit",color:"#e2e8f0",transition:"all 0.25s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=s.color;e.currentTarget.style.boxShadow=`0 6px 24px ${s.color}18`;e.currentTarget.style.transform="translateY(-2px)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(0,212,255,0.1)";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
-                    <div style={{fontWeight:700,fontSize:"1.05rem",color:s.color,marginBottom:8}}>{s.title}</div>
-                    <div style={{fontSize:12,color:"#64748b",marginBottom:10}}>{s.points.length} key points</div>
-                    <div style={{fontSize:11,color:s.color,opacity:0.7}}>View Summary ΓåÆ</div>
+                  <button key={key} onClick={()=>setSummaryTopic(key)} style={{padding:22,borderRadius:14,background:'#0c1425',border:'1px solid #1e2d4a',cursor:'pointer',textAlign:'left',fontFamily:'inherit',color:'#e2e8f0',transition:'all .25s'}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=s.color;e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 8px 28px ${s.color}18`;}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor='#1e2d4a';e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow='none';}}>
+                    <div style={{fontWeight:700,fontSize:'1rem',color:s.color,marginBottom:5}}>{s.title}</div>
+                    <div style={{fontSize:12,color:'#64748b',marginBottom:8}}>{s.points.length} key points</div>
+                    <div style={{fontSize:11,color:s.color,opacity:.7}}>View &rarr;</div>
                   </button>
                 ))}
               </div>
             ):(
               <div>
-                <button onClick={()=>setSummaryTopic(null)} style={{background:"rgba(0,212,255,0.06)",border:"1px solid rgba(0,212,255,0.2)",color:"#00d4ff",padding:"7px 14px",borderRadius:7,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,marginBottom:20}}>ΓåÉ Back to Topics</button>
-                <div style={{background:"#0f1629",border:`1px solid ${SUMMARIES[summaryTopic].color}30`,borderRadius:14,padding:28}}>
-                  <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,color:SUMMARIES[summaryTopic].color,marginBottom:20}}>{SUMMARIES[summaryTopic].title} ΓÇö Key Points</div>
+                <button onClick={()=>setSummaryTopic(null)} style={{marginBottom:20,padding:'7px 14px',borderRadius:8,background:'rgba(0,212,255,.08)',border:'1px solid rgba(0,212,255,.2)',color:'#00d4ff',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:600}}>&larr; Back</button>
+                <div style={{background:'#0c1425',border:`1px solid ${SUMMARIES[summaryTopic].color}30`,borderRadius:14,padding:28}}>
+                  <div style={{fontSize:'1.4rem',fontWeight:800,color:SUMMARIES[summaryTopic].color,marginBottom:20}}>{SUMMARIES[summaryTopic].title}</div>
                   {SUMMARIES[summaryTopic].points.map((pt,i)=>(
-                    <div key={i} style={{display:"flex",gap:12,marginBottom:14,padding:"12px 14px",borderRadius:9,background:"rgba(0,212,255,0.02)",border:"1px solid rgba(0,212,255,0.06)"}}>
-                      <span style={{fontFamily:"monospace",fontSize:11,color:SUMMARIES[summaryTopic].color,minWidth:24,paddingTop:2,fontWeight:700}}>{String(i+1).padStart(2,"0")}</span>
-                      <span style={{fontSize:"0.87rem",color:"#94a3b8",lineHeight:1.7}}>{pt}</span>
+                    <div key={i} style={{display:'flex',gap:12,marginBottom:12,padding:'11px 14px',borderRadius:9,background:'rgba(255,255,255,.02)',border:'1px solid rgba(255,255,255,.04)'}}>
+                      <span style={{fontFamily:'monospace',fontSize:10,color:SUMMARIES[summaryTopic].color,minWidth:22,paddingTop:3,fontWeight:700}}>{String(i+1).padStart(2,'0')}</span>
+                      <span style={{fontSize:'0.86rem',color:'#94a3b8',lineHeight:1.75}}>{pt}</span>
                     </div>
                   ))}
-                  {/* Related questions */}
-                  <div style={{marginTop:24,borderTop:"1px solid #1e2d4a",paddingTop:20}}>
-                    <div style={{fontWeight:700,fontSize:"0.85rem",color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:14}}>Related Questions in Bank</div>
-                    {QUESTIONS.filter(q=>q.topic===summaryTopic).slice(0,5).map(q=>(
-                      <div key={q.id} style={{padding:"10px 14px",borderRadius:8,background:"rgba(0,0,0,0.3)",border:"1px solid #1e2d4a",marginBottom:8,fontSize:"0.83rem",color:"#7da8c4",cursor:"pointer"}}
-                        onClick={()=>{setSummaryTopic(null);setTab("practice");setFilter(summaryTopic);setOpenQ(q.id);}}>
-                        #{q.id}: {q.q.slice(0,80)}...
+                  <div style={{marginTop:22,paddingTop:18,borderTop:'1px solid #1e2d4a'}}>
+                    <div style={{fontSize:'0.72rem',fontWeight:700,color:'#475569',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:12}}>Related Practice Questions</div>
+                    {QUESTIONS.filter(q=>q.topic===summaryTopic).slice(0,4).map(q=>(
+                      <div key={q.id} onClick={()=>{setSummaryTopic(null);setTab('practice');setFilter(summaryTopic);setOpenQ(q.id);}}
+                        style={{padding:'9px 14px',borderRadius:8,background:'rgba(0,0,0,.3)',border:'1px solid #1e2d4a',marginBottom:7,fontSize:'0.82rem',color:'#7da8c4',cursor:'pointer'}}
+                        onMouseEnter={e=>e.currentTarget.style.color='#00d4ff'}
+                        onMouseLeave={e=>e.currentTarget.style.color='#7da8c4'}>
+                        #{q.id}: {q.q.slice(0,72)}&hellip;
                       </div>
                     ))}
                   </div>
@@ -3155,310 +3369,16 @@ export default function App() {
           </>
         )}
 
-        {/* ΓöÇΓöÇ TEST TAB ΓöÇΓöÇ */}
-        {tab==="test" && (
-          <QuizSection questions={QUIZ_QS}/>
-        )}
-
-        {/* ΓöÇΓöÇ AI TAB ΓöÇΓöÇ */}
-        {tab==="ai" && (
-          <AITutor/>
-        )}
+        {tab==='test'&&<QuizSection questions={QUIZ_QS}/>}
+        {tab==='ai'&&<AITutor/>}
       </div>
-    </div>
-  );
-}
-
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-//  QUIZ COMPONENT
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function QuizSection({questions}) {
-  const [phase, setPhase] = useState("setup");
-  const [qs, setQs] = useState([]);
-  const [cur, setCur] = useState(0);
-  const [sel, setSel] = useState(null);
-  const [answered, setAnswered] = useState(false);
-  const [score, setScore] = useState(0);
-  const [log, setLog] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(90);
-  const timerRef = useRef(null);
-  const [numQ, setNumQ] = useState(15);
-  const [timed, setTimed] = useState(true);
-
-  const start = () => {
-    const shuffled = [...questions].sort(()=>Math.random()-0.5).slice(0,numQ);
-    setQs(shuffled); setCur(0); setSel(null); setAnswered(false);
-    setScore(0); setLog([]); setTimeLeft(90); setPhase("quiz");
-  };
-
-  useEffect(()=>{
-    if(phase!=="quiz"||answered||!timed) return;
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(()=>{
-      setTimeLeft(t=>{
-        if(t<=1){clearInterval(timerRef.current);handleAns(-1);return 0;}
-        return t-1;
-      });
-    },1000);
-    return ()=>clearInterval(timerRef.current);
-  },[phase,cur,answered]);
-
-  const handleAns = (idx) => {
-    clearInterval(timerRef.current);
-    if(answered) return;
-    setSel(idx); setAnswered(true);
-    const ok = idx===qs[cur].ans;
-    if(ok) setScore(s=>s+1);
-    setLog(l=>[...l,{q:qs[cur],sel:idx,ok}]);
-  };
-
-  const next = () => {
-    if(cur+1>=qs.length){setPhase("result");return;}
-    setCur(c=>c+1); setSel(null); setAnswered(false); setTimeLeft(90);
-  };
-
-  if(phase==="setup") return (
-    <div style={{maxWidth:560,margin:"0 auto"}}>
-      <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:20}}>≡ƒÄ» C++ OOP Test Series</div>
-      <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:14,padding:28,marginBottom:20}}>
-        <div style={{marginBottom:20}}>
-          <label style={{display:"block",fontSize:12,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>Number of Questions</label>
-          <div style={{display:"flex",gap:8}}>
-            {[10,15,20,30].map(n=>(
-              <button key={n} onClick={()=>setNumQ(n)} style={{padding:"8px 18px",borderRadius:8,fontFamily:"inherit",fontSize:13,fontWeight:600,cursor:"pointer",background:numQ===n?"rgba(0,212,255,0.12)":"transparent",color:numQ===n?"#00d4ff":"#64748b",border:`1px solid ${numQ===n?"#00d4ff":"#1e2d4a"}`}}>{n}</button>
-            ))}
-          </div>
-        </div>
-        <div style={{marginBottom:24}}>
-          <label style={{display:"block",fontSize:12,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>Timer (90s per question)</label>
-          <div style={{display:"flex",gap:8}}>
-            {[[true,"Timed ΓÅ▒"],[false,"Untimed"]].map(([v,l])=>(
-              <button key={l} onClick={()=>setTimed(v)} style={{padding:"8px 18px",borderRadius:8,fontFamily:"inherit",fontSize:13,fontWeight:600,cursor:"pointer",background:timed===v?"rgba(0,212,255,0.12)":"transparent",color:timed===v?"#00d4ff":"#64748b",border:`1px solid ${timed===v?"#00d4ff":"#1e2d4a"}`}}>{l}</button>
-            ))}
-          </div>
-        </div>
-        <button onClick={start} style={{width:"100%",padding:"14px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:"0.95rem",fontWeight:700,letterSpacing:"0.05em"}}>Start Test ΓåÆ</button>
-      </div>
-      <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:12,padding:18}}>
-        <div style={{fontWeight:700,fontSize:"0.8rem",color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>Topics Covered</div>
-        {["OOP Core (RAII, constructors, operators)","Inheritance (virtual, LSP, diamond)","Polymorphism (vtable, CRTP, dispatch)","Templates (SFINAE, variadic, concepts)","STL (containers, algorithms, lambdas)","Exception Handling (safety guarantees)"].map((t,i)=>(
-          <div key={i} style={{fontSize:13,color:"#7da8c4",padding:"4px 0",borderBottom:"1px solid rgba(0,212,255,0.05)"}}>ΓÇó {t}</div>
-        ))}
-      </div>
-    </div>
-  );
-
-  if(phase==="result") {
-    const pct = Math.round(score/qs.length*100);
-    const color = pct>=85?"#10b981":pct>=65?"#f59e0b":"#ef4444";
-    return (
-      <div style={{maxWidth:680,margin:"0 auto"}}>
-        <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:14,padding:36,textAlign:"center",marginBottom:20}}>
-          <div style={{fontSize:48,marginBottom:12}}>≡ƒÄô</div>
-          <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,marginBottom:6}}>{pct>=85?"Outstanding! ≡ƒÅå":pct>=65?"Great Job! ≡ƒÄ»":"Keep Practicing ≡ƒôÜ"}</div>
-          <div style={{fontFamily:"monospace",fontSize:"3.5rem",fontWeight:700,color,margin:"16px 0"}}>{pct}%</div>
-          <div style={{display:"flex",gap:32,justifyContent:"center",marginBottom:24}}>
-            {[[score,"Correct","#10b981"],[qs.length-score,"Wrong","#ef4444"],[qs.length,"Total","#00d4ff"]].map(([v,l,c])=>(
-              <div key={l} style={{textAlign:"center"}}><div style={{fontFamily:"monospace",fontSize:"1.6rem",fontWeight:700,color:c}}>{v}</div><div style={{fontSize:11,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div></div>
-            ))}
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-            <button onClick={start} style={{padding:"11px 24px",borderRadius:9,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:14,fontWeight:700}}>Try Again</button>
-            <button onClick={()=>setPhase("setup")} style={{padding:"11px 24px",borderRadius:9,background:"transparent",color:"#00d4ff",border:"1px solid rgba(0,212,255,0.3)",cursor:"pointer",fontFamily:"inherit",fontSize:14,fontWeight:700}}>Back</button>
-          </div>
-        </div>
-        <div style={{fontWeight:700,fontSize:"0.85rem",color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:14}}>Answer Review</div>
-        {log.map((item,i)=>(
-          <div key={i} style={{background:"#0f1629",border:`1px solid ${item.ok?"rgba(16,185,129,0.2)":"rgba(239,68,68,0.15)"}`,borderRadius:10,padding:"14px 16px",marginBottom:10}}>
-            <div style={{fontSize:13,fontWeight:600,marginBottom:8}}>{item.ok?"Γ£à":"Γ¥î"} Q{i+1}: {item.q.q}</div>
-            {!item.ok&&<div style={{fontSize:12,color:"#10b981",marginBottom:4}}>Γ£ô Correct: {item.q.opts[item.q.ans]}</div>}
-            <div style={{fontSize:12,color:"#64748b",lineHeight:1.6}}>{item.q.exp}</div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  const q = qs[cur];
-  const pct = (cur/qs.length*100).toFixed(0);
-  return (
-    <div style={{maxWidth:640,margin:"0 auto"}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,flexWrap:"wrap",gap:10}}>
-        <div style={{flex:1,maxWidth:320}}>
-          <div style={{display:"flex",justifyContent:"space-between",fontSize:12,color:"#64748b",marginBottom:5}}><span>Q{cur+1}/{qs.length}</span><span>{pct}%</span></div>
-          <div style={{height:4,borderRadius:2,background:"#1e2d4a",overflow:"hidden"}}><div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#7c3aed,#00d4ff)",borderRadius:2}}/></div>
-        </div>
-        {timed&&<div style={{fontFamily:"monospace",fontSize:"1.2rem",color:timeLeft<=20?"#ef4444":"#f59e0b",background:timeLeft<=20?"rgba(239,68,68,0.08)":"rgba(245,158,11,0.08)",border:`1px solid ${timeLeft<=20?"rgba(239,68,68,0.2)":"rgba(245,158,11,0.2)"}`,padding:"7px 16px",borderRadius:7}}>0:{String(timeLeft).padStart(2,"0")}</div>}
-      </div>
-      <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:12,padding:26,marginBottom:14}}>
-        <div style={{fontWeight:700,fontSize:"0.95rem",lineHeight:1.6,marginBottom:22}}>Q{cur+1}. {q.q}</div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {q.opts.map((opt,i)=>{
-            let bg="rgba(0,212,255,0.02)",bc="#1e2d4a",col="#e2e8f0";
-            if(answered){
-              if(i===q.ans){bg="rgba(16,185,129,0.08)";bc="#10b981";col="#6ee7b7";}
-              else if(i===sel&&i!==q.ans){bg="rgba(239,68,68,0.07)";bc="#ef4444";col="#f87171";}
-            } else if(sel===i){bg="rgba(0,212,255,0.08)";bc="#00d4ff";col="#00d4ff";}
-            return (
-              <div key={i} onClick={()=>!answered&&handleAns(i)}
-                style={{padding:"12px 16px",borderRadius:9,border:`1px solid ${bc}`,background:bg,color:col,cursor:answered?"default":"pointer",display:"flex",alignItems:"center",gap:12,fontSize:14,transition:"all 0.15s"}}>
-                <span style={{width:24,height:24,borderRadius:5,background:"rgba(0,212,255,0.08)",border:"1px solid rgba(0,212,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"monospace",fontSize:11,fontWeight:700,color:"#00d4ff",flexShrink:0}}>{String.fromCharCode(65+i)}</span>
-                {opt}
-              </div>
-            );
-          })}
-        </div>
-        {answered&&<div style={{marginTop:16,padding:"12px 14px",borderRadius:8,background:sel===q.ans?"rgba(16,185,129,0.06)":"rgba(239,68,68,0.06)",border:`1px solid ${sel===q.ans?"rgba(16,185,129,0.2)":"rgba(239,68,68,0.2)"}`}}>
-          <span style={{fontWeight:700,color:sel===q.ans?"#10b981":"#ef4444"}}>{sel===q.ans?"Γ£à Correct!":"Γ¥î Wrong"}</span>
-          <p style={{fontSize:13,color:"#64748b",marginTop:6,lineHeight:1.6}}>{q.exp}</p>
-        </div>}
-      </div>
-      <div style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10}}>
-        <button onClick={()=>setPhase("setup")} style={{padding:"9px 18px",borderRadius:8,background:"transparent",color:"#64748b",border:"1px solid #1e2d4a",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>End</button>
-        {answered&&<button onClick={next} style={{padding:"9px 22px",borderRadius:8,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700}}>{cur+1>=qs.length?"Results ΓåÆ":"Next ΓåÆ"}</button>}
-      </div>
-    </div>
-  );
-}
-
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-//  AI TUTOR ΓÇö powered by Anthropic API
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function AITutor() {
-  const [messages, setMessages] = useState([
-    {role:"assistant",content:"≡ƒæï Hi! I'm your C++ OOP AI Tutor. Ask me **anything** about C++ OOP ΓÇö constructors, templates, STL, virtual functions, CRTP, SFINAE, exception safety, design patterns, code explanations, or anything else!\n\nTry: *\"Explain vtable with example\"* or *\"What is CRTP?\"* or *\"Show me a variadic template\"*"}
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const bottomRef = useRef(null);
-  const [suggestions] = useState([
-    "Explain vtable and vptr with example",
-    "What is CRTP and when to use it?",
-    "Difference between move and copy semantics",
-    "How does std::shared_ptr work internally?",
-    "What is SFINAE? Show me enable_if example",
-    "Explain exception safety guarantees",
-    "What is the Rule of Five?",
-    "How does std::function type erasure work?",
-    "Show me diamond problem with solution",
-    "Explain template metaprogramming with factorial",
-  ]);
-
-  useEffect(()=>{
-    bottomRef.current?.scrollIntoView({behavior:"smooth"});
-  },[messages]);
-
-  const send = async(msg) => {
-    if(!msg.trim()||loading) return;
-    const userMsg = {role:"user",content:msg};
-    setMessages(m=>[...m,userMsg]);
-    setInput("");
-    setLoading(true);
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          system:`You are an expert C++ OOP tutor. Answer questions about C++, OOP, templates, STL, design patterns, and related topics.
-
-Rules:
-- Be precise and technical but clear
-- Use code examples when helpful (wrap in \`\`\`cpp ... \`\`\`)
-- For code output questions, explain WHY step by step
-- Mention C++ standard version when relevant (C++11/14/17/20)
-- Keep answers focused and not too long (under 400 words usually)
-- If showing output, label it clearly
-- Highlight important keywords or concepts with **bold**`,
-          messages:[...messages.map(m=>({role:m.role,content:m.content})),userMsg]
-        })
-      });
-      const data = await res.json();
-      const reply = data.content?.[0]?.text || "Sorry, couldn't get a response.";
-      setMessages(m=>[...m,{role:"assistant",content:reply}]);
-    } catch(e) {
-      setMessages(m=>[...m,{role:"assistant",content:"ΓÜá∩╕Å Connection error. Please try again."}]);
-    }
-    setLoading(false);
-  };
-
-  const formatMsg = (text) => {
-    // Simple markdown: **bold**, `code`, ```cpp blocks
-    const parts = text.split(/(```[\s\S]*?```|`[^`]+`|\*\*[^*]+\*\*)/g);
-    return parts.map((part,i)=>{
-      if(part.startsWith("```")&&part.endsWith("```")){
-        const code = part.slice(part.indexOf("\n")+1,-3);
-        return <pre key={i} style={{background:"#060d1f",border:"1px solid #1e2d4a",borderRadius:8,padding:"12px 14px",fontFamily:"'JetBrains Mono',Consolas,monospace",fontSize:"0.76rem",lineHeight:1.6,overflowX:"auto",margin:"8px 0",color:"#e2e8f0"}}>{code}</pre>;
-      }
-      if(part.startsWith("`")&&part.endsWith("`")){
-        return <code key={i} style={{fontFamily:"monospace",background:"rgba(0,212,255,0.1)",color:"#00d4ff",padding:"1px 5px",borderRadius:3,fontSize:"0.85em"}}>{part.slice(1,-1)}</code>;
-      }
-      if(part.startsWith("**")&&part.endsWith("**")){
-        return <strong key={i} style={{color:"#00d4ff"}}>{part.slice(2,-2)}</strong>;
-      }
-      // Handle newlines
-      return <span key={i}>{part.split("\n").map((line,j,arr)=><span key={j}>{line}{j<arr.length-1&&<br/>}</span>)}</span>;
-    });
-  };
-
-  return (
-    <div style={{maxWidth:780,margin:"0 auto"}}>
-      <div style={{marginBottom:20}}>
-        <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:6}}>≡ƒñû C++ OOP AI Tutor</div>
-        <div style={{fontSize:13,color:"#64748b"}}>Powered by Claude ┬╖ Ask anything about C++ OOP, templates, STL, patterns</div>
-      </div>
-
-      {/* Suggestions */}
-      {messages.length<=1&&(
-        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:18}}>
-          {suggestions.map((s,i)=>(
-            <button key={i} onClick={()=>send(s)} style={{padding:"7px 13px",borderRadius:20,background:"rgba(0,212,255,0.06)",border:"1px solid rgba(0,212,255,0.15)",color:"#7da8c4",fontFamily:"inherit",fontSize:12,cursor:"pointer",transition:"all 0.18s"}}
-              onMouseEnter={e=>{e.currentTarget.style.background="rgba(0,212,255,0.12)";e.currentTarget.style.color="#00d4ff";}}
-              onMouseLeave={e=>{e.currentTarget.style.background="rgba(0,212,255,0.06)";e.currentTarget.style.color="#7da8c4";}}>
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Chat */}
-      <div style={{background:"#0a0e1a",border:"1px solid #1e2d4a",borderRadius:14,overflow:"hidden"}}>
-        <div style={{height:460,overflowY:"auto",padding:"20px 20px 8px"}}>
-          {messages.map((m,i)=>(
-            <div key={i} style={{marginBottom:18,display:"flex",flexDirection:"column",alignItems:m.role==="user"?"flex-end":"flex-start"}}>
-              <div style={{maxWidth:"85%",padding:"12px 16px",borderRadius:m.role==="user"?"12px 12px 2px 12px":"2px 12px 12px 12px",background:m.role==="user"?"linear-gradient(135deg,rgba(124,58,237,0.25),rgba(0,212,255,0.15))":"rgba(15,22,41,0.95)",border:m.role==="user"?"1px solid rgba(124,58,237,0.3)":"1px solid #1e2d4a",fontSize:"0.87rem",lineHeight:1.7,color:"#e2e8f0"}}>
-                {m.role==="assistant"&&<div style={{fontSize:"0.68rem",color:"#00d4ff",fontWeight:700,letterSpacing:"0.1em",marginBottom:6,textTransform:"uppercase"}}>≡ƒñû AI Tutor</div>}
-                {formatMsg(m.content)}
-              </div>
-            </div>
-          ))}
-          {loading&&(
-            <div style={{display:"flex",gap:4,padding:"12px 16px"}}>
-              {[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:"#00d4ff",animation:`bounce 1.2s ${i*0.2}s infinite`}}/>)}
-            </div>
-          )}
-          <div ref={bottomRef}/>
-        </div>
-
-        {/* Input */}
-        <div style={{padding:"12px 16px",borderTop:"1px solid #1e2d4a",display:"flex",gap:10}}>
-          <input
-            value={input}
-            onChange={e=>setInput(e.target.value)}
-            onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send(input)}
-            placeholder="Ask about C++ OOP... (Enter to send)"
-            style={{flex:1,background:"rgba(0,212,255,0.04)",border:"1px solid #1e2d4a",borderRadius:9,padding:"10px 14px",color:"#e2e8f0",fontFamily:"inherit",fontSize:14,outline:"none"}}
-          />
-          <button onClick={()=>send(input)} disabled={loading||!input.trim()}
-            style={{padding:"10px 20px",borderRadius:9,background:loading||!input.trim()?"#1e2d4a":"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:loading||!input.trim()?"not-allowed":"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700,transition:"all 0.2s"}}>
-            {loading?"...":"Send"}
-          </button>
-        </div>
-      </div>
-
       <style>{`
-        @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+        *{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;}
+        ::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:#1e2d4a;border-radius:99px;}
+        @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 12px rgba(239,68,68,.4)}50%{box-shadow:0 0 24px rgba(239,68,68,.7)}}
+        input::placeholder{color:#475569;}input:focus{border-color:rgba(0,212,255,.3)!important;outline:none;}
       `}</style>
     </div>
   );
