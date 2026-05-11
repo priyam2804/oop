@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+﻿import { useState, useEffect, useRef, useCallback } from "react";
 
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 //  150+ QUESTION BANK
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 const QUESTIONS = [
-// ── OOP CORE ─────────────────────────────────────────────────
+// ΓöÇΓöÇ OOP CORE ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:1,topic:'oop',type:'output',diff:'medium',q:'What is the output?',
 code:`class Base {
 public:
@@ -18,7 +18,7 @@ public:
 };
 int main() { Derived d; }`,
 output:'BD~D~B',
-explanation:'Constructor order: Base→Derived. Destructor order reverses: ~Derived→~Base.',
+explanation:'Constructor order: BaseΓåÆDerived. Destructor order reverses: ~DerivedΓåÆ~Base.',
 options:['BD~B~D','DB~B~D','BD~D~B','BD~D'],answer:2},
 
 {id:2,topic:'oop',type:'theory',diff:'medium',q:'What is shallow copy vs deep copy? When does the default copy constructor cause problems?',
@@ -26,15 +26,15 @@ answer_text:`Shallow copy copies pointer values (addresses), not the heap data t
 Deep copy allocates new memory and copies the actual pointed-to data.
 
 Problems with default (shallow) copy constructor when class owns heap memory:
-• Double-free: both objects point to same memory; deleting one corrupts the other.
-• Aliasing: modifying data through one object changes the other unexpectedly.
-• Dangling pointer after first object is destroyed.
+ΓÇó Double-free: both objects point to same memory; deleting one corrupts the other.
+ΓÇó Aliasing: modifying data through one object changes the other unexpectedly.
+ΓÇó Dangling pointer after first object is destroyed.
 
-Rule of Three (C++03): If you define destructor → also define copy constructor + copy assignment.
+Rule of Three (C++03): If you define destructor ΓåÆ also define copy constructor + copy assignment.
 Rule of Five (C++11): Add move constructor + move assignment for efficiency.`,
 options:['Shallow copies recursively; deep copies addresses only','Shallow copies pointer values causing double-free/aliasing; deep copy allocates fresh memory','Both identical for primitive types','Shallow copy is always sufficient'],answer:1},
 
-{id:3,topic:'oop',type:'output',diff:'hard',q:'Member initialization order — what prints?',
+{id:3,topic:'oop',type:'output',diff:'hard',q:'Member initialization order ΓÇö what prints?',
 code:`class A {
 public:
     int x;
@@ -50,7 +50,7 @@ output:'A1A2',
 explanation:'Members are always initialized in DECLARATION ORDER (a1 then a2), regardless of initializer list order. a2(2) listed first but a1(1) executes first.',
 options:['A2A1','A1A2','A1','Undefined behavior'],answer:1},
 
-{id:4,topic:'oop',type:'output',diff:'medium',q:'Static member counting — what prints?',
+{id:4,topic:'oop',type:'output',diff:'medium',q:'Static member counting ΓÇö what prints?',
 code:`class Counter {
     static int count;
 public:
@@ -65,12 +65,12 @@ int main() {
     cout << Counter::get();
 }`,
 output:'3 2',
-explanation:'a,b,c exist → count=3. Inner block ends, c destroyed → count=2.',
+explanation:'a,b,c exist ΓåÆ count=3. Inner block ends, c destroyed ΓåÆ count=2.',
 options:['2 3','3 2','3 3','2 2'],answer:1},
 
 {id:5,topic:'oop',type:'theory',diff:'hard',q:'Explain the Diamond Problem and how virtual inheritance solves it.',
 answer_text:`Diamond Problem: D inherits from B and C, both of which inherit from A.
-Without virtual inheritance, D contains TWO copies of A's members → ambiguity.
+Without virtual inheritance, D contains TWO copies of A's members ΓåÆ ambiguity.
 
 class B : virtual public A {};
 class C : virtual public A {};
@@ -78,10 +78,10 @@ class D : public B, public C {};
 
 Virtual inheritance ensures ONE shared copy of A in D. 
 The most-derived class (D) is responsible for constructing the virtual base A.
-Construction order: A (virtual base, first) → B → C → D.`,
+Construction order: A (virtual base, first) ΓåÆ B ΓåÆ C ΓåÆ D.`,
 options:['Compile error; fixed by renaming methods','Multiple inheritance from common base; virtual inheritance ensures single shared copy, most-derived class constructs it','Fixed using abstract classes only','Virtual inheritance creates multiple vtables'],answer:1},
 
-{id:6,topic:'oop',type:'output',diff:'hard',q:'Operator overloading — what prints?',
+{id:6,topic:'oop',type:'output',diff:'hard',q:'Operator overloading ΓÇö what prints?',
 code:`class Vec {
 public:
     int x, y;
@@ -99,7 +99,7 @@ output:'(4,6)',
 explanation:'operator+ returns Vec{4,6}. Friend operator<< outputs "(4,6)".',
 options:['(1,2)+(3,4)','4 6','(4,6)','Compile error'],answer:2},
 
-{id:7,topic:'oop',type:'output',diff:'hard',q:'Move semantics and NRVO — what prints?',
+{id:7,topic:'oop',type:'output',diff:'hard',q:'Move semantics and NRVO ΓÇö what prints?',
 code:`struct R {
     R()        { cout << "C"; }
     R(const R&){ cout << "Copy"; }
@@ -141,7 +141,7 @@ int main() {
     cout << (a < b) << " " << (b < a);
 }`,
 output:'1 0',
-explanation:'a.val=3 < b.val=5 → true→1. b.val=5 < a.val=3 → false→0.',
+explanation:'a.val=3 < b.val=5 ΓåÆ trueΓåÆ1. b.val=5 < a.val=3 ΓåÆ falseΓåÆ0.',
 options:['0 1','1 0','true false','Compile error'],answer:1},
 
 {id:10,topic:'oop',type:'theory',diff:'hard',q:'What is the difference between composition, aggregation, and inheritance? When to prefer each?',
@@ -155,10 +155,10 @@ Aggregation ("has-a", weak ownership):
 
 Inheritance ("is-a"):
   class Dog : public Animal {}; // Dog IS an Animal
-  Use ONLY when Liskov Substitution holds — derived can replace base.
+  Use ONLY when Liskov Substitution holds ΓÇö derived can replace base.
   Prefer composition over inheritance (GoF principle) to avoid fragile base class problem.
 
-Rule: if you can say "X is a Y" and substitution holds → inheritance. Otherwise → composition/aggregation.`,
+Rule: if you can say "X is a Y" and substitution holds ΓåÆ inheritance. Otherwise ΓåÆ composition/aggregation.`,
 options:['All three are the same','Composition owns, aggregation references, inheritance is-a; prefer composition over inheritance','Inheritance always preferred','Aggregation and composition are identical'],answer:1},
 
 {id:11,topic:'oop',type:'output',diff:'medium',q:'What is the output of this const member function?',
@@ -175,16 +175,16 @@ int main() {
     // f.inc(); // Would be compile error
 }`,
 output:'10',
-explanation:'const objects can only call const member functions. f.show() is const → OK. f.inc() is non-const → compile error if uncommented.',
+explanation:'const objects can only call const member functions. f.show() is const ΓåÆ OK. f.inc() is non-const ΓåÆ compile error if uncommented.',
 options:['10','11','Compile error','0'],answer:0},
 
 {id:12,topic:'oop',type:'theory',diff:'medium',q:'What is a mutable keyword? When is it used?',
 answer_text:`mutable allows a member to be modified even in a const member function or const object.
 
 Use cases:
-1. Caching/memoization — lazy evaluation stored in mutable cache variable
-2. Mutex locking — lock a mutable mutex inside const method for thread safety
-3. Reference counting — mutable refcount in a "logically const" object
+1. Caching/memoization ΓÇö lazy evaluation stored in mutable cache variable
+2. Mutex locking ΓÇö lock a mutable mutex inside const method for thread safety
+3. Reference counting ΓÇö mutable refcount in a "logically const" object
 
 Example:
   class Cache {
@@ -196,8 +196,8 @@ Example:
       }
   };
 
-"Logically const" but "physically mutable" — the observable state doesn't change.`,
-options:['Makes a variable global','Allows modification of member in const context — used for caching, mutexes, ref counts','Makes member immutable','Prevents copy construction'],answer:1},
+"Logically const" but "physically mutable" ΓÇö the observable state doesn't change.`,
+options:['Makes a variable global','Allows modification of member in const context ΓÇö used for caching, mutexes, ref counts','Makes member immutable','Prevents copy construction'],answer:1},
 
 {id:13,topic:'oop',type:'output',diff:'hard',q:'What prints? (conversion constructor + implicit conversion)',
 code:`class Dollars {
@@ -217,17 +217,17 @@ options:['5','D5','Compile error: no matching call','D5.0'],answer:1},
 answer_text:`explicit prevents implicit conversions and copy-initialization using that constructor.
 
 Without explicit:
-  Dollars d = 5.0;  // OK — implicit conversion
-  print(5.0);       // OK — implicit conversion
+  Dollars d = 5.0;  // OK ΓÇö implicit conversion
+  print(5.0);       // OK ΓÇö implicit conversion
 
 With explicit Dollars(double d):
-  Dollars d = 5.0;  // ERROR — explicit constructor
-  Dollars d(5.0);   // OK — direct initialization
-  Dollars d{5.0};   // OK — list initialization
-  print(static_cast<Dollars>(5.0)); // OK — explicit cast
+  Dollars d = 5.0;  // ERROR ΓÇö explicit constructor
+  Dollars d(5.0);   // OK ΓÇö direct initialization
+  Dollars d{5.0};   // OK ΓÇö list initialization
+  print(static_cast<Dollars>(5.0)); // OK ΓÇö explicit cast
 
 Best practice: mark single-argument constructors explicit unless intentional conversion is desired. Prevents hard-to-find bugs from accidental type conversions.`,
-options:['Makes constructor public','Prevents implicit conversions — single-arg constructors should be explicit unless conversion is intentional','Makes constructor virtual','Prevents inheritance'],answer:1},
+options:['Makes constructor public','Prevents implicit conversions ΓÇö single-arg constructors should be explicit unless conversion is intentional','Makes constructor virtual','Prevents inheritance'],answer:1},
 
 {id:15,topic:'oop',type:'output',diff:'hard',q:'What is printed? (copy vs move in return)',
 code:`struct S {
@@ -242,11 +242,11 @@ int main() {
     cout << " " << a.v << " " << b.v;
 }`,
 output:'C1M 0 1',
-explanation:'S a(1) → "C1". move(a) casts a to rvalue → move constructor runs → "M", a.v=0, b.v=1. Then prints " 0 1".',
+explanation:'S a(1) ΓåÆ "C1". move(a) casts a to rvalue ΓåÆ move constructor runs ΓåÆ "M", a.v=0, b.v=1. Then prints " 0 1".',
 options:['C1Cp 1 1','C1M 0 1','C1 1 1','C1M 1 1'],answer:1},
 
-// ── INHERITANCE ──────────────────────────────────────────────
-{id:16,topic:'inherit',type:'output',diff:'medium',q:'Virtual destructor — what prints?',
+// ΓöÇΓöÇ INHERITANCE ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:16,topic:'inherit',type:'output',diff:'medium',q:'Virtual destructor ΓÇö what prints?',
 code:`class Animal {
 public:
     Animal()  { cout << "Animal "; }
@@ -262,10 +262,10 @@ int main() {
     delete p;
 }`,
 output:'Animal Dog ~Dog ~Animal ',
-explanation:'Virtual destructor ensures ~Dog() is called first (via vtable), then ~Animal(). Without virtual: ~Animal() only → UB/leak.',
+explanation:'Virtual destructor ensures ~Dog() is called first (via vtable), then ~Animal(). Without virtual: ~Animal() only ΓåÆ UB/leak.',
 options:['Animal Dog ~Animal ','Animal Dog ~Dog ~Animal ','Dog Animal ~Animal ~Dog ','Animal Dog ~Dog '],answer:1},
 
-{id:17,topic:'inherit',type:'output',diff:'hard',q:'Object slicing — what prints?',
+{id:17,topic:'inherit',type:'output',diff:'hard',q:'Object slicing ΓÇö what prints?',
 code:`class Shape {
 public:
     void draw() { cout << "Shape"; }
@@ -280,30 +280,30 @@ int main() {
     render(c);
 }`,
 output:'Shape',
-explanation:'Object slicing: Circle passed by value as Shape loses its Circle part. draw() is non-virtual, parameter is Shape type → Shape::draw().',
+explanation:'Object slicing: Circle passed by value as Shape loses its Circle part. draw() is non-virtual, parameter is Shape type ΓåÆ Shape::draw().',
 options:['Circle','Shape','ShapeCircle','Compile error'],answer:1},
 
 {id:18,topic:'inherit',type:'theory',diff:'medium',q:'What is the difference between public, protected, and private inheritance?',
 answer_text:`Access specifier in inheritance changes the MAXIMUM access level of inherited members:
 
-• public inheritance (is-a):
-  public→public, protected→protected, private stays private.
+ΓÇó public inheritance (is-a):
+  publicΓåÆpublic, protectedΓåÆprotected, private stays private.
   Maintains original interface. Liskov Substitution Principle applies.
   Use for "is-a" relationships.
 
-• protected inheritance:
-  public→protected, protected→protected.
+ΓÇó protected inheritance:
+  publicΓåÆprotected, protectedΓåÆprotected.
   Derived class can use base's interface but doesn't expose it externally.
 
-• private inheritance (has-a implementation):
-  public→private, protected→private.
+ΓÇó private inheritance (has-a implementation):
+  publicΓåÆprivate, protectedΓåÆprivate.
   All inherited members become private. No external access to base interface.
-  Useful for "implemented-in-terms-of" — alternative to composition.
+  Useful for "implemented-in-terms-of" ΓÇö alternative to composition.
 
 Most OOP code uses public inheritance only.`,
 options:['Control whether derived can call base constructor','Determine maximum visibility: public keeps access, protected caps at protected, private caps at private','Only affect virtual function overriding','No practical difference'],answer:1},
 
-{id:19,topic:'inherit',type:'output',diff:'hard',q:'Virtual inheritance construction order — what prints?',
+{id:19,topic:'inherit',type:'output',diff:'hard',q:'Virtual inheritance construction order ΓÇö what prints?',
 code:`class X { public: X() { cout << "X"; } };
 class Y : virtual public X { public: Y() { cout << "Y"; } };
 class Z : virtual public X { public: Z() { cout << "Z"; } };
@@ -313,7 +313,7 @@ output:'XYZW',
 explanation:'With virtual inheritance: virtual base X constructed once and first. Then Y, Z, W in order. Without virtual: X would print twice.',
 options:['XYZW','XZYW','YXZW','XYWZ'],answer:0},
 
-{id:20,topic:'inherit',type:'output',diff:'hard',q:'Constructor delegation and base init — what prints?',
+{id:20,topic:'inherit',type:'output',diff:'hard',q:'Constructor delegation and base init ΓÇö what prints?',
 code:`class A {
 public:
     int val;
@@ -330,7 +330,7 @@ int main() {
     B b2(5);
 }`,
 output:'A0 B0 A5 B5 ',
-explanation:'B() implicitly calls A() → "A0 B0". B(5) calls A(5) via initializer list → "A5 B5".',
+explanation:'B() implicitly calls A() ΓåÆ "A0 B0". B(5) calls A(5) via initializer list ΓåÆ "A5 B5".',
 options:['B0 A0 B5 A5 ','A0 B0 A5 B5 ','A0 B0 B5 A5 ','A5 B5 A0 B0 '],answer:1},
 
 {id:21,topic:'inherit',type:'theory',diff:'hard',q:'What is the Liskov Substitution Principle (LSP)? Give a classic violation example.',
@@ -338,16 +338,16 @@ answer_text:`LSP: "If S is a subtype of T, objects of type T may be replaced by 
 
 In C++: a derived class should be fully substitutable for its base class wherever the base is used.
 
-Classic violation — Rectangle/Square:
+Classic violation ΓÇö Rectangle/Square:
   class Rectangle { virtual void setWidth(int); virtual void setHeight(int); };
   class Square : public Rectangle { ... }; // Square constrains width==height
 
-If code sets width and height independently assuming they're independent (valid for Rectangle), Square breaks that assumption → LSP violated.
+If code sets width and height independently assuming they're independent (valid for Rectangle), Square breaks that assumption ΓåÆ LSP violated.
 
 Fix: don't inherit Square from Rectangle. Use a common abstract Shape base instead. Or make Rectangle non-virtual (prevent inheritance of behavior).`,
 options:['All inheritance violates LSP','Derived should be substitutable for base; classic violation: Square inheriting Rectangle breaks width/height independence','LSP only applies to interfaces','LSP is enforced by the compiler'],answer:1},
 
-{id:22,topic:'inherit',type:'output',diff:'medium',q:'Using declaration in derived class — what prints?',
+{id:22,topic:'inherit',type:'output',diff:'medium',q:'Using declaration in derived class ΓÇö what prints?',
 code:`class Base {
 public:
     void func(int x) { cout << "Base:" << x; }
@@ -372,19 +372,19 @@ answer_text:`When you change a base class implementation, it can break derived c
 Example:
   Base::add() calls Base::addAll() internally.
   Derived overrides addAll() and calls Base::add().
-  Now Base::add() → Derived::addAll() → Base::add() → infinite recursion!
+  Now Base::add() ΓåÆ Derived::addAll() ΓåÆ Base::add() ΓåÆ infinite recursion!
 
 The derived class was coupled to BASE'S IMPLEMENTATION, not just its interface.
 
 Solutions:
-• Prefer composition over inheritance
-• Document which methods are designed for override (non-virtual by default in some guidelines)
-• Use final to prevent further derivation
-• Use the NVI (Non-Virtual Interface) pattern: public non-virtual calls private virtual`,
+ΓÇó Prefer composition over inheritance
+ΓÇó Document which methods are designed for override (non-virtual by default in some guidelines)
+ΓÇó Use final to prevent further derivation
+ΓÇó Use the NVI (Non-Virtual Interface) pattern: public non-virtual calls private virtual`,
 options:['Base class constructor is called too many times','Changing base implementation breaks derived classes even without interface change','Base class destructor is virtual','Multiple inheritance always causes this'],answer:1},
 
-// ── POLYMORPHISM ─────────────────────────────────────────────
-{id:24,topic:'poly',type:'output',diff:'medium',q:'Virtual dispatch from base — what prints?',
+// ΓöÇΓöÇ POLYMORPHISM ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:24,topic:'poly',type:'output',diff:'medium',q:'Virtual dispatch from base ΓÇö what prints?',
 code:`class Base {
 public:
     virtual void show() { cout << "Base"; }
@@ -399,10 +399,10 @@ int main() {
     d.print();
 }`,
 output:'Derived',
-explanation:'print() calls show() virtually. Even though print() is in Base, "this" points to Derived at runtime → Derived::show() dispatched.',
+explanation:'print() calls show() virtually. Even though print() is in Base, "this" points to Derived at runtime ΓåÆ Derived::show() dispatched.',
 options:['Base','Derived','BaseDerived','Compile error'],answer:1},
 
-{id:25,topic:'poly',type:'output',diff:'hard',q:'Chain of virtual overrides — what prints?',
+{id:25,topic:'poly',type:'output',diff:'hard',q:'Chain of virtual overrides ΓÇö what prints?',
 code:`struct Base {
     virtual void f() { cout << "B"; }
     void g() { f(); }
@@ -418,7 +418,7 @@ int main() {
     p->g();
 }`,
 output:'D2',
-explanation:'g() calls f() virtually. p points to D2 → vtable resolves to D2::f() — the most-derived override.',
+explanation:'g() calls f() virtually. p points to D2 ΓåÆ vtable resolves to D2::f() ΓÇö the most-derived override.',
 options:['B','D1','D2','BD2'],answer:2},
 
 {id:26,topic:'poly',type:'theory',diff:'medium',q:'What is the difference between function overloading and overriding? Can both coexist?',
@@ -430,14 +430,14 @@ Overriding: derived class redefines virtual function with EXACT same signature.
 
 Coexistence and Name Hiding:
   If Base has virtual void f(int) and Derived adds void f(double):
-  • f(double) is a new overload in Derived scope
-  • f(int) from Base is HIDDEN in Derived (name hiding!)
-  • Fix: use "using Base::f;" in Derived to bring both into scope
+  ΓÇó f(double) is a new overload in Derived scope
+  ΓÇó f(int) from Base is HIDDEN in Derived (name hiding!)
+  ΓÇó Fix: use "using Base::f;" in Derived to bring both into scope
 
 Key: overloading = compile-time, overriding = runtime, hiding = accident.`,
 options:['Overloading is runtime, overriding compile-time','Overloading is compile-time on different signatures; overriding is runtime of same virtual signature; name hiding occurs without "using"','They are the same','Overriding requires different return type'],answer:1},
 
-{id:27,topic:'poly',type:'output',diff:'hard',q:'Pure virtual with implementation — what prints?',
+{id:27,topic:'poly',type:'output',diff:'hard',q:'Pure virtual with implementation ΓÇö what prints?',
 code:`class Abstract {
 public:
     virtual void work() = 0;
@@ -452,10 +452,10 @@ int main() {
     p->run();
 }`,
 output:'run-work',
-explanation:'Pure virtual functions CAN have implementations (rarely used). run() calls work() virtually. p points to Concrete → Concrete::work() runs.',
+explanation:'Pure virtual functions CAN have implementations (rarely used). run() calls work() virtually. p points to Concrete ΓåÆ Concrete::work() runs.',
 options:['Compile error: cannot use Abstract*','run-','work','run-work'],answer:3},
 
-{id:28,topic:'poly',type:'output',diff:'medium',q:'Covariant return types — what prints?',
+{id:28,topic:'poly',type:'output',diff:'medium',q:'Covariant return types ΓÇö what prints?',
 code:`class Base {
 public:
     virtual Base* clone() {
@@ -475,7 +475,7 @@ int main() {
     Base* c = p->clone();
 }`,
 output:'ChildClone',
-explanation:'Covariant return type: Child* overrides Base* — valid. Calling clone() on Base* pointing to Child dispatches to Child::clone().',
+explanation:'Covariant return type: Child* overrides Base* ΓÇö valid. Calling clone() on Base* pointing to Child dispatches to Child::clone().',
 options:['BaseClone','ChildClone','BaseCloneChildClone','Compile error'],answer:1},
 
 {id:29,topic:'poly',type:'theory',diff:'hard',q:'What is the vtable? Memory overhead and runtime cost?',
@@ -483,20 +483,20 @@ answer_text:`vtable: a per-class static array of function pointers for all virtu
 vptr: a hidden pointer (8 bytes on 64-bit) stored in EACH object, pointing to its class's vtable.
 
 Memory overhead:
-• One vptr per object (8 bytes)
-• One vtable per class (N virtual functions × 8 bytes each)
-• Example: 1M objects × 8B vptr = 8MB extra memory
+ΓÇó One vptr per object (8 bytes)
+ΓÇó One vtable per class (N virtual functions ├ù 8 bytes each)
+ΓÇó Example: 1M objects ├ù 8B vptr = 8MB extra memory
 
 Runtime cost of virtual call vs direct call:
-• Load vptr from object (memory read #1)
-• Load function pointer from vtable at offset (memory read #2)
-• Indirect call (cannot be inlined, may cause branch misprediction, icache miss)
+ΓÇó Load vptr from object (memory read #1)
+ΓÇó Load function pointer from vtable at offset (memory read #2)
+ΓÇó Indirect call (cannot be inlined, may cause branch misprediction, icache miss)
 
 Typical: 1-3ns extra per virtual call on modern CPUs. Matters in tight loops.
 Alternatives: CRTP (zero overhead), std::variant + visit, concepts (C++20).`,
 options:['vtable has no overhead','Per-class array of function pointers; vptr (8B) per object; two extra memory reads + no inlining per call','vtable stored inside object','Only abstract classes have vtables'],answer:1},
 
-{id:30,topic:'poly',type:'output',diff:'hard',q:'override and final keywords — which line causes error?',
+{id:30,topic:'poly',type:'output',diff:'hard',q:'override and final keywords ΓÇö which line causes error?',
 code:`class Base {
 public:
     virtual void f() {}
@@ -521,12 +521,12 @@ answer_text:`CRTP: template <typename Derived> class Base { ... };
        class MyClass : public Base<MyClass> { ... };
 
 The derived class passes ITSELF as template argument to the base.
-This allows BASE to call DERIVED's methods at COMPILE TIME — static polymorphism.
+This allows BASE to call DERIVED's methods at COMPILE TIME ΓÇö static polymorphism.
 
 Benefits vs virtual:
-• Zero runtime overhead (no vtable, fully inlineable)
-• Compile-time dispatch
-• Can be used for mixins, static interfaces
+ΓÇó Zero runtime overhead (no vtable, fully inlineable)
+ΓÇó Compile-time dispatch
+ΓÇó Can be used for mixins, static interfaces
 
 Classic uses:
 1. Static interface enforcement (like concepts pre-C++20)
@@ -537,8 +537,8 @@ Classic uses:
 Downsides: increases compile time, harder to read error messages, no runtime polymorphism.`,
 options:['Runtime pattern for circular dependencies','Derived passes itself as template arg to base; enables compile-time static polymorphism with zero vtable overhead','Only for abstract classes','Same as virtual inheritance'],answer:1},
 
-// ── TEMPLATES ────────────────────────────────────────────────
-{id:32,topic:'template',type:'output',diff:'medium',q:'Template explicit specialization — what prints?',
+// ΓöÇΓöÇ TEMPLATES ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:32,topic:'template',type:'output',diff:'medium',q:'Template explicit specialization ΓÇö what prints?',
 code:`template<typename T>
 T maxVal(T a, T b) { return (a > b) ? a : b; }
 
@@ -551,7 +551,7 @@ int main() {
     cout << maxVal("apple", "banana");
 }`,
 output:'5 banana',
-explanation:'maxVal(3,5) uses generic template → 5. Explicit specialization for const char* uses strcmp → "banana" > "apple" lexicographically.',
+explanation:'maxVal(3,5) uses generic template ΓåÆ 5. Explicit specialization for const char* uses strcmp ΓåÆ "banana" > "apple" lexicographically.',
 options:['5 apple','5 banana','3 banana','Compile error'],answer:1},
 
 {id:33,topic:'template',type:'theory',diff:'hard',q:'What is SFINAE? Give a practical example.',
@@ -559,7 +559,7 @@ answer_text:`SFINAE = "Substitution Failure Is Not An Error"
 
 When the compiler tries to instantiate a template and encounters an error during substitution of template arguments, it SILENTLY discards that overload instead of emitting a compile error.
 
-Practical example — enable function only for integral types:
+Practical example ΓÇö enable function only for integral types:
   template<typename T,
     typename = enable_if_t<is_integral_v<T>>>
   void process(T val) { cout << "integral: " << val; }
@@ -572,9 +572,9 @@ Practical example — enable function only for integral types:
   process(3.14); // prints "float: 3.14"
 
 C++20 replaces most SFINAE patterns with cleaner Concepts syntax.`,
-options:['Template errors are silently ignored always','Substitution failure for invalid template args is silently dropped — enables compile-time type-based dispatch via enable_if','Only for function templates','Runtime template selection'],answer:1},
+options:['Template errors are silently ignored always','Substitution failure for invalid template args is silently dropped ΓÇö enables compile-time type-based dispatch via enable_if','Only for function templates','Runtime template selection'],answer:1},
 
-{id:34,topic:'template',type:'output',diff:'hard',q:'Variadic template — what prints?',
+{id:34,topic:'template',type:'output',diff:'hard',q:'Variadic template ΓÇö what prints?',
 code:`template<typename T>
 void print(T val) { cout << val << "\n"; }
 
@@ -587,10 +587,10 @@ int main() {
     print(1, 2, 3);
 }`,
 output:'1 2 3\n',
-explanation:'Recursive variadic: prints 1, calls print(2,3) → prints 2, calls print(3) → base case prints "3\\n".',
+explanation:'Recursive variadic: prints 1, calls print(2,3) ΓåÆ prints 2, calls print(3) ΓåÆ base case prints "3\\n".',
 options:['1 2 3','1 2 3\n','3 2 1\n','Compile error'],answer:1},
 
-{id:35,topic:'template',type:'output',diff:'medium',q:'Non-type template parameter — what prints?',
+{id:35,topic:'template',type:'output',diff:'medium',q:'Non-type template parameter ΓÇö what prints?',
 code:`template<typename T, int N>
 class Array {
     T data[N];
@@ -607,7 +607,7 @@ output:'5 42',
 explanation:'Non-type template parameter N=5 defines compile-time array size. size() returns N=5. a[2]=42 sets element, then reads it.',
 options:['5 42','5 0','4 42','Compile error'],answer:0},
 
-{id:36,topic:'template',type:'output',diff:'hard',q:'Partial specialization — what prints?',
+{id:36,topic:'template',type:'output',diff:'hard',q:'Partial specialization ΓÇö what prints?',
 code:`template<typename T>
 struct TypeInfo { static void print() { cout << "generic"; } };
 
@@ -623,7 +623,7 @@ int main() {
     TypeInfo<int>::print();
 }`,
 output:'genericpointerint',
-explanation:'double→generic template. int*→partial spec T* (T=int). int→full specialization.',
+explanation:'doubleΓåÆgeneric template. int*ΓåÆpartial spec T* (T=int). intΓåÆfull specialization.',
 options:['genericgenericint','genericpointerint','pointerintgeneric','Compile error'],answer:1},
 
 {id:37,topic:'template',type:'theory',diff:'hard',q:'What is template metaprogramming? Give a compile-time factorial example.',
@@ -649,9 +649,9 @@ Modern C++11+: use constexpr functions (cleaner):
   static_assert(factorial(5) == 120);  // compile-time check
 
 TMP is Turing-complete. Used in type traits, policy classes, expression templates.`,
-options:['Runtime template computation','Using templates for compile-time computation — Turing complete, used for type traits and compile-time constants','Only for type manipulation','Template specialization only'],answer:1},
+options:['Runtime template computation','Using templates for compile-time computation ΓÇö Turing complete, used for type traits and compile-time constants','Only for type manipulation','Template specialization only'],answer:1},
 
-{id:38,topic:'template',type:'output',diff:'medium',q:'Template function vs template class deduction — what prints?',
+{id:38,topic:'template',type:'output',diff:'medium',q:'Template function vs template class deduction ΓÇö what prints?',
 code:`template<typename T>
 T add(T a, T b) { return a + b; }
 
@@ -662,7 +662,7 @@ int main() {
     cout << add<double>(1, 2);
 }`,
 output:'3 4 3',
-explanation:'add(1,2): T=int→3. add(1.5,2.5): T=double→4. add<double>(1,2): explicit T=double, 1 and 2 converted to double→3.0 printed as 3.',
+explanation:'add(1,2): T=intΓåÆ3. add(1.5,2.5): T=doubleΓåÆ4. add<double>(1,2): explicit T=double, 1 and 2 converted to doubleΓåÆ3.0 printed as 3.',
 options:['3 4 3','3 4.0 3.0','3 4 3.0','Compile error'],answer:0},
 
 {id:39,topic:'template',type:'theory',diff:'hard',q:'What are concepts in C++20? How do they improve on SFINAE?',
@@ -685,10 +685,10 @@ Standard library concepts (C++20):
 
   // Even cleaner:
   auto add(std::integral auto a, std::integral auto b) { return a+b; }`,
-options:['Runtime type constraints','Named compile-time predicates constraining templates — cleaner than SFINAE with readable errors and subsumption','Only for classes','Same as virtual functions'],answer:1},
+options:['Runtime type constraints','Named compile-time predicates constraining templates ΓÇö cleaner than SFINAE with readable errors and subsumption','Only for classes','Same as virtual functions'],answer:1},
 
-// ── STL ──────────────────────────────────────────────────────
-{id:40,topic:'stl',type:'output',diff:'medium',q:'lower_bound and sort — what prints?',
+// ΓöÇΓöÇ STL ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:40,topic:'stl',type:'output',diff:'medium',q:'lower_bound and sort ΓÇö what prints?',
 code:`#include <vector>
 #include <algorithm>
 int main() {
@@ -698,28 +698,28 @@ int main() {
     cout << *it << " " << (it - v.begin());
 }`,
 output:'3 2',
-explanation:'After sort: {1,2,3,4,5}. lower_bound(3) returns iterator to first element ≥ 3, which is 3 at index 2.',
+explanation:'After sort: {1,2,3,4,5}. lower_bound(3) returns iterator to first element ΓëÑ 3, which is 3 at index 2.',
 options:['3 2','2 1','3 3','4 3'],answer:0},
 
 {id:41,topic:'stl',type:'theory',diff:'medium',q:'std::map vs std::unordered_map: when to use which?',
 answer_text:`std::map:
-  • Red-black tree. Keys sorted. O(log n) insert/find/erase.
-  • Iterators valid after insert. Ordered traversal.
-  • Use when: need sorted order, range queries (lower_bound), or iterator stability.
+  ΓÇó Red-black tree. Keys sorted. O(log n) insert/find/erase.
+  ΓÇó Iterators valid after insert. Ordered traversal.
+  ΓÇó Use when: need sorted order, range queries (lower_bound), or iterator stability.
 
 std::unordered_map:
-  • Hash table. No ordering. Average O(1) insert/find. Worst O(n) on hash collision.
-  • Requires hashable key type.
-  • Use when: maximum average-case speed, don't need order, large datasets.
+  ΓÇó Hash table. No ordering. Average O(1) insert/find. Worst O(n) on hash collision.
+  ΓÇó Requires hashable key type.
+  ΓÇó Use when: maximum average-case speed, don't need order, large datasets.
 
 Other considerations:
-  • map: predictable performance, no hash collisions possible
-  • unordered_map: larger memory footprint (bucket array + linked lists)
-  • For int/string keys: unordered_map typically 3-5x faster
-  • For custom keys: map is simpler (just need operator<)`,
-options:['unordered_map always faster, use it always','map is sorted O(log n) tree; unordered_map is O(1) average hash table — choose map for order/range, unordered for speed','They are identical except syntax','map supports duplicates, unordered_map does not'],answer:1},
+  ΓÇó map: predictable performance, no hash collisions possible
+  ΓÇó unordered_map: larger memory footprint (bucket array + linked lists)
+  ΓÇó For int/string keys: unordered_map typically 3-5x faster
+  ΓÇó For custom keys: map is simpler (just need operator<)`,
+options:['unordered_map always faster, use it always','map is sorted O(log n) tree; unordered_map is O(1) average hash table ΓÇö choose map for order/range, unordered for speed','They are identical except syntax','map supports duplicates, unordered_map does not'],answer:1},
 
-{id:42,topic:'stl',type:'output',diff:'hard',q:'map operator[] side effect — what prints?',
+{id:42,topic:'stl',type:'output',diff:'hard',q:'map operator[] side effect ΓÇö what prints?',
 code:`#include <map>
 int main() {
     map<string,int> m;
@@ -729,10 +729,10 @@ int main() {
     cout << m["c"] << " " << m.size();
 }`,
 output:'not found 0 3',
-explanation:'find("c") returns end() — not found. Then m["c"] uses operator[] which DEFAULT-INSERTS "c" with value 0, so size becomes 3.',
+explanation:'find("c") returns end() ΓÇö not found. Then m["c"] uses operator[] which DEFAULT-INSERTS "c" with value 0, so size becomes 3.',
 options:['not found','not found 0 3','0 3','not found 3'],answer:1},
 
-{id:43,topic:'stl',type:'output',diff:'medium',q:'priority_queue (max-heap) — what prints?',
+{id:43,topic:'stl',type:'output',diff:'medium',q:'priority_queue (max-heap) ΓÇö what prints?',
 code:`#include <queue>
 int main() {
     priority_queue<int> pq;
@@ -750,21 +750,21 @@ options:['1 1 3 4 5 ','5 4 3 1 1 ','3 1 4 1 5 ','5 4 3 2 1 '],answer:1},
 answer_text:`Iterator invalidation: after certain container modifications, existing iterators become dangling/undefined.
 
 std::vector:
-  • push_back/insert causing reallocation → ALL iterators, pointers, references invalidated
-  • erase(it) → iterators at and after erased element invalidated
-  • push_back without reallocation → end() invalidated, others valid
+  ΓÇó push_back/insert causing reallocation ΓåÆ ALL iterators, pointers, references invalidated
+  ΓÇó erase(it) ΓåÆ iterators at and after erased element invalidated
+  ΓÇó push_back without reallocation ΓåÆ end() invalidated, others valid
 
 std::deque:
-  • Insert at middle → all iterators invalidated
-  • Insert at front/back → all iterators invalidated, but references/pointers to elements valid
+  ΓÇó Insert at middle ΓåÆ all iterators invalidated
+  ΓÇó Insert at front/back ΓåÆ all iterators invalidated, but references/pointers to elements valid
 
 std::list / std::set / std::map:
-  • Only iterators to erased elements invalidated — all others remain valid
+  ΓÇó Only iterators to erased elements invalidated ΓÇö all others remain valid
 
 Best practice: after any modifying operation, re-obtain iterators rather than reusing old ones. Use return value from insert/erase.`,
-options:['Iterator invalidation only in user containers','After container modifications, iterators may dangle — vector reallocation invalidates all; list/map only invalidates erased-element iterators','Using reserve() prevents all invalidation','Invalidation only for raw pointers'],answer:1},
+options:['Iterator invalidation only in user containers','After container modifications, iterators may dangle ΓÇö vector reallocation invalidates all; list/map only invalidates erased-element iterators','Using reserve() prevents all invalidation','Invalidation only for raw pointers'],answer:1},
 
-{id:45,topic:'stl',type:'output',diff:'hard',q:'set unique insertion — what prints?',
+{id:45,topic:'stl',type:'output',diff:'hard',q:'set unique insertion ΓÇö what prints?',
 code:`#include <set>
 int main() {
     set<int> s = {3,1,4,1,5};
@@ -774,10 +774,10 @@ int main() {
     cout << *s.begin();
 }`,
 output:'4 0 1',
-explanation:'set stores unique sorted elements: {1,3,4,5} → size 4. Inserting 3 again: ok=false(0). First element (begin) is 1.',
+explanation:'set stores unique sorted elements: {1,3,4,5} ΓåÆ size 4. Inserting 3 again: ok=false(0). First element (begin) is 1.',
 options:['5 0 1','4 0 1','4 1 1','5 1 3'],answer:1},
 
-{id:46,topic:'stl',type:'output',diff:'medium',q:'accumulate with lambda — what prints?',
+{id:46,topic:'stl',type:'output',diff:'medium',q:'accumulate with lambda ΓÇö what prints?',
 code:`#include <numeric>
 #include <vector>
 int main() {
@@ -792,21 +792,21 @@ options:['15','55','25','Compile error'],answer:1},
 
 {id:47,topic:'stl',type:'theory',diff:'medium',q:'What is the difference between std::vector and std::deque?',
 answer_text:`std::vector:
-  • Contiguous memory. Best cache performance. O(1) amortized push_back.
-  • push_front: O(n) (have to shift everything). insert at middle: O(n).
-  • Reallocation invalidates ALL iterators.
+  ΓÇó Contiguous memory. Best cache performance. O(1) amortized push_back.
+  ΓÇó push_front: O(n) (have to shift everything). insert at middle: O(n).
+  ΓÇó Reallocation invalidates ALL iterators.
 
 std::deque (double-ended queue):
-  • Segmented memory (array of fixed-size chunks). O(1) push_front AND push_back.
-  • Random access O(1) but slower than vector (pointer indirection).
-  • No reallocation — insert at ends doesn't invalidate references.
+  ΓÇó Segmented memory (array of fixed-size chunks). O(1) push_front AND push_back.
+  ΓÇó Random access O(1) but slower than vector (pointer indirection).
+  ΓÇó No reallocation ΓÇö insert at ends doesn't invalidate references.
 
-Use vector: almost always — better cache locality, known size.
+Use vector: almost always ΓÇö better cache locality, known size.
 Use deque: when you need efficient front insertion/deletion (e.g., BFS queue).
 Both have O(1) random access but vector is typically 2-5x faster in practice.`,
 options:['Deque is always faster','vector is contiguous O(1) pushback; deque is segmented O(1) push front/back but slower random access','vector supports front operations, deque does not','No practical difference'],answer:1},
 
-{id:48,topic:'stl',type:'output',diff:'hard',q:'std::transform — what prints?',
+{id:48,topic:'stl',type:'output',diff:'hard',q:'std::transform ΓÇö what prints?',
 code:`#include <vector>
 #include <algorithm>
 int main() {
@@ -821,7 +821,7 @@ explanation:'transform applies the lambda to each element and writes to out. Squ
 options:['1 4 9 16 25 ','2 4 6 8 10 ','1 2 3 4 5 ','Compile error'],answer:0},
 
 {id:49,topic:'stl',type:'theory',diff:'hard',q:'What is std::move_iterator and when is it useful?',
-answer_text:`std::move_iterator wraps an iterator to make dereferencing return an rvalue reference instead of lvalue reference — enabling move semantics during algorithms.
+answer_text:`std::move_iterator wraps an iterator to make dereferencing return an rvalue reference instead of lvalue reference ΓÇö enabling move semantics during algorithms.
 
 Use case: efficiently move elements from one container to another without copying.
 
@@ -837,9 +837,9 @@ Without move_iterator: strings would be copied (O(n) each).
 With move_iterator: strings are moved (O(1) each via buffer steal).
 
 Also used with std::move algorithm (not the cast) for moving ranges.`,
-options:['Only for raw pointers','Wraps iterator to produce rvalues on dereference — enables move semantics in algorithms, avoiding copies','Same as regular iterator','Only works with vector'],answer:1},
+options:['Only for raw pointers','Wraps iterator to produce rvalues on dereference ΓÇö enables move semantics in algorithms, avoiding copies','Same as regular iterator','Only works with vector'],answer:1},
 
-{id:50,topic:'stl',type:'output',diff:'medium',q:'std::find_if — what prints?',
+{id:50,topic:'stl',type:'output',diff:'medium',q:'std::find_if ΓÇö what prints?',
 code:`#include <vector>
 #include <algorithm>
 int main() {
@@ -850,11 +850,11 @@ int main() {
     else cout << "none";
 }`,
 output:'7',
-explanation:'find_if returns iterator to first element satisfying predicate (odd). 2 is even, 4 is even, 7 is odd → returns iterator to 7.',
+explanation:'find_if returns iterator to first element satisfying predicate (odd). 2 is even, 4 is even, 7 is odd ΓåÆ returns iterator to 7.',
 options:['2','7','none','Compile error'],answer:1},
 
-// ── EXCEPTION HANDLING ───────────────────────────────────────
-{id:51,topic:'exception',type:'output',diff:'medium',q:'Basic try-catch-catch-all — what prints?',
+// ΓöÇΓöÇ EXCEPTION HANDLING ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:51,topic:'exception',type:'output',diff:'medium',q:'Basic try-catch-catch-all ΓÇö what prints?',
 code:`int main() {
     try {
         cout << "A ";
@@ -866,10 +866,10 @@ code:`int main() {
     cout << "E";
 }`,
 output:'A C 42 E',
-explanation:'A prints. Exception thrown (int 42). B skipped. catch(int) matches → "C 42". catch(...) skipped. "E" prints.',
+explanation:'A prints. Exception thrown (int 42). B skipped. catch(int) matches ΓåÆ "C 42". catch(...) skipped. "E" prints.',
 options:['A B C 42 E','A C 42 D E','A C 42 E','A D E'],answer:2},
 
-{id:52,topic:'exception',type:'output',diff:'hard',q:'RAII + exception: destructor in stack unwinding — what prints?',
+{id:52,topic:'exception',type:'output',diff:'hard',q:'RAII + exception: destructor in stack unwinding ΓÇö what prints?',
 code:`struct Guard {
     ~Guard() { cout << "Guard "; }
 };
@@ -884,7 +884,7 @@ int main() {
     }
 }`,
 output:'Try Guard Catch',
-explanation:'RAII: "Try" prints, exception thrown, stack unwinds destroying g → "Guard" in destructor, then catch block → "Catch".',
+explanation:'RAII: "Try" prints, exception thrown, stack unwinds destroying g ΓåÆ "Guard" in destructor, then catch block ΓåÆ "Catch".',
 options:['Try Catch','Guard Try Catch','Try Guard Catch','Try Catch Guard'],answer:2},
 
 {id:53,topic:'exception',type:'theory',diff:'medium',q:'noexcept: what happens if a noexcept function throws?',
@@ -893,10 +893,10 @@ answer_text:`noexcept guarantees a function will not throw. If it does throw:
   Stack unwinding may or may not occur (implementation-defined).
 
 Benefits of noexcept:
-  • Enables compiler optimizations (no need to generate unwind tables)
-  • Required for move operations to be used in containers (vector reallocation
+  ΓÇó Enables compiler optimizations (no need to generate unwind tables)
+  ΓÇó Required for move operations to be used in containers (vector reallocation
     uses move only if move constructor is noexcept; otherwise copies)
-  • Documents intent clearly
+  ΓÇó Documents intent clearly
 
   MyClass(MyClass&&) noexcept { ... }  // enables vector to move
   MyClass(MyClass&&) { ... }           // vector may copy instead!
@@ -906,7 +906,7 @@ noexcept(expr): conditionally noexcept based on whether expr is noexcept.
   void swap(T& a, T& b) noexcept(noexcept(T(move(a))));`,
 options:['Exception propagates normally','terminate() is called; stack unwinding implementation-defined; noexcept enables move in containers and compiler optimizations','Exception is silently swallowed','Program continues normally'],answer:1},
 
-{id:54,topic:'exception',type:'output',diff:'hard',q:'Exception re-throw — what prints?',
+{id:54,topic:'exception',type:'output',diff:'hard',q:'Exception re-throw ΓÇö what prints?',
 code:`void inner() {
     try { throw string("error"); }
     catch(const string& s) {
@@ -924,7 +924,7 @@ output:'inner:error outer:error',
 explanation:'"throw;" re-throws the SAME exception object unchanged. outer catch catches the same string "error".',
 options:['inner:error','outer:error','inner:error outer:error','Compile error'],answer:2},
 
-{id:55,topic:'exception',type:'output',diff:'medium',q:'Custom exception hierarchy — what prints?',
+{id:55,topic:'exception',type:'output',diff:'medium',q:'Custom exception hierarchy ΓÇö what prints?',
 code:`struct Base : exception {
     const char* what() const noexcept override { return "Base"; }
 };
@@ -938,7 +938,7 @@ int main() {
     }
 }`,
 output:'Child',
-explanation:'catch(const Base&) catches Child (derived from Base). Virtual dispatch on what() via reference → Child::what() → "Child".',
+explanation:'catch(const Base&) catches Child (derived from Base). Virtual dispatch on what() via reference ΓåÆ Child::what() ΓåÆ "Child".',
 options:['Base','Child','BaseChild','Compile error'],answer:1},
 
 {id:56,topic:'exception',type:'theory',diff:'hard',q:'What is exception safety? Define the four levels.',
@@ -959,12 +959,12 @@ answer_text:`Exception safety guarantees what state a program is in if an operat
    void swap(T& a, T& b) noexcept; // must be no-throw
 
 Best practices:
-  • Destructors must be noexcept (default in C++11)
-  • Use copy-and-swap idiom for strong guarantee in assignment operators
-  • Use RAII to achieve basic guarantee automatically`,
+  ΓÇó Destructors must be noexcept (default in C++11)
+  ΓÇó Use copy-and-swap idiom for strong guarantee in assignment operators
+  ΓÇó Use RAII to achieve basic guarantee automatically`,
 options:['Only two levels: throw or not throw','4 levels: no guarantee, basic (no leaks), strong (rollback on throw), no-throw (noexcept)','Exception safety only matters for databases','Strong guarantee is always required'],answer:1},
 
-{id:57,topic:'exception',type:'output',diff:'hard',q:'Exception in constructor — what happens?',
+{id:57,topic:'exception',type:'output',diff:'hard',q:'Exception in constructor ΓÇö what happens?',
 code:`struct Res {
     int* p;
     Res(): p(new int(42)) { cout << "Alloc "; }
@@ -980,19 +980,19 @@ int main() {
     catch(...) { cout << "Caught"; }
 }`,
 output:'Alloc Bad Caught',
-explanation:'Res r constructed → "Alloc". Bad() starts → "Bad". Exception thrown. Bad is partially constructed → ~Bad() NOT called. But Res r WAS fully constructed → ~Res() IS called (but doesn\'t print here since we simplified). Then "Caught".',
+explanation:'Res r constructed ΓåÆ "Alloc". Bad() starts ΓåÆ "Bad". Exception thrown. Bad is partially constructed ΓåÆ ~Bad() NOT called. But Res r WAS fully constructed ΓåÆ ~Res() IS called (but doesn\'t print here since we simplified). Then "Caught".',
 options:['Alloc Bad ~Bad Caught','Alloc Bad Caught','Bad Caught','Alloc Bad Free Caught'],answer:1},
 
-// ── FILE HANDLING ─────────────────────────────────────────────
+// ΓöÇΓöÇ FILE HANDLING ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:58,topic:'file',type:'theory',diff:'medium',q:'Text mode vs binary mode in C++. When to use each?',
 answer_text:`Text mode (default):
-  • Newline translation: \\n ↔ \\r\\n on Windows
-  • EOF character (Ctrl+Z) may terminate reads on Windows
-  • Data treated as human-readable characters
+  ΓÇó Newline translation: \\n Γåö \\r\\n on Windows
+  ΓÇó EOF character (Ctrl+Z) may terminate reads on Windows
+  ΓÇó Data treated as human-readable characters
 
 Binary mode (ios::binary):
-  • No translation. Every byte read/written exactly as-is.
-  • Essential for images, audio, custom binary formats, structures
+  ΓÇó No translation. Every byte read/written exactly as-is.
+  ΓÇó Essential for images, audio, custom binary formats, structures
 
   ofstream f("data.bin", ios::binary);
   f.write(reinterpret_cast<char*>(&myStruct), sizeof(myStruct));
@@ -1002,7 +1002,7 @@ Binary mode (ios::binary):
 
 Use text mode: CSV, config files, logs, human-readable output.
 Use binary mode: any non-text data. Using text mode for binary data will CORRUPT it on Windows due to \\r\\n translation.`,
-options:['Binary mode compresses data','Text mode translates newlines (platform-specific); binary mode transfers bytes verbatim — use binary for non-text to prevent corruption','No difference in modern C++','Binary mode requires manual flushing'],answer:1},
+options:['Binary mode compresses data','Text mode translates newlines (platform-specific); binary mode transfers bytes verbatim ΓÇö use binary for non-text to prevent corruption','No difference in modern C++','Binary mode requires manual flushing'],answer:1},
 
 {id:59,topic:'file',type:'theory',diff:'medium',q:'What is RAII and how does it apply to file handling?',
 answer_text:`RAII (Resource Acquisition Is Initialization): resource acquired in constructor, released in destructor.
@@ -1014,10 +1014,10 @@ File handling with RAII:
   }  // file AUTOMATICALLY closed when fin goes out of scope
 
 Benefits:
-  • No resource leaks even if exceptions are thrown
-  • No need to call close() manually (though you can)
-  • Deterministic cleanup
-  • Simpler code — no error-path cleanup needed
+  ΓÇó No resource leaks even if exceptions are thrown
+  ΓÇó No need to call close() manually (though you can)
+  ΓÇó Deterministic cleanup
+  ΓÇó Simpler code ΓÇö no error-path cleanup needed
 
 Compared to C-style (unsafe):
   FILE* f = fopen("data.txt", "r");
@@ -1025,7 +1025,7 @@ Compared to C-style (unsafe):
   fclose(f);  // must manually close on every exit path
 
 RAII is the PREFERRED C++ pattern. std::ifstream/ofstream/fstream all use it.`,
-options:['RAII means files must be manually closed','RAII ties file lifetime to stream object lifetime — auto-closes on destruction even under exceptions','RAII only for dynamic memory','Requires using smart pointers for files'],answer:1},
+options:['RAII means files must be manually closed','RAII ties file lifetime to stream object lifetime ΓÇö auto-closes on destruction even under exceptions','RAII only for dynamic memory','Requires using smart pointers for files'],answer:1},
 
 {id:60,topic:'file',type:'theory',diff:'hard',q:'Explain seekg/seekp and tellg/tellp for random file access.',
 answer_text:`seekg(pos, dir): move read pointer (get).
@@ -1049,29 +1049,29 @@ True mid-file insertion (expanding): not directly supported.
 Must read everything after insertion point, expand file, shift data, then write.`,
 options:['seekg/seekp are deprecated','seekg moves read pointer, seekp write pointer; tellg/tellp return positions; random access requires opening without ios::trunc','Binary files cannot be seeked','seekg and seekp are identical'],answer:1},
 
-// ── SMART POINTERS ─────────────────────────────────────────────
-{id:61,topic:'oop',type:'theory',diff:'medium',q:'unique_ptr vs shared_ptr vs weak_ptr — explain all three.',
+// ΓöÇΓöÇ SMART POINTERS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:61,topic:'oop',type:'theory',diff:'medium',q:'unique_ptr vs shared_ptr vs weak_ptr ΓÇö explain all three.',
 answer_text:`unique_ptr<T>:
-  • SOLE ownership. Non-copyable, movable only.
-  • Zero overhead — literally the same as raw pointer in release builds.
-  • Destructs automatically when it goes out of scope.
-  • Use for: exclusive ownership, factory functions, PIMPL pattern.
+  ΓÇó SOLE ownership. Non-copyable, movable only.
+  ΓÇó Zero overhead ΓÇö literally the same as raw pointer in release builds.
+  ΓÇó Destructs automatically when it goes out of scope.
+  ΓÇó Use for: exclusive ownership, factory functions, PIMPL pattern.
 
 shared_ptr<T>:
-  • SHARED ownership via reference counting (thread-safe atomic refcount).
-  • Destructs when count reaches 0.
-  • Small overhead: control block allocation, atomic refcount operations.
-  • Use for: shared ownership, when lifetime is unclear.
+  ΓÇó SHARED ownership via reference counting (thread-safe atomic refcount).
+  ΓÇó Destructs when count reaches 0.
+  ΓÇó Small overhead: control block allocation, atomic refcount operations.
+  ΓÇó Use for: shared ownership, when lifetime is unclear.
 
 weak_ptr<T>:
-  • NON-OWNING observer of a shared_ptr. Does not increment refcount.
-  • Must lock() to access (returns shared_ptr or nullptr).
-  • Use for: breaking circular references, caches, observer pattern.
+  ΓÇó NON-OWNING observer of a shared_ptr. Does not increment refcount.
+  ΓÇó Must lock() to access (returns shared_ptr or nullptr).
+  ΓÇó Use for: breaking circular references, caches, observer pattern.
 
 Circular reference problem:
-  A has shared_ptr<B>, B has shared_ptr<A> → neither refcount reaches 0 → LEAK.
+  A has shared_ptr<B>, B has shared_ptr<A> ΓåÆ neither refcount reaches 0 ΓåÆ LEAK.
   Fix: make one direction a weak_ptr.`,
-options:['All three are identical except syntax','unique_ptr sole owner; shared_ptr ref-counts shared ownership; weak_ptr non-owning observer — circular shared_ptrs leak; use weak_ptr to break cycles','weak_ptr prevents all leaks automatically','shared_ptr is always preferred'],answer:1},
+options:['All three are identical except syntax','unique_ptr sole owner; shared_ptr ref-counts shared ownership; weak_ptr non-owning observer ΓÇö circular shared_ptrs leak; use weak_ptr to break cycles','weak_ptr prevents all leaks automatically','shared_ptr is always preferred'],answer:1},
 
 {id:62,topic:'oop',type:'output',diff:'hard',q:'What prints? (unique_ptr move)',
 code:`#include <memory>
@@ -1085,7 +1085,7 @@ output:'1 42',
 explanation:'After move, p is nullptr. q owns the int(42). *q=42.',
 options:['0 42','1 42','Segfault','Compile error'],answer:1},
 
-{id:63,topic:'oop',type:'output',diff:'hard',q:'shared_ptr reference counting — what prints?',
+{id:63,topic:'oop',type:'output',diff:'hard',q:'shared_ptr reference counting ΓÇö what prints?',
 code:`#include <memory>
 int main() {
     auto a = make_shared<int>(10);
@@ -1100,18 +1100,18 @@ output:'1 2 1',
 explanation:'After make_shared: count=1. After b=a: count=2. After b destroyed: count=1.',
 options:['1 1 1','1 2 1','1 2 0','2 2 1'],answer:1},
 
-// ── LAMBDAS / CLOSURES ────────────────────────────────────────
-{id:64,topic:'stl',type:'output',diff:'medium',q:'Lambda capture by value vs reference — what prints?',
+// ΓöÇΓöÇ LAMBDAS / CLOSURES ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+{id:64,topic:'stl',type:'output',diff:'medium',q:'Lambda capture by value vs reference ΓÇö what prints?',
 code:`int x = 10;
 auto byVal = [x]()  { return x + 1; };
 auto byRef = [&x]() { return x + 1; };
 x = 20;
 cout << byVal() << " " << byRef();`,
 output:'11 21',
-explanation:'byVal captured x=10 at creation time. byRef captured reference to x; x changed to 20 → byRef() returns 21.',
+explanation:'byVal captured x=10 at creation time. byRef captured reference to x; x changed to 20 ΓåÆ byRef() returns 21.',
 options:['11 11','21 21','11 21','21 11'],answer:2},
 
-{id:65,topic:'stl',type:'output',diff:'hard',q:'Mutable lambda — what prints?',
+{id:65,topic:'stl',type:'output',diff:'hard',q:'Mutable lambda ΓÇö what prints?',
 code:`int main() {
     int x = 0;
     auto f = [x]() mutable {
@@ -1126,7 +1126,7 @@ explanation:'mutable allows modifying captured copy of x inside lambda. Each cal
 options:['0 0 0 0','1 2 3 3','1 2 3 0','Compile error without mutable'],answer:2},
 
 {id:66,topic:'stl',type:'theory',diff:'medium',q:'What are generic lambdas (C++14)? What about lambda templates (C++20)?',
-answer_text:`Generic lambdas (C++14): use "auto" parameters — the compiler generates a templated operator().
+answer_text:`Generic lambdas (C++14): use "auto" parameters ΓÇö the compiler generates a templated operator().
 
   auto add = [](auto a, auto b) { return a + b; };
   add(1, 2);      // int: 3
@@ -1138,14 +1138,14 @@ C++20 explicit template lambdas:
   // Can use T explicitly inside lambda body
 
 Practical uses:
-  • Sort with custom comparator: sort(v.begin(), v.end(), [](auto& a, auto& b){ return a.key < b.key; });
-  • Visitor pattern with std::visit
-  • Generic algorithms without naming types
+  ΓÇó Sort with custom comparator: sort(v.begin(), v.end(), [](auto& a, auto& b){ return a.key < b.key; });
+  ΓÇó Visitor pattern with std::visit
+  ΓÇó Generic algorithms without naming types
 
 Lambdas are just syntactic sugar for anonymous functor classes with operator().`,
 options:['Lambdas cannot be generic','C++14 auto params generate templated operator(); C++20 adds explicit template syntax for lambdas','Only C++20 supports generic lambdas','Generic lambdas use virtual dispatch'],answer:1},
 
-// ── ADVANCED OOP ──────────────────────────────────────────────
+// ΓöÇΓöÇ ADVANCED OOP ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:67,topic:'oop',type:'theory',diff:'hard',q:'What is the PIMPL idiom? What are its benefits?',
 answer_text:`PIMPL (Pointer to IMPLementation) = Cheshire Cat pattern:
 Move all private implementation details to a separate class accessed via pointer.
@@ -1161,7 +1161,7 @@ Move all private implementation details to a separate class accessed via pointer
       unique_ptr<Impl> pImpl;  // opaque pointer
   };
 
-  // source (widget.cpp) — Impl details hidden
+  // source (widget.cpp) ΓÇö Impl details hidden
   struct Widget::Impl {
       // heavy includes, data members, etc.
   };
@@ -1173,7 +1173,7 @@ Benefits:
   4. Reduce compile-time dependencies (move #includes to .cpp)
 
 Cost: one extra indirection, heap allocation for Impl, can't inline.`,
-options:['Just for hiding public members','Move private implementation to opaque pointer — reduces compile dependencies, provides ABI stability, hides implementation','Equivalent to inheritance','Only useful in large projects'],answer:1},
+options:['Just for hiding public members','Move private implementation to opaque pointer ΓÇö reduces compile dependencies, provides ABI stability, hides implementation','Equivalent to inheritance','Only useful in large projects'],answer:1},
 
 {id:68,topic:'oop',type:'output',diff:'hard',q:'What prints? (initializer list priority)',
 code:`class S {
@@ -1198,15 +1198,15 @@ answer_text:`The ONLY technical differences in C++:
 That's it. Both support everything: constructors, destructors, virtual functions, templates, inheritance.
 
 Conventions/idioms:
-  • struct: used for passive data holders (POD-like), no invariants, public everything.
+  ΓÇó struct: used for passive data holders (POD-like), no invariants, public everything.
            C compatibility in headers.
-  • class: used when there's encapsulation, invariants to maintain, private data.
+  ΓÇó class: used when there's encapsulation, invariants to maintain, private data.
 
 Example:
   struct Point { int x, y; };  // passive data
   class BankAccount { ... };   // encapsulated with invariants
 
-Neither is "better" — use based on semantic intent.`,
+Neither is "better" ΓÇö use based on semantic intent.`,
 options:['struct cannot have member functions','Only difference: struct=public default, class=private default; by convention struct for passive data, class for encapsulated types','struct cannot inherit','class is always preferred in modern C++'],answer:1},
 
 {id:70,topic:'oop',type:'output',diff:'hard',q:'What prints? (static vs virtual)',
@@ -1226,10 +1226,10 @@ int main() {
     p->virtualF();  // virtual: resolved at runtime
 }`,
 output:'Base::static Derived::virtual ',
-explanation:'Static functions are NOT virtual — resolved at compile time based on POINTER TYPE (Base*). virtualF() is virtual — runtime dispatch to Derived.',
+explanation:'Static functions are NOT virtual ΓÇö resolved at compile time based on POINTER TYPE (Base*). virtualF() is virtual ΓÇö runtime dispatch to Derived.',
 options:['Derived::static Derived::virtual ','Base::static Base::virtual ','Base::static Derived::virtual ','Compile error'],answer:2},
 
-// ── MORE ADVANCED TOPICS ──────────────────────────────────────
+// ΓöÇΓöÇ MORE ADVANCED TOPICS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:71,topic:'template',type:'output',diff:'hard',q:'What prints? (fold expressions C++17)',
 code:`template<typename... Args>
 auto sum(Args... args) {
@@ -1242,7 +1242,7 @@ output:'15',
 explanation:'Fold expression (... + args) expands to ((((1+2)+3)+4)+5) = 15.',
 options:['5','15','Compile error','1+2+3+4+5'],answer:1},
 
-{id:72,topic:'stl',type:'output',diff:'medium',q:'std::optional — what prints?',
+{id:72,topic:'stl',type:'output',diff:'medium',q:'std::optional ΓÇö what prints?',
 code:`#include <optional>
 optional<int> safeDivide(int a, int b) {
     if(b == 0) return nullopt;
@@ -1273,7 +1273,7 @@ vs C-style union:
                                  // calling wrong accessor = UB
 
 Benefits of variant:
-  1. Type-safe — tracks which type is active
+  1. Type-safe ΓÇö tracks which type is active
   2. Destructs active member properly
   3. Works with std::visit for exhaustive handling
   4. No undefined behavior
@@ -1281,9 +1281,9 @@ Benefits of variant:
   visit([](auto& v){ cout << v; }, myVariant);  // handles all types
 
 Use cases: error-or-value returns, AST nodes, command pattern, discriminated unions.`,
-options:['variant is just a renamed union','variant is a type-safe tagged union tracking active member; visit enables exhaustive handling — no UB unlike C union','variant requires dynamic allocation','variant is slower than union'],answer:1},
+options:['variant is just a renamed union','variant is a type-safe tagged union tracking active member; visit enables exhaustive handling ΓÇö no UB unlike C union','variant requires dynamic allocation','variant is slower than union'],answer:1},
 
-{id:74,topic:'stl',type:'output',diff:'hard',q:'structured bindings — what prints?',
+{id:74,topic:'stl',type:'output',diff:'hard',q:'structured bindings ΓÇö what prints?',
 code:`#include <map>
 #include <tuple>
 int main() {
@@ -1295,7 +1295,7 @@ int main() {
     cout << x << " " << y;
 }`,
 output:'a1 b2 1 2.5',
-explanation:'Structured bindings decompose pairs in map iteration → "a1 b2". Then tuple decomposition → x=1, y=2.5, z="hi". Prints "1 2.5".',
+explanation:'Structured bindings decompose pairs in map iteration ΓåÆ "a1 b2". Then tuple decomposition ΓåÆ x=1, y=2.5, z="hi". Prints "1 2.5".',
 options:['a1 b2 1 2.5','a b 1 2','Compile error','a1 b2 1 2'],answer:0},
 
 {id:75,topic:'oop',type:'theory',diff:'hard',q:'What is the Non-Virtual Interface (NVI) pattern?',
@@ -1304,9 +1304,9 @@ The public interface is stable; the customization point is private/protected.
 
   class Widget {
   public:
-      void draw() {  // non-virtual, public — the interface
+      void draw() {  // non-virtual, public ΓÇö the interface
           beforeDraw();
-          doDraw();   // private virtual — the customization point
+          doDraw();   // private virtual ΓÇö the customization point
           afterDraw();
       }
   private:
@@ -1320,14 +1320,14 @@ The public interface is stable; the customization point is private/protected.
 
 Benefits:
   1. Base class controls pre/post conditions (beforeDraw, afterDraw always run)
-  2. Interface is stable — callers only see draw()
+  2. Interface is stable ΓÇö callers only see draw()
   3. Template Method Pattern implemented cleanly
   4. Derived classes can't accidentally bypass invariants
 
 Used extensively in: std::iostream, date/time libraries, GUI frameworks.`,
-options:['Virtual functions must be public','NVI: public non-virtual calls private virtual — base controls pre/post conditions, derived customizes only the implementation point','NVI prevents virtual functions','Same as CRTP'],answer:1},
+options:['Virtual functions must be public','NVI: public non-virtual calls private virtual ΓÇö base controls pre/post conditions, derived customizes only the implementation point','NVI prevents virtual functions','Same as CRTP'],answer:1},
 
-{id:76,topic:'poly',type:'output',diff:'medium',q:'typeid and dynamic_cast — what prints?',
+{id:76,topic:'poly',type:'output',diff:'medium',q:'typeid and dynamic_cast ΓÇö what prints?',
 code:`#include <typeinfo>
 class Base { public: virtual ~Base(){} };
 class Derived : public Base {};
@@ -1337,24 +1337,24 @@ int main() {
     cout << typeid(*p).name()[0];  // first char of mangled name
 }`,
 output:'1 7 (or similar, implementation-defined for name)',
-explanation:'dynamic_cast<Derived*>(p): p actually points to Derived → cast succeeds, non-null → 1. typeid(*p) is Derived (runtime type). name() is implementation-defined.',
+explanation:'dynamic_cast<Derived*>(p): p actually points to Derived ΓåÆ cast succeeds, non-null ΓåÆ 1. typeid(*p) is Derived (runtime type). name() is implementation-defined.',
 options:['0 B','1 D (first char implementation-defined)','Compile error','1 7'],answer:1},
 
 {id:77,topic:'template',type:'theory',diff:'hard',q:'What are type traits? Give examples from <type_traits>.',
 answer_text:`Type traits: compile-time predicates and transformations on types, available in <type_traits>.
 
 Predicates (is_xxx<T>::value or is_xxx_v<T>):
-  is_integral_v<int>       → true
-  is_pointer_v<int*>       → true
-  is_polymorphic_v<Base>   → true (has virtual function)
-  is_trivially_copyable_v<int> → true (can memcpy)
-  is_same_v<int, int>      → true
+  is_integral_v<int>       ΓåÆ true
+  is_pointer_v<int*>       ΓåÆ true
+  is_polymorphic_v<Base>   ΓåÆ true (has virtual function)
+  is_trivially_copyable_v<int> ΓåÆ true (can memcpy)
+  is_same_v<int, int>      ΓåÆ true
 
 Transformations:
-  remove_const_t<const int>  → int
-  add_pointer_t<int>         → int*
-  decay_t<int&>              → int  (array/function decay + remove ref/const)
-  conditional_t<cond,A,B>    → A if cond, else B
+  remove_const_t<const int>  ΓåÆ int
+  add_pointer_t<int>         ΓåÆ int*
+  decay_t<int&>              ΓåÆ int  (array/function decay + remove ref/const)
+  conditional_t<cond,A,B>    ΓåÆ A if cond, else B
 
 Custom type trait:
   template<typename T>
@@ -1363,31 +1363,31 @@ Custom type trait:
   struct IsVector<vector<T>> : true_type {};
 
 Used extensively in: enable_if, static_assert, concepts, library implementations.`,
-options:['Runtime type checking like RTTI','Compile-time predicates and transformations on types — is_integral, remove_const, etc. — enable meta-programming and SFINAE','Only for primitive types','Same as dynamic_cast'],answer:1},
+options:['Runtime type checking like RTTI','Compile-time predicates and transformations on types ΓÇö is_integral, remove_const, etc. ΓÇö enable meta-programming and SFINAE','Only for primitive types','Same as dynamic_cast'],answer:1},
 
 {id:78,topic:'exception',type:'theory',diff:'hard',q:'What is std::terminate vs std::abort vs std::exit?',
 answer_text:`std::terminate():
-  • Called when: unhandled exception, noexcept violation, exception in destructor during unwinding.
-  • Calls current terminate handler (customizable via set_terminate).
-  • Default handler calls abort().
+  ΓÇó Called when: unhandled exception, noexcept violation, exception in destructor during unwinding.
+  ΓÇó Calls current terminate handler (customizable via set_terminate).
+  ΓÇó Default handler calls abort().
 
 std::abort():
-  • Sends SIGABRT, terminates abnormally.
-  • NO cleanup: no destructors, no atexit handlers, no flushing of output.
-  • Used for unrecoverable errors, contract violations.
+  ΓÇó Sends SIGABRT, terminates abnormally.
+  ΓÇó NO cleanup: no destructors, no atexit handlers, no flushing of output.
+  ΓÇó Used for unrecoverable errors, contract violations.
 
 std::exit(int code):
-  • Calls destructors of static/thread-local objects.
-  • Calls atexit/at_quick_exit handlers.
-  • Flushes/closes open file streams.
-  • Does NOT call destructors of local variables!
+  ΓÇó Calls destructors of static/thread-local objects.
+  ΓÇó Calls atexit/at_quick_exit handlers.
+  ΓÇó Flushes/closes open file streams.
+  ΓÇó Does NOT call destructors of local variables!
 
 std::quick_exit(): calls at_quick_exit handlers, no flush, no static destructors.
 
-Order of "graceful" cleanup: exit > quick_exit > abort > terminate(→abort).`,
+Order of "graceful" cleanup: exit > quick_exit > abort > terminate(ΓåÆabort).`,
 options:['All three are identical','terminate() calls handler (default:abort); abort() is immediate no-cleanup; exit() does partial cleanup (static dtors, atexit) but not local dtors','terminate() is recoverable','abort() flushes streams'],answer:1},
 
-{id:79,topic:'stl',type:'output',diff:'hard',q:'std::string_view — what prints?',
+{id:79,topic:'stl',type:'output',diff:'hard',q:'std::string_view ΓÇö what prints?',
 code:`#include <string_view>
 void print(string_view sv) {
     cout << sv.size() << ":" << sv;
@@ -1422,7 +1422,7 @@ output:'Full WH Empty ',
 explanation:'Config() delegates to Config(800,600) which delegates to Config(800,600,"Default"). Chain runs innermost first: "Full", then "WH", then "Empty".',
 options:['Empty WH Full ','Full WH Empty ','Full Empty ','Compile error'],answer:1},
 
-// ── 81-100: ADDITIONAL VARIED QUESTIONS ───────────────────────
+// ΓöÇΓöÇ 81-100: ADDITIONAL VARIED QUESTIONS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:81,topic:'oop',type:'output',diff:'medium',q:'What prints? (prefix vs postfix operator overload)',
 code:`class Int {
     int v;
@@ -1437,7 +1437,7 @@ int main() {
     cout << ++x << " " << x++ << " " << x;
 }`,
 output:'6 6 7',
-explanation:'++x: prefix, increments to 6, returns reference to x → prints 6. x++: postfix, saves 6, increments to 7, returns old value 6 → prints 6. x is now 7 → prints 7.',
+explanation:'++x: prefix, increments to 6, returns reference to x ΓåÆ prints 6. x++: postfix, saves 6, increments to 7, returns old value 6 ΓåÆ prints 6. x is now 7 ΓåÆ prints 7.',
 options:['6 7 7','6 6 7','5 6 7','Compile error'],answer:1},
 
 {id:82,topic:'inherit',type:'output',diff:'hard',q:'What prints? (virtual function in constructor)',
@@ -1453,28 +1453,28 @@ public:
 };
 int main() { Derived d; }`,
 output:'Base Derived ',
-explanation:'During Base constructor, vtable points to Base — so f() calls Base::f(). After Base finishes, Derived constructor runs with full vtable → Derived::f().',
+explanation:'During Base constructor, vtable points to Base ΓÇö so f() calls Base::f(). After Base finishes, Derived constructor runs with full vtable ΓåÆ Derived::f().',
 options:['Derived Derived ','Base Derived ','Base Base ','Derived Base '],answer:1},
 
 {id:83,topic:'stl',type:'theory',diff:'medium',q:'What is the difference between std::sort, std::stable_sort, and std::partial_sort?',
 answer_text:`std::sort(first, last, comp):
-  • Introsort (hybrid quicksort+heapsort+insertion). O(n log n) average AND worst case.
-  • NOT stable (equal elements may reorder).
-  • Best for general-purpose sorting.
+  ΓÇó Introsort (hybrid quicksort+heapsort+insertion). O(n log n) average AND worst case.
+  ΓÇó NOT stable (equal elements may reorder).
+  ΓÇó Best for general-purpose sorting.
 
 std::stable_sort(first, last, comp):
-  • Merge sort based. O(n log n) guaranteed but slower constant factor.
-  • STABLE: equal elements preserve original relative order.
-  • Use when: sorting by multiple criteria sequentially, or equal elements must stay ordered.
+  ΓÇó Merge sort based. O(n log n) guaranteed but slower constant factor.
+  ΓÇó STABLE: equal elements preserve original relative order.
+  ΓÇó Use when: sorting by multiple criteria sequentially, or equal elements must stay ordered.
 
 std::partial_sort(first, middle, last, comp):
-  • Sorts only [first, middle) — the smallest (middle-first) elements.
-  • O(n log k) where k = middle - first.
-  • Use when: you only need top-k elements (leaderboard, top-10).
+  ΓÇó Sorts only [first, middle) ΓÇö the smallest (middle-first) elements.
+  ΓÇó O(n log k) where k = middle - first.
+  ΓÇó Use when: you only need top-k elements (leaderboard, top-10).
 
 std::nth_element(first, nth, last):
-  • Partitions so nth element is what it would be if sorted.
-  • O(n) average. Use for median, percentiles.`,
+  ΓÇó Partitions so nth element is what it would be if sorted.
+  ΓÇó O(n) average. Use for median, percentiles.`,
 options:['All three are identical except name','sort is O(n log n) unstable introsort; stable_sort preserves equal-element order; partial_sort O(n log k) for top-k','stable_sort is faster','partial_sort sorts the whole array'],answer:1},
 
 {id:84,topic:'template',type:'output',diff:'medium',q:'What prints? (if constexpr C++17)',
@@ -1505,7 +1505,7 @@ answer_text:`Copy-and-swap: implement operator= using copy constructor + swap.
   }  // other (old data) destroyed here
 
 Why it's brilliant:
-  1. Exception safety: copy happens before we touch *this; if copy throws, *this unchanged → STRONG guarantee.
+  1. Exception safety: copy happens before we touch *this; if copy throws, *this unchanged ΓåÆ STRONG guarantee.
   2. Self-assignment safe: parameter is a copy; swapping with self = no-op.
   3. DRY: reuses copy constructor logic.
   4. Works for move assignment too (parameter can be moved into).
@@ -1515,7 +1515,7 @@ Requires a noexcept swap:
       using std::swap;
       swap(a.data, b.data);  // swap each member
   }`,
-options:['Just a coding pattern with no benefits','Implements operator= via copy + swap — provides strong exception safety, self-assignment safety, and DRY code reuse','Only for primitive types','Slower than direct assignment always'],answer:1},
+options:['Just a coding pattern with no benefits','Implements operator= via copy + swap ΓÇö provides strong exception safety, self-assignment safety, and DRY code reuse','Only for primitive types','Slower than direct assignment always'],answer:1},
 
 {id:86,topic:'poly',type:'output',diff:'hard',q:'What prints? (abstract class with concrete method)',
 code:`class Shape {
@@ -1536,10 +1536,10 @@ int main() {
     c.describe();
 }`,
 output:'Area=12.56',
-explanation:'describe() calls area() virtually. c is a Circle → Circle::area() = 3.14*4 = 12.56.',
+explanation:'describe() calls area() virtually. c is a Circle ΓåÆ Circle::area() = 3.14*4 = 12.56.',
 options:['Area=0','Area=12.56','Compile error','Area=6.28'],answer:1},
 
-{id:87,topic:'exception',type:'output',diff:'medium',q:'Multiple catch clauses — order matters. What prints?',
+{id:87,topic:'exception',type:'output',diff:'medium',q:'Multiple catch clauses ΓÇö order matters. What prints?',
 code:`class Base { public: virtual ~Base(){} };
 class Derived : public Base {};
 int main() {
@@ -1550,10 +1550,10 @@ int main() {
     catch(Derived& d) { cout << "Derived "; }  // unreachable!
 }`,
 output:'Base ',
-explanation:'catch clauses checked in ORDER. Derived is-a Base → first catch(Base&) matches. catch(Derived&) is never reached. Always put most-derived first!',
+explanation:'catch clauses checked in ORDER. Derived is-a Base ΓåÆ first catch(Base&) matches. catch(Derived&) is never reached. Always put most-derived first!',
 options:['Derived ','Base ','Base Derived ','Compile error'],answer:1},
 
-{id:88,topic:'stl',type:'output',diff:'medium',q:'std::span (C++20) — what prints?',
+{id:88,topic:'stl',type:'output',diff:'medium',q:'std::span (C++20) ΓÇö what prints?',
 code:`#include <span>
 void printAll(span<int> s) {
     for(int x : s) cout << x << " ";
@@ -1568,7 +1568,7 @@ explanation:'span is a non-owning view over contiguous data. printAll(arr) views
 options:['1 2 3 4 5 2 3 4 ','1 2 3 4 5 1 2 3 ','Compile error','1 2 3 4 5 '],answer:0},
 
 {id:89,topic:'oop',type:'theory',diff:'hard',q:'Explain the Observer pattern in C++ with OOP principles.',
-answer_text:`Observer: defines a one-to-many dependency — when subject state changes, all observers notified.
+answer_text:`Observer: defines a one-to-many dependency ΓÇö when subject state changes, all observers notified.
 
   class Observer {
   public:
@@ -1592,10 +1592,10 @@ answer_text:`Observer: defines a one-to-many dependency — when subject state c
   };
 
 Modern C++ alternatives:
-  • Use std::function<void(int)> callbacks instead of Observer interface
-  • Signals/slots (Qt, Boost.Signals2)
-  • Avoid raw pointers: use weak_ptr<Observer> to auto-unsubscribe on destruction`,
-options:['Observer requires multiple inheritance','Subject notifies registered Observers when state changes — loose coupling via abstract Observer interface; modern C++ can use std::function callbacks','Observer is a creational pattern','Only applicable for UI programming'],answer:1},
+  ΓÇó Use std::function<void(int)> callbacks instead of Observer interface
+  ΓÇó Signals/slots (Qt, Boost.Signals2)
+  ΓÇó Avoid raw pointers: use weak_ptr<Observer> to auto-unsubscribe on destruction`,
+options:['Observer requires multiple inheritance','Subject notifies registered Observers when state changes ΓÇö loose coupling via abstract Observer interface; modern C++ can use std::function callbacks','Observer is a creational pattern','Only applicable for UI programming'],answer:1},
 
 {id:90,topic:'template',type:'theory',diff:'hard',q:'What is tag dispatching? Give an example.',
 answer_text:`Tag dispatching: use empty types (tags) as function arguments to select between overloads at compile time.
@@ -1617,9 +1617,9 @@ answer_text:`Tag dispatching: use empty types (tags) as function arguments to se
   }
 
 This is how std::advance picks efficient algorithm per iterator type.
-Zero runtime overhead — tag is empty class, optimized away.
+Zero runtime overhead ΓÇö tag is empty class, optimized away.
 Modern C++: if constexpr or concepts are cleaner alternatives.`,
-options:['Runtime type dispatch','Empty type arguments select overloads at compile time — used by std iterators for category-based algorithm selection','Same as RTTI','Only for iterator types'],answer:1},
+options:['Runtime type dispatch','Empty type arguments select overloads at compile time ΓÇö used by std iterators for category-based algorithm selection','Same as RTTI','Only for iterator types'],answer:1},
 
 {id:91,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::any)',
 code:`#include <any>
@@ -1651,11 +1651,11 @@ Problems:
 4. Fragile base class: changes in either base can break C.
 
 Best practices:
-  • Inherit from at most ONE concrete class + multiple interfaces (pure abstract).
-  • Java/C# approach: single concrete inheritance + multiple interface implementation.
-  • Prefer composition over multiple concrete inheritance.
-  • Use mixin pattern (small, focused base classes via CRTP or protected inheritance).`,
-options:['Multiple inheritance is always good','Inheriting from multiple bases — problems: diamond (virtual inheritance fix), ambiguity, complexity; prefer one concrete + multiple abstract bases','Multiple inheritance is not supported in C++','Only causes problems with virtual functions'],answer:1},
+  ΓÇó Inherit from at most ONE concrete class + multiple interfaces (pure abstract).
+  ΓÇó Java/C# approach: single concrete inheritance + multiple interface implementation.
+  ΓÇó Prefer composition over multiple concrete inheritance.
+  ΓÇó Use mixin pattern (small, focused base classes via CRTP or protected inheritance).`,
+options:['Multiple inheritance is always good','Inheriting from multiple bases ΓÇö problems: diamond (virtual inheritance fix), ambiguity, complexity; prefer one concrete + multiple abstract bases','Multiple inheritance is not supported in C++','Only causes problems with virtual functions'],answer:1},
 
 {id:93,topic:'oop',type:'output',diff:'hard',q:'What prints? (virtual function table with multiple inheritance)',
 code:`struct A {
@@ -1690,7 +1690,7 @@ int main() {
     cout << v.size() << " " << v[1];
 }`,
 output:'3 42',
-explanation:'Template template parameter accepts Container<T> generically. fill pushes 42 three times → size=3, v[1]=42.',
+explanation:'Template template parameter accepts Container<T> generically. fill pushes 42 three times ΓåÆ size=3, v[1]=42.',
 options:['3 42','Compile error','3 0','0 42'],answer:0},
 
 {id:95,topic:'stl',type:'theory',diff:'hard',q:'What are allocators in STL? When would you write a custom one?',
@@ -1698,8 +1698,8 @@ answer_text:`Allocators: policy classes that decouple memory allocation from con
 Every STL container has an Allocator template parameter (default: std::allocator<T>).
 
 Custom allocator reasons:
-1. Pool allocator: pre-allocate large block, serve from it — avoids heap fragmentation, faster for many small allocations.
-2. Arena allocator: allocate from a fixed buffer (stack or mmap'd) — no heap at all.
+1. Pool allocator: pre-allocate large block, serve from it ΓÇö avoids heap fragmentation, faster for many small allocations.
+2. Arena allocator: allocate from a fixed buffer (stack or mmap'd) ΓÇö no heap at all.
 3. Debug allocator: track allocations, detect double-free/leaks.
 4. NUMA-aware: allocate on specific memory node for HPC.
 5. GPU memory: allocate in device memory.
@@ -1714,7 +1714,7 @@ Custom allocator interface:
   };
 
   vector<int, MyAlloc<int>> v;  // uses custom allocator`,
-options:['Allocators are only for debugging','Policy classes for memory management in containers — custom ones used for pool allocation, arena, debug tracking, NUMA, GPU memory','Only std::allocator works','Allocators are deprecated in C++17'],answer:1},
+options:['Allocators are only for debugging','Policy classes for memory management in containers ΓÇö custom ones used for pool allocation, arena, debug tracking, NUMA, GPU memory','Only std::allocator works','Allocators are deprecated in C++17'],answer:1},
 
 {id:96,topic:'poly',type:'output',diff:'hard',q:'What prints? (multiple dispatch via std::visit)',
 code:`#include <variant>
@@ -1751,7 +1751,7 @@ Function-try-block: catches exceptions from the ENTIRE function body + member in
 Function-try-block is the ONLY way to catch exceptions from member initializer lists.
 Used for: cleanup in constructor when base/member init throws.
 Limitation: constructor function-try-block must rethrow (can't suppress exception and use partially-constructed object).`,
-options:['They are identical','Function-try-block also catches initializer-list exceptions — only way to handle base/member init throws; must rethrow in constructors','Function-try-block is deprecated','Regular try-catch can catch initializer exceptions'],answer:1},
+options:['They are identical','Function-try-block also catches initializer-list exceptions ΓÇö only way to handle base/member init throws; must rethrow in constructors','Function-try-block is deprecated','Regular try-catch can catch initializer exceptions'],answer:1},
 
 {id:98,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::tie for tuple unpacking)',
 code:`#include <tuple>
@@ -1768,25 +1768,25 @@ explanation:'tie creates a tuple of references. Assignment unpacks tuple values.
 options:['10 20 30 1 3','10 20 30 1 99 3','Compile error','10 20 30'],answer:0},
 
 {id:99,topic:'oop',type:'theory',diff:'hard',q:'Explain SOLID principles in C++ context.',
-answer_text:`S — Single Responsibility: a class should have ONE reason to change.
+answer_text:`S ΓÇö Single Responsibility: a class should have ONE reason to change.
      Don't mix parsing + business logic + UI in one class.
 
-O — Open/Closed: open for extension, closed for modification.
+O ΓÇö Open/Closed: open for extension, closed for modification.
      Add behavior via new derived classes / policies, not modifying existing code.
      Strategy pattern, templates, virtual functions achieve this.
 
-L — Liskov Substitution: derived types must be substitutable for base type.
+L ΓÇö Liskov Substitution: derived types must be substitutable for base type.
      If Base* p works correctly, Derived* p should too. No strengthening preconditions.
 
-I — Interface Segregation: prefer many small interfaces over one large one.
+I ΓÇö Interface Segregation: prefer many small interfaces over one large one.
      class IPrint { virtual void print()=0; };
      class IScan { virtual void scan()=0; };
      Better than one fat IDevice with both.
 
-D — Dependency Inversion: depend on abstractions, not concretions.
+D ΓÇö Dependency Inversion: depend on abstractions, not concretions.
      class Logger { unique_ptr<IOutput> out; };  // depends on interface
      Not: class Logger { FileOutput out; };  // depends on concrete type`,
-options:['SOLID is a design philosophy with no C++ impact','S=single responsibility, O=open/closed, L=Liskov substitution, I=interface segregation, D=dependency inversion — each has concrete C++ implications','Only S and O matter','SOLID only applies to Java'],answer:1},
+options:['SOLID is a design philosophy with no C++ impact','S=single responsibility, O=open/closed, L=Liskov substitution, I=interface segregation, D=dependency inversion ΓÇö each has concrete C++ implications','Only S and O matter','SOLID only applies to Java'],answer:1},
 
 {id:100,topic:'oop',type:'output',diff:'hard',q:'What prints? (copy elision / RVO)',
 code:`struct Heavy {
@@ -1809,7 +1809,7 @@ output:'Ctor Ctor ',
 explanation:'RVO and NRVO (Named RVO) eliminate copy/move entirely in both cases. Objects constructed directly in place. Only Ctor prints twice.',
 options:['Ctor Copy Ctor Copy','Ctor Move Ctor Move','Ctor Ctor ','Ctor Copy Ctor Move'],answer:2},
 
-// ── QUESTIONS 101-155 ──────────────────────────────────────────
+// ΓöÇΓöÇ QUESTIONS 101-155 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 {id:101,topic:'oop',type:'output',diff:'hard',q:'What prints? (virtual + default arguments)',
 code:`class Base {
 public:
@@ -1824,7 +1824,7 @@ int main() {
     p->f();
 }`,
 output:'D:10',
-explanation:'Default arguments are resolved at COMPILE TIME based on STATIC type (Base*) → x=10. Virtual dispatch is RUNTIME → Derived::f() is called. Result: "D:10". Tricky!',
+explanation:'Default arguments are resolved at COMPILE TIME based on STATIC type (Base*) ΓåÆ x=10. Virtual dispatch is RUNTIME ΓåÆ Derived::f() is called. Result: "D:10". Tricky!',
 options:['B:10','D:20','D:10','B:20'],answer:2},
 
 {id:102,topic:'template',type:'output',diff:'hard',q:'What prints? (SFINAE with enable_if)',
@@ -1839,7 +1839,7 @@ int main() {
     show(3.14);
 }`,
 output:'int:5float:3.14',
-explanation:'enable_if_t enables/disables overloads based on type. show(5) → integral overload. show(3.14) → floating_point overload.',
+explanation:'enable_if_t enables/disables overloads based on type. show(5) ΓåÆ integral overload. show(3.14) ΓåÆ floating_point overload.',
 options:['int:5int:3.14','int:5float:3.14','Compile error','float:5float:3.14'],answer:1},
 
 {id:103,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::unique and std::erase)',
@@ -1866,7 +1866,7 @@ int main() {
     cout << a.x << " " << a.y;
 }`,
 output:'garbage 10 (undefined behavior)',
-explanation:'x is declared before y, so x is initialized first — but x(y+1) uses uninitialized y! This is UB. Compiler warns about this. Always init in declaration order.',
+explanation:'x is declared before y, so x is initialized first ΓÇö but x(y+1) uses uninitialized y! This is UB. Compiler warns about this. Always init in declaration order.',
 options:['11 10','10 10','garbage 10 (UB)','Compile error'],answer:2},
 
 {id:105,topic:'poly',type:'theory',diff:'hard',q:'What is double dispatch? How is it implemented in C++?',
@@ -1890,7 +1890,7 @@ C++ vtable only supports single dispatch (one virtual lookup). Double dispatch r
 3. Dynamic cast table: map of typeid pairs to functions (ugly, avoid).
 
 Visitor is preferred for stable type hierarchies. variant+visit for extensible types.`,
-options:['Double dispatch is automatic in C++','Selecting based on two types at runtime — visitor pattern or std::variant+visit, since C++ vtable only does single dispatch','Double dispatch requires multiple inheritance','Same as function overloading'],answer:1},
+options:['Double dispatch is automatic in C++','Selecting based on two types at runtime ΓÇö visitor pattern or std::variant+visit, since C++ vtable only does single dispatch','Double dispatch requires multiple inheritance','Same as function overloading'],answer:1},
 
 {id:106,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::partition)',
 code:`#include <vector>
@@ -1901,7 +1901,7 @@ int main() {
     for(int x : v) cout << x << " ";
     cout << "| " << (it - v.begin());
 }`,
-output:'(even numbers first, then odd — order within each group not guaranteed) | 3',
+output:'(even numbers first, then odd ΓÇö order within each group not guaranteed) | 3',
 explanation:'partition reorders: evens {2,4,6} first, then odds {1,3,5}. Returns iterator to first odd. it-begin=3. Order within groups not guaranteed.',
 options:['2 4 6 1 3 5 | 3','1 2 3 4 5 6 | 3','Compile error','Even order guaranteed'],answer:0},
 
@@ -1937,20 +1937,20 @@ Problem: naive vector math copies intermediate results:
   Vector a,b,c,d;
   Vector result = a + b + c + d;
   // Without ET: creates temp for (a+b), temp for (a+b+c), then final
-  // Each temp = malloc + copy — very slow for large vectors
+  // Each temp = malloc + copy ΓÇö very slow for large vectors
 
 With expression templates: a+b returns an Add<Vec,Vec> type (not a vector).
 Adding more: Add<Add<Vec,Vec>,Vec>. Evaluation happens only at assignment.
-Final loop: result[i] = a[i]+b[i]+c[i]+d[i] — ONE PASS, no temporaries.
+Final loop: result[i] = a[i]+b[i]+c[i]+d[i] ΓÇö ONE PASS, no temporaries.
 
 Libraries using expression templates:
-  • Eigen (matrix math) — used in ML, robotics, graphics
-  • Blaze — linear algebra
-  • Boost.Proto — DSL construction
-  • Old PETE library
+  ΓÇó Eigen (matrix math) ΓÇö used in ML, robotics, graphics
+  ΓÇó Blaze ΓÇö linear algebra
+  ΓÇó Boost.Proto ΓÇö DSL construction
+  ΓÇó Old PETE library
 
 C++20 concepts make ET cleaner. C++23 constexpr improvements help further.`,
-options:['Runtime template evaluation','Templates representing expressions as types to avoid temporaries in math — one-pass evaluation used by Eigen, Blaze','Only for string concatenation','Same as lazy evaluation in Python'],answer:1},
+options:['Runtime template evaluation','Templates representing expressions as types to avoid temporaries in math ΓÇö one-pass evaluation used by Eigen, Blaze','Only for string concatenation','Same as lazy evaluation in Python'],answer:1},
 
 {id:109,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::bind vs lambda)',
 code:`#include <functional>
@@ -1979,11 +1979,11 @@ public:
 };
 int main() {
     Derived d;
-    d.f(5);    // int → double? or Base::f?
+    d.f(5);    // int ΓåÆ double? or Base::f?
     d.g(5);
 }`,
 output:'D(double)Dg',
-explanation:'Derived::f(double) HIDES Base::f(int) in derived scope. d.f(5) → 5 converted to double → Derived::f(double). Same for g. To access Base::f: use d.Base::f(5) or "using Base::f;".',
+explanation:'Derived::f(double) HIDES Base::f(int) in derived scope. d.f(5) ΓåÆ 5 converted to double ΓåÆ Derived::f(double). Same for g. To access Base::f: use d.Base::f(5) or "using Base::f;".',
 options:['B(int)Bg','D(double)Dg','Compile error','B(int)Dg'],answer:1},
 
 {id:111,topic:'oop',type:'output',diff:'medium',q:'What prints? (delete operator)',
@@ -2001,7 +2001,7 @@ int main() {
     cout << Tracked::alive;
 }`,
 output:'1 0',
-explanation:'new → constructor → alive=1. delete → destructor → alive=0.',
+explanation:'new ΓåÆ constructor ΓåÆ alive=1. delete ΓåÆ destructor ΓåÆ alive=0.',
 options:['0 0','1 1','1 0','0 1'],answer:2},
 
 {id:112,topic:'template',type:'output',diff:'medium',q:'What prints? (auto return type deduction)',
@@ -2014,28 +2014,28 @@ int main() {
     cout << r1 << " " << r2;
 }`,
 output:'12 10',
-explanation:'multiply(3,4): T=int,U=int→int 12. multiply(2.5,4): T=double,U=int → double 10.0 printed as 10.',
+explanation:'multiply(3,4): T=int,U=intΓåÆint 12. multiply(2.5,4): T=double,U=int ΓåÆ double 10.0 printed as 10.',
 options:['12 10','12 10.0','Compile error','12.0 10.0'],answer:0},
 
 {id:113,topic:'stl',type:'theory',diff:'medium',q:'What are the complexity guarantees of std::unordered_set operations?',
 answer_text:`std::unordered_set uses a hash table internally.
 
 Operation complexities:
-• insert: Average O(1), Worst O(n) [all elements hash to same bucket]
-• find: Average O(1), Worst O(n)
-• erase: Average O(1), Worst O(n)
-• count: Average O(1), Worst O(n)
+ΓÇó insert: Average O(1), Worst O(n) [all elements hash to same bucket]
+ΓÇó find: Average O(1), Worst O(n)
+ΓÇó erase: Average O(1), Worst O(n)
+ΓÇó count: Average O(1), Worst O(n)
 
 The worst case occurs with hash collisions. To avoid:
 1. Use good hash functions (distribute evenly)
 2. Reserve bucket count: s.reserve(1000) to avoid rehashing
 3. Set max_load_factor before inserting
 
-Rehashing: when load_factor() > max_load_factor() (default 1.0), rehash occurs → O(n) but amortized O(1).
+Rehashing: when load_factor() > max_load_factor() (default 1.0), rehash occurs ΓåÆ O(n) but amortized O(1).
 
 Iterator invalidation: rehashing invalidates all iterators!
 Use insert return value to re-obtain iterators after bulk inserts.`,
-options:['Always O(log n)','Average O(1) insert/find/erase with worst O(n) on hash collisions — rehashing invalidates all iterators','Always O(1) guaranteed','O(n) for all operations'],answer:1},
+options:['Always O(log n)','Average O(1) insert/find/erase with worst O(n) on hash collisions ΓÇö rehashing invalidates all iterators','Always O(1) guaranteed','O(n) for all operations'],answer:1},
 
 {id:114,topic:'poly',type:'output',diff:'medium',q:'What prints? (interface class pattern)',
 code:`class IDrawable {
@@ -2090,7 +2090,7 @@ answer_text:`CRTP Mixin pattern: add functionality to derived classes via templa
   a != b;  // uses Comparable::operator!=, no virtual dispatch, inlineable
 
 Use cases: enable_shared_from_this, iterator bases, operator generation (Boost.Operators), static polymorphism.`,
-options:['CRTP only for virtual functions','CRTP base generates derived functionality at compile time — zero overhead mixins; used for operator generation, static interfaces, enable_shared_from_this','Requires dynamic_cast','Only for single inheritance'],answer:1},
+options:['CRTP only for virtual functions','CRTP base generates derived functionality at compile time ΓÇö zero overhead mixins; used for operator generation, static interfaces, enable_shared_from_this','Requires dynamic_cast','Only for single inheritance'],answer:1},
 
 {id:116,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::iota)',
 code:`#include <numeric>
@@ -2113,7 +2113,7 @@ code:`int main() {
         catch(int) {
             cout << "int ";
         }
-        // string not caught → propagates up
+        // string not caught ΓåÆ propagates up
         cout << "after inner ";
     }
     catch(string& s) {
@@ -2121,7 +2121,7 @@ code:`int main() {
     }
 }`,
 output:'string:inner',
-explanation:'Inner catch(int) doesn\'t match string. Exception propagates to outer catch(string&) → "string:inner". "after inner" never reached.',
+explanation:'Inner catch(int) doesn\'t match string. Exception propagates to outer catch(string&) ΓåÆ "string:inner". "after inner" never reached.',
 options:['after inner string:inner','string:inner','int string:inner','Compile error'],answer:1},
 
 {id:118,topic:'template',type:'output',diff:'hard',q:'What prints? (constexpr if with type dispatch)',
@@ -2140,7 +2140,7 @@ int main() {
     cout << a << " " << b;
 }`,
 output:'42 42',
-explanation:'if constexpr only compiles the matching branch. convert(string) → stoi → int 42. convert(42) → to_string → string "42". Both print as "42 42".',
+explanation:'if constexpr only compiles the matching branch. convert(string) ΓåÆ stoi ΓåÆ int 42. convert(42) ΓåÆ to_string ΓåÆ string "42". Both print as "42 42".',
 options:['42 42','"42" 42','42 "42"','Compile error'],answer:0},
 
 {id:119,topic:'oop',type:'theory',diff:'medium',q:'What is the Factory Method pattern in C++?',
@@ -2166,12 +2166,12 @@ answer_text:`Factory Method: define an interface for creating objects, but let d
   }
 
 Benefits:
-  • Decouples creation from usage
-  • Easy to add new types without changing existing code (Open/Closed)
-  • Returns smart pointer → automatic lifetime management
+  ΓÇó Decouples creation from usage
+  ΓÇó Easy to add new types without changing existing code (Open/Closed)
+  ΓÇó Returns smart pointer ΓåÆ automatic lifetime management
 
 Modern C++: often just a free function or static method, not a full pattern class.`,
-options:['Factory pattern requires virtual constructors','Defines interface for object creation; subclasses/functions decide which concrete type to instantiate — decouples creation from use','Factory is only for Singleton','Requires protected constructors'],answer:1},
+options:['Factory pattern requires virtual constructors','Defines interface for object creation; subclasses/functions decide which concrete type to instantiate ΓÇö decouples creation from use','Factory is only for Singleton','Requires protected constructors'],answer:1},
 
 {id:120,topic:'stl',type:'output',diff:'hard',q:'What prints? (parallel algorithms C++17)',
 code:`#include <execution>
@@ -2229,12 +2229,12 @@ answer_text:`Policy-based design: compose classes from small, orthogonal behavio
   using FastPtr = SmartPtr<StackStorage, SingleThreaded, NoChecking>;
 
 Benefits:
-  • Zero cost abstractions (inlined at compile time)
-  • Mix and match behaviors without inheritance hierarchies
-  • Used in: std::allocator, Loki library, EASTL, Abseil
+  ΓÇó Zero cost abstractions (inlined at compile time)
+  ΓÇó Mix and match behaviors without inheritance hierarchies
+  ΓÇó Used in: std::allocator, Loki library, EASTL, Abseil
 
 vs Strategy pattern: Strategy is runtime (virtual), Policy is compile-time (template).`,
-options:['Runtime configuration of class behavior','Compose class behavior from template policy parameters — compile-time zero-cost composition used in allocators, smart pointers, library internals','Same as multiple inheritance','Only for memory management'],answer:1},
+options:['Runtime configuration of class behavior','Compose class behavior from template policy parameters ΓÇö compile-time zero-cost composition used in allocators, smart pointers, library internals','Same as multiple inheritance','Only for memory management'],answer:1},
 
 {id:123,topic:'oop',type:'output',diff:'medium',q:'What prints? (inherit constructor C++11)',
 code:`class Base {
@@ -2269,15 +2269,15 @@ options:['1 3 5 2 4 6 ','1 2 3 4 5 6 ','2 4 6 1 3 5 ','Compile error'],answer:1}
 
 {id:125,topic:'oop',type:'theory',diff:'medium',q:'What is aggregate initialization and when can you use it?',
 answer_text:`Aggregate: a class/struct with:
-  • No user-provided constructors (can have =default)
-  • No private/protected non-static data members
-  • No virtual functions, no virtual/private/protected base classes
-  • No base classes with private/protected members
+  ΓÇó No user-provided constructors (can have =default)
+  ΓÇó No private/protected non-static data members
+  ΓÇó No virtual functions, no virtual/private/protected base classes
+  ΓÇó No base classes with private/protected members
   (rules relaxed in C++17: can have base classes)
 
 Aggregate initialization with braces:
   struct Point { int x, y; };
-  Point p{3, 4};  // x=3, y=4 — no constructor needed
+  Point p{3, 4};  // x=3, y=4 ΓÇö no constructor needed
   Point q = {5, 6};  // also OK
 
   // C++17: aggregate can have base classes
@@ -2313,23 +2313,23 @@ options:['Compile error','Woof','(nothing)','Runtime error'],answer:1},
 
 {id:127,topic:'stl',type:'theory',diff:'hard',q:'What is the difference between std::list and std::forward_list?',
 answer_text:`std::list: doubly-linked list.
-  • Bidirectional iteration (++ and --)
-  • O(1) insert/erase anywhere given iterator
-  • O(n) random access (no operator[])
-  • Each node: data + 2 pointers = more memory
-  • Supports: push_front, push_back, insert, erase, splice, sort, merge
+  ΓÇó Bidirectional iteration (++ and --)
+  ΓÇó O(1) insert/erase anywhere given iterator
+  ΓÇó O(n) random access (no operator[])
+  ΓÇó Each node: data + 2 pointers = more memory
+  ΓÇó Supports: push_front, push_back, insert, erase, splice, sort, merge
 
 std::forward_list: singly-linked list (C++11).
-  • Forward iteration only (++ only, no --)
-  • O(1) insert/erase AFTER a given iterator (insert_after, erase_after)
-  • Slightly less memory per node (only 1 pointer)
-  • No size() method! (doesn't store count)
-  • Supports: push_front only (no push_back in O(1))
+  ΓÇó Forward iteration only (++ only, no --)
+  ΓÇó O(1) insert/erase AFTER a given iterator (insert_after, erase_after)
+  ΓÇó Slightly less memory per node (only 1 pointer)
+  ΓÇó No size() method! (doesn't store count)
+  ΓÇó Supports: push_front only (no push_back in O(1))
 
 When to use list: need bidirectional iteration + frequent middle insert/erase.
 When to use forward_list: memory-constrained, need only single-pass forward traversal.
 Reality: vector outperforms both in most cases due to cache locality. Prefer vector unless profiling shows list is better.`,
-options:['forward_list is just an alias for list','list is doubly-linked (bidirectional); forward_list is singly-linked (forward only, less memory, insert_after) — vector usually beats both','list is deprecated','forward_list supports random access'],answer:1},
+options:['forward_list is just an alias for list','list is doubly-linked (bidirectional); forward_list is singly-linked (forward only, less memory, insert_after) ΓÇö vector usually beats both','list is deprecated','forward_list supports random access'],answer:1},
 
 {id:128,topic:'oop',type:'output',diff:'hard',q:'What prints? (return value optimization with named temp)',
 code:`struct Obj {
@@ -2408,7 +2408,7 @@ answer_text:`Template Method: define the skeleton of an algorithm in a base clas
 
   class DataProcessor {
   public:
-      // Template method — defines algorithm skeleton
+      // Template method ΓÇö defines algorithm skeleton
       void process() {
           readData();      // non-virtual hook
           parseData();     // virtual step 1
@@ -2431,7 +2431,7 @@ answer_text:`Template Method: define the skeleton of an algorithm in a base clas
 
 Benefits: code reuse for algorithm structure, customization only at variation points.
 Related to: Strategy (composition-based), Hook Methods (optional overrides).`,
-options:['Template Method uses template functions','Base defines algorithm skeleton with virtual steps — subclasses customize steps, base controls order/pre/post conditions','Requires C++ templates','Same as Strategy pattern'],answer:1},
+options:['Template Method uses template functions','Base defines algorithm skeleton with virtual steps ΓÇö subclasses customize steps, base controls order/pre/post conditions','Requires C++ templates','Same as Strategy pattern'],answer:1},
 
 {id:133,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::rotate)',
 code:`#include <algorithm>
@@ -2483,7 +2483,7 @@ decltype(auto): like auto but preserves references and cv-qualifiers.
   int& ref = x;
   auto a = ref;        // a is int (copies)
   decltype(auto) b = ref; // b is int& (reference!)`,
-options:['Runtime type query like typeid','Compile-time type deduction of expression — used for trailing return types, type metaprogramming, decltype(auto) for reference preservation','Same as auto','Only for function return types'],answer:1},
+options:['Runtime type query like typeid','Compile-time type deduction of expression ΓÇö used for trailing return types, type metaprogramming, decltype(auto) for reference preservation','Same as auto','Only for function return types'],answer:1},
 
 {id:136,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::count_if)',
 code:`#include <algorithm>
@@ -2514,14 +2514,14 @@ answer_text:`In virtual inheritance, the MOST-DERIVED class is responsible for c
 
 When D is constructed:
   1. A(42) constructed first (D's initializer used)
-  2. B() — B's A(0) is IGNORED because A is a virtual base
-  3. C() — C's A(0) is IGNORED
+  2. B() ΓÇö B's A(0) is IGNORED because A is a virtual base
+  3. C() ΓÇö C's A(0) is IGNORED
   4. D()
 
 This ensures A is constructed ONCE with D's arguments.
-If D doesn't provide A's initializer → A's default constructor used.
+If D doesn't provide A's initializer ΓåÆ A's default constructor used.
 This is why virtual base classes should have default constructors if possible.`,
-options:['Each derived class constructs virtual base independently','Most-derived class constructs virtual base; intermediate classes\' initializers for virtual base are ignored — ensure most-derived provides correct args','Virtual bases have no constructors','Virtual base is constructed last'],answer:1},
+options:['Each derived class constructs virtual base independently','Most-derived class constructs virtual base; intermediate classes\' initializers for virtual base are ignored ΓÇö ensure most-derived provides correct args','Virtual bases have no constructors','Virtual base is constructed last'],answer:1},
 
 {id:138,topic:'oop',type:'output',diff:'medium',q:'What prints? (const correctness chain)',
 code:`class Container {
@@ -2538,7 +2538,7 @@ int main() {
     cout << cc.at(1);
 }`,
 output:'nc c 5',
-explanation:'c.at(0): non-const Container → non-const at() → "nc", returns reference, assigned 10. cc.at(1): const Container → const at() → "c", returns const ref 5.',
+explanation:'c.at(0): non-const Container ΓåÆ non-const at() ΓåÆ "nc", returns reference, assigned 10. cc.at(1): const Container ΓåÆ const at() ΓåÆ "c", returns const ref 5.',
 options:['nc c 5','c nc 5','nc c 2','Compile error'],answer:0},
 
 {id:139,topic:'template',type:'output',diff:'hard',q:'What prints? (template specialization for char*)',
@@ -2555,7 +2555,7 @@ int main() {
     cout << isEqual("abc", "abc");
 }`,
 output:'1 0 1',
-explanation:'isEqual(1,1): int==int → true→1. isEqual(1,2): false→0. isEqual("abc","abc"): specialization uses strcmp → 0==0 → true→1.',
+explanation:'isEqual(1,1): int==int ΓåÆ trueΓåÆ1. isEqual(1,2): falseΓåÆ0. isEqual("abc","abc"): specialization uses strcmp ΓåÆ 0==0 ΓåÆ trueΓåÆ1.',
 options:['1 0 1','1 0 0','Compile error','1 1 1'],answer:0},
 
 {id:140,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::for_each with capture)',
@@ -2601,7 +2601,7 @@ Modern C++ with std::function (more flexible):
       void doSort(vector<int>& v) { strategy(v); }
   };
   Sorter s([](auto& v){ sort(v.begin(),v.end()); }); // lambda strategy`,
-options:['Strategy requires multiple inheritance','Strategy encapsulates interchangeable algorithms — classic: virtual inheritance hierarchy; modern: std::function/lambda for zero-cost type-erased strategies','Strategy is same as Template Method','Strategy uses static polymorphism only'],answer:1},
+options:['Strategy requires multiple inheritance','Strategy encapsulates interchangeable algorithms ΓÇö classic: virtual inheritance hierarchy; modern: std::function/lambda for zero-cost type-erased strategies','Strategy is same as Template Method','Strategy uses static polymorphism only'],answer:1},
 
 {id:142,topic:'poly',type:'output',diff:'hard',q:'What prints? (dynamic_cast failure)',
 code:`class Base { public: virtual ~Base(){} };
@@ -2617,7 +2617,7 @@ int main() {
     catch(bad_cast&) { cout << "bad_cast"; }
 }`,
 output:'1 bad_cast',
-explanation:'dynamic_cast<D2*>(p): p points to D1, not D2 → returns nullptr → prints 1. dynamic_cast<D2&>: fails with reference → throws bad_cast.',
+explanation:'dynamic_cast<D2*>(p): p points to D1, not D2 ΓåÆ returns nullptr ΓåÆ prints 1. dynamic_cast<D2&>: fails with reference ΓåÆ throws bad_cast.',
 options:['0 bad_cast','1 bad_cast','Compile error','1 '],answer:1},
 
 {id:143,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::set with custom comparator)',
@@ -2646,7 +2646,7 @@ int main() {
     f(nullptr);
 }`,
 output:'intintnull',
-explanation:'0 and NULL (typically 0) both call f(int). nullptr has type nullptr_t → f(nullptr_t). nullptr is the proper null pointer literal.',
+explanation:'0 and NULL (typically 0) both call f(int). nullptr has type nullptr_t ΓåÆ f(nullptr_t). nullptr is the proper null pointer literal.',
 options:['intintnull','ptrintrnull','nullnullnull','Compile error'],answer:0},
 
 {id:145,topic:'template',type:'theory',diff:'hard',q:'What are variadic templates and parameter packs? List three use cases.',
@@ -2655,30 +2655,30 @@ answer_text:`Variadic templates: templates accepting any number of type argument
   template<typename... Args> void print(Args... args) { ... };
 
 Parameter pack operations:
-  sizeof...(Args)       — number of types
-  (func(args), ...)     — fold expression to apply func to each
-  forward<Args>(args)...— perfect forward each
+  sizeof...(Args)       ΓÇö number of types
+  (func(args), ...)     ΓÇö fold expression to apply func to each
+  forward<Args>(args)...ΓÇö perfect forward each
 
-Use case 1 — std::tuple implementation:
+Use case 1 ΓÇö std::tuple implementation:
   template<typename... Ts>
   class tuple { /* recursive inheritance or array of any */ };
 
-Use case 2 — perfect forwarding factory:
+Use case 2 ΓÇö perfect forwarding factory:
   template<typename T, typename... Args>
   unique_ptr<T> make_unique(Args&&... args) {
       return unique_ptr<T>(new T(forward<Args>(args)...));
   }
 
-Use case 3 — printf-safe variadic print:
+Use case 3 ΓÇö printf-safe variadic print:
   template<typename... Args>
   void safeLog(string_view fmt, Args... args) {
       // C++20: format string checking at compile time
   }
 
-Use case 4 — std::visit with overloaded lambdas:
+Use case 4 ΓÇö std::visit with overloaded lambdas:
   template<typename... Ts>
   struct overloaded : Ts... { using Ts::operator()...; };`,
-options:['Only for printf-style functions','Templates accepting any number of types — used for tuple, perfect forwarding (make_unique/emplace), type-safe variadic print, overloaded lambdas','Variadic templates are runtime only','Limited to 10 arguments'],answer:1},
+options:['Only for printf-style functions','Templates accepting any number of types ΓÇö used for tuple, perfect forwarding (make_unique/emplace), type-safe variadic print, overloaded lambdas','Variadic templates are runtime only','Limited to 10 arguments'],answer:1},
 
 {id:146,topic:'inherit',type:'output',diff:'hard',q:'What prints? (covariant return + virtual chain)',
 code:`struct Animal {
@@ -2695,7 +2695,7 @@ int main() {
     Animal* c = p->create();
 }`,
 output:'G',
-explanation:'Covariant return: GoldenRetriever* overrides Dog* which overrides Animal*. Virtual dispatch to GoldenRetriever::create() → "G".',
+explanation:'Covariant return: GoldenRetriever* overrides Dog* which overrides Animal*. Virtual dispatch to GoldenRetriever::create() ΓåÆ "G".',
 options:['A','D','G','ADG'],answer:2},
 
 {id:147,topic:'stl',type:'output',diff:'hard',q:'What prints? (std::deque vs vector push_front)',
@@ -2709,7 +2709,7 @@ int main() {
     cout << dq.front() << " " << dq.back();
 }`,
 output:'1 2 3 | 1 3',
-explanation:'push_back(3)→{3}. push_front(2)→{2,3}. push_front(1)→{1,2,3}. front=1, back=3.',
+explanation:'push_back(3)ΓåÆ{3}. push_front(2)ΓåÆ{2,3}. push_front(1)ΓåÆ{1,2,3}. front=1, back=3.',
 options:['3 2 1 | 3 1','1 2 3 | 1 3','Compile error','2 3 1 | 2 1'],answer:1},
 
 {id:148,topic:'oop',type:'theory',diff:'medium',q:'What are copy elision and guaranteed copy elision in C++17?',
@@ -2723,16 +2723,16 @@ C++17 guaranteed copy elision (prvalue context):
   Widget w = Widget();  // GUARANTEED: no copy/move even if deleted!
   return Widget{};      // GUARANTEED for prvalue returns
 
-Technical reason (C++17): prvalues are not objects — they're instructions to initialize.
+Technical reason (C++17): prvalues are not objects ΓÇö they're instructions to initialize.
 A prvalue Widget() doesn't create a temporary; it initializes the target directly.
 
 What's NOT guaranteed:
   Widget w;
   return w;  // NRVO: not guaranteed, but common
-  return move(w);  // forces move (prevents NRVO — avoid move() in returns!)
+  return move(w);  // forces move (prevents NRVO ΓÇö avoid move() in returns!)
 
-Key rule: NEVER write return move(local_var) — it prevents NRVO and forces a move instead of elision.`,
-options:['Copy elision is a runtime optimization','Compiler omits copy/move calls; C++17 guarantees elision for prvalue init — no copy even with deleted copy constructor; never return move(local)','Copy elision only for primitive types','Always requires noexcept'],answer:1},
+Key rule: NEVER write return move(local_var) ΓÇö it prevents NRVO and forces a move instead of elision.`,
+options:['Copy elision is a runtime optimization','Compiler omits copy/move calls; C++17 guarantees elision for prvalue init ΓÇö no copy even with deleted copy constructor; never return move(local)','Copy elision only for primitive types','Always requires noexcept'],answer:1},
 
 {id:149,topic:'stl',type:'output',diff:'medium',q:'What prints? (std::string operations)',
 code:`int main() {
@@ -2743,17 +2743,17 @@ code:`int main() {
     cout << s;
 }`,
 output:'World 7 Hello, C++!',
-explanation:'substr(7,5)="World". find("World")=7. replace(7,5,"C++") replaces 5 chars at pos 7 with "C++" → "Hello, C++!".',
+explanation:'substr(7,5)="World". find("World")=7. replace(7,5,"C++") replaces 5 chars at pos 7 with "C++" ΓåÆ "Hello, C++!".',
 options:['World 7 Hello, C++!','Hello 0 C++, World!','World 6 Hello, C++!','Compile error'],answer:0},
 
 {id:150,topic:'poly',type:'theory',diff:'hard',q:'What is type erasure in C++? How does std::function implement it?',
 answer_text:`Type erasure: hiding the concrete type while preserving behavior. Enables storing heterogeneous types through a uniform interface without virtual inheritance.
 
 std::function<void(int)> can hold:
-  • Lambda
-  • Free function pointer
-  • Member function (with bind)
-  • Functor object
+  ΓÇó Lambda
+  ΓÇó Free function pointer
+  ΓÇó Member function (with bind)
+  ΓÇó Functor object
 All with the same type!
 
 Implementation technique:
@@ -2776,7 +2776,7 @@ Implementation technique:
 
 Small Buffer Optimization (SBO): small callables stored inline (no heap). Large ones heap-allocate.
 Other type erasure examples: std::any, std::span, std::string_view, std::variant.`,
-options:['Type erasure is just void*','Hiding concrete type while preserving behavior — std::function uses internal virtual dispatch via concept/model pattern with SBO for small callables','Only for function pointers','Type erasure is runtime RTTI'],answer:1},
+options:['Type erasure is just void*','Hiding concrete type while preserving behavior ΓÇö std::function uses internal virtual dispatch via concept/model pattern with SBO for small callables','Only for function pointers','Type erasure is runtime RTTI'],answer:1},
 
 {id:151,topic:'oop',type:'output',diff:'hard',q:'What prints? (volatile keyword)',
 code:`int main() {
@@ -2845,12 +2845,12 @@ Interface (fully abstract, no implementation):
   };
 
 Difference:
-  • ABC: partial implementation + abstract methods (Template Method structure)
-  • Interface: pure abstraction, no implementation, no state (Java-style)
+  ΓÇó ABC: partial implementation + abstract methods (Template Method structure)
+  ΓÇó Interface: pure abstraction, no implementation, no state (Java-style)
 
-C++ has no interface keyword — use class with all pure virtuals + virtual destructor.
+C++ has no interface keyword ΓÇö use class with all pure virtuals + virtual destructor.
 Best practice for interfaces: no data members, all pure virtual, virtual/default destructor.`,
-options:['ABC and interface are identical','ABC has partial implementation + pure virtuals (can have state); interface is purely abstract (all pure virtual, no state) — C++ uses classes with all pure virtuals for interfaces','ABC cannot be inherited','Interfaces require multiple inheritance'],answer:1},
+options:['ABC and interface are identical','ABC has partial implementation + pure virtuals (can have state); interface is purely abstract (all pure virtual, no state) ΓÇö C++ uses classes with all pure virtuals for interfaces','ABC cannot be inherited','Interfaces require multiple inheritance'],answer:1},
 
 {id:155,topic:'stl',type:'output',diff:'hard',q:'What prints? (structured binding with get<>)',
 code:`#include <tuple>
@@ -2872,61 +2872,61 @@ explanation:'Array decomposed: x=10,y=20,z=30. Tuple decomposed by reference: a2
 options:['10 20 30 | 9.9','10 20 30 | 2.5','Compile error','10 20 30 | 9'],answer:0},
 ];
 
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 //  TOPIC SUMMARIES
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 const SUMMARIES = {
   oop: {title:"OOP Core",color:"#7c3aed",points:[
-    "Constructors run Base→Derived; Destructors reverse: ~Derived→~Base",
-    "Copy ctor by default = shallow copy: pointer values only, NOT heap data → Rule of Three/Five",
+    "Constructors run BaseΓåÆDerived; Destructors reverse: ~DerivedΓåÆ~Base",
+    "Copy ctor by default = shallow copy: pointer values only, NOT heap data ΓåÆ Rule of Three/Five",
     "Member initialization order = DECLARATION order, not initializer list order",
     "Static members shared across all instances; initialized once outside class",
     "explicit keyword prevents implicit single-arg constructor conversions",
     "mutable allows const method to modify member (for caching, mutex)",
     "move semantics: T&& rvalue ref; std::move casts to rvalue; move ctor steals resources",
-    "PIMPL: pointer to impl — reduces compile dependencies, provides ABI stability",
-    "RAII: acquire in ctor, release in dtor — smart pointers, fstream, lock_guard",
+    "PIMPL: pointer to impl ΓÇö reduces compile dependencies, provides ABI stability",
+    "RAII: acquire in ctor, release in dtor ΓÇö smart pointers, fstream, lock_guard",
     "Copy-and-swap idiom: strong exception safety for operator=",
     "SOLID: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion",
   ]},
   inherit: {title:"Inheritance",color:"#00d4ff",points:[
     "public=is-a, protected=implementation only, private=has-a via inheritance",
-    "Virtual destructor required when deleting via base pointer → otherwise UB",
+    "Virtual destructor required when deleting via base pointer ΓåÆ otherwise UB",
     "Object slicing: passing Derived by value as Base loses derived part",
-    "Diamond problem: D→B,C→A creates two A copies. Fix: virtual inheritance",
+    "Diamond problem: DΓåÆB,CΓåÆA creates two A copies. Fix: virtual inheritance",
     "Virtual base: most-derived class constructs it; intermediate inits ignored",
     "using Base::method brings hidden base method into derived scope",
     "Liskov Substitution: derived must be fully substitutable for base",
-    "Fragile base: changing base impl can break derived — prefer composition",
+    "Fragile base: changing base impl can break derived ΓÇö prefer composition",
     "Inherit constructors: using Base::Base; brings all base ctors to derived",
-    "Multiple inheritance: C:A,B — bases constructed in declaration order",
+    "Multiple inheritance: C:A,B ΓÇö bases constructed in declaration order",
   ]},
   poly: {title:"Polymorphism",color:"#f59e0b",points:[
     "Virtual dispatch: vtable lookup at runtime based on actual object type",
     "vtable: per-class array of function pointers. vptr: per-object 8B pointer",
-    "Two extra memory reads + no inlining per virtual call — avoid in tight loops",
-    "override keyword: catches signature mismatch at compile time — always use it",
+    "Two extra memory reads + no inlining per virtual call ΓÇö avoid in tight loops",
+    "override keyword: catches signature mismatch at compile time ΓÇö always use it",
     "final: prevents further overriding. Can also apply to entire class",
     "Pure virtual (=0): makes class abstract. Can still have implementation body",
     "Covariant return: derived can return Derived* where base returns Base*",
     "CRTP: static polymorphism with zero vtable overhead via template recursion",
-    "NVI (Non-Virtual Interface): public non-virtual → private virtual",
+    "NVI (Non-Virtual Interface): public non-virtual ΓåÆ private virtual",
     "virtual function in constructor: static dispatch (vtable not fully set up yet!)",
-    "Default args resolved at COMPILE TIME by pointer type — NOT runtime type!",
+    "Default args resolved at COMPILE TIME by pointer type ΓÇö NOT runtime type!",
   ]},
   template: {title:"Templates",color:"#10b981",points:[
     "Function templates: compiler deduces T from args; explicit: func<int>()",
     "Class template full specialization: template<> class Foo<int> {}",
-    "Partial specialization: template<typename T> class Foo<T*> {} — only for classes",
-    "Non-type template params: template<int N> — compile-time constants",
+    "Partial specialization: template<typename T> class Foo<T*> {} ΓÇö only for classes",
+    "Non-type template params: template<int N> ΓÇö compile-time constants",
     "Variadic templates: Args... parameter pack. sizeof...(Args) for count",
-    "SFINAE: substitution failure is not an error — silently discards bad overloads",
+    "SFINAE: substitution failure is not an error ΓÇö silently discards bad overloads",
     "enable_if<condition>: enables/disables overload based on type trait",
-    "if constexpr: compile-time branch — only matching branch is compiled",
+    "if constexpr: compile-time branch ΓÇö only matching branch is compiled",
     "Fold expressions (C++17): (... + args) expands to (((a+b)+c)+d)",
     "Concepts (C++20): named constraints, cleaner than SFINAE, better errors",
     "CRTP: Derived passes self as template arg to Base for static polymorphism",
-    "TMP: template metaprogramming — Turing complete, compile-time computation",
+    "TMP: template metaprogramming ΓÇö Turing complete, compile-time computation",
     "CTAD (C++17): class template argument deduction from constructor",
   ]},
   stl: {title:"STL",color:"#ef4444",points:[
@@ -2937,10 +2937,10 @@ const SUMMARIES = {
     "set: unique sorted elements. unordered_set: hash set unique elements",
     "priority_queue: max-heap by default. Use greater<> for min-heap",
     "Iterator invalidation: vector realloc=all invalid. list/map=only erased iter invalid",
-    "map operator[] inserts default value if key not found — use find() to avoid",
+    "map operator[] inserts default value if key not found ΓÇö use find() to avoid",
     "sort: O(n log n) unstable. stable_sort: stable. partial_sort: top-k O(n log k)",
-    "Algorithm range: [first, last) — last is one past end, never dereferenced",
-    "lower_bound/upper_bound: O(log n) on sorted range — binary search iterators",
+    "Algorithm range: [first, last) ΓÇö last is one past end, never dereferenced",
+    "lower_bound/upper_bound: O(log n) on sorted range ΓÇö binary search iterators",
     "std::function: type erasure for callables. std::variant: type-safe union",
     "std::optional: value-or-nothing. std::span: non-owning contiguous view",
     "Lambdas: [=] copy all, [&] ref all, [x] copy x, [&x] ref x. mutable for copy modification",
@@ -2951,8 +2951,8 @@ const SUMMARIES = {
     "catch(...): catches everything including non-standard exceptions",
     "throw; (no argument): re-throws current exception unchanged",
     "RAII ensures cleanup on exception: destructors called during stack unwinding",
-    "Destructor throwing during stack unwinding → terminate() — keep dtors noexcept",
-    "noexcept: guarantee function won't throw. Violation → terminate()",
+    "Destructor throwing during stack unwinding ΓåÆ terminate() ΓÇö keep dtors noexcept",
+    "noexcept: guarantee function won't throw. Violation ΓåÆ terminate()",
     "noexcept enables vector to use move semantics; without it vector may copy",
     "Exception safety: no-guarantee < basic < strong < no-throw",
     "Function-try-block: only way to catch constructor initializer list exceptions",
@@ -2963,7 +2963,7 @@ const SUMMARIES = {
     "ifstream: read. ofstream: write. fstream: read+write",
     "Always check stream state: if(!fin) or fin.fail()",
     "Text mode: \\n translated. Binary mode (ios::binary): byte-exact",
-    "RAII: file auto-closed when stream object destroyed — no manual close needed",
+    "RAII: file auto-closed when stream object destroyed ΓÇö no manual close needed",
     "seekg/seekp: move read/write position. tellg/tellp: get current position",
     "ios::beg, ios::cur, ios::end: seek directions",
     "write()/read(): binary block I/O. reinterpret_cast<char*>(&obj) for structs",
@@ -2975,41 +2975,41 @@ const SUMMARIES = {
 
 // QUIZ QUESTIONS for test series (30 MCQ)
 const QUIZ_QS = [
-  {q:"Constructor execution order for class D : B, A (in that declaration order)?",opts:["D→B→A","B→A→D","A→B→D","D→A→B"],ans:1,exp:"Bases constructed in DECLARATION ORDER (B then A), then derived D."},
+  {q:"Constructor execution order for class D : B, A (in that declaration order)?",opts:["DΓåÆBΓåÆA","BΓåÆAΓåÆD","AΓåÆBΓåÆD","DΓåÆAΓåÆB"],ans:1,exp:"Bases constructed in DECLARATION ORDER (B then A), then derived D."},
   {q:"With virtual inheritance, who is responsible for constructing the virtual base?",opts:["First intermediate class","Last intermediate class","Most-derived class","Shared responsibility"],ans:2,exp:"Most-derived class constructs the virtual base. Intermediate initializers are ignored."},
-  {q:"What is object slicing?",opts:["Pointer arithmetic on objects","Losing derived data when passing derived by value as base","Copying array elements","Splitting class into files"],ans:1,exp:"Passing derived object by value as base type — loses all derived-class members."},
+  {q:"What is object slicing?",opts:["Pointer arithmetic on objects","Losing derived data when passing derived by value as base","Copying array elements","Splitting class into files"],ans:1,exp:"Passing derived object by value as base type ΓÇö loses all derived-class members."},
   {q:"Default args in virtual functions are resolved based on:",opts:["Dynamic (runtime) type","Static (compile-time/pointer) type","The overriding class","Random"],ans:1,exp:"Default args are compile-time construct, resolved by STATIC type of pointer/reference. Tricky!"},
-  {q:"Which correctly describes SFINAE?",opts:["Syntax Feature In Name Applications Error","Substitution Failure Is Not An Error","Single Function Instance Not An Error","None"],ans:1,exp:"Substitution Failure Is Not An Error — invalid template substitution silently drops overload."},
+  {q:"Which correctly describes SFINAE?",opts:["Syntax Feature In Name Applications Error","Substitution Failure Is Not An Error","Single Function Instance Not An Error","None"],ans:1,exp:"Substitution Failure Is Not An Error ΓÇö invalid template substitution silently drops overload."},
   {q:"map operator[] when key does NOT exist:",opts:["Throws exception","Returns -1","Default-inserts key with zero value","Returns end()"],ans:2,exp:"operator[] default-inserts missing key with value-initialized value. Use find() to check without inserting."},
   {q:"What does 'throw;' (no argument) do?",opts:["Throws nullptr","Throws default exception","Re-throws current active exception unchanged","Terminates program"],ans:2,exp:"Bare throw; re-throws the current exception. Preserves original type and state."},
-  {q:"Vector iterator validity after push_back causing reallocation:",opts:["All iterators still valid","Only end() invalidated","All iterators, pointers, references invalidated","Only begin() invalidated"],ans:2,exp:"Reallocation copies to new memory — ALL iterators, pointers, and references are invalidated."},
-  {q:"CRTP stands for:",opts:["Compile-time Runtime Template Pattern","Curiously Recurring Template Pattern","Class Recursive Type Parameter","None"],ans:1,exp:"Curiously Recurring Template Pattern — derived passes itself as template arg to base for static polymorphism."},
+  {q:"Vector iterator validity after push_back causing reallocation:",opts:["All iterators still valid","Only end() invalidated","All iterators, pointers, references invalidated","Only begin() invalidated"],ans:2,exp:"Reallocation copies to new memory ΓÇö ALL iterators, pointers, and references are invalidated."},
+  {q:"CRTP stands for:",opts:["Compile-time Runtime Template Pattern","Curiously Recurring Template Pattern","Class Recursive Type Parameter","None"],ans:1,exp:"Curiously Recurring Template Pattern ΓÇö derived passes itself as template arg to base for static polymorphism."},
   {q:"noexcept violation causes:",opts:["Exception to propagate normally","Undefined behavior","std::terminate() to be called","Program to pause"],ans:2,exp:"Throwing from noexcept function calls std::terminate() immediately."},
-  {q:"What does priority_queue<int> provide by default?",opts:["Min-heap","Max-heap","Sorted queue","FIFO queue"],ans:1,exp:"Default priority_queue is max-heap — top() returns largest element."},
+  {q:"What does priority_queue<int> provide by default?",opts:["Min-heap","Max-heap","Sorted queue","FIFO queue"],ans:1,exp:"Default priority_queue is max-heap ΓÇö top() returns largest element."},
   {q:"Rule of Five in C++11 adds which two to Rule of Three?",opts:["Move ctor and move assignment","Virtual ctor and virtual dtor","Copy ctor and copy assignment","Static methods"],ans:0,exp:"Rule of Five adds move constructor and move assignment operator to the three from C++03."},
   {q:"'explicit' keyword on constructor prevents:",opts:["Inheritance","Virtual overriding","Implicit single-argument conversions","Multiple constructors"],ans:2,exp:"explicit prevents implicit conversion/copy-initialization using that constructor."},
-  {q:"lower_bound() requires the range to be:",opts:["Any order","Sorted (ascending by default)","Unique elements only","Non-empty"],ans:1,exp:"lower_bound uses binary search — requires sorted range. Returns iterator to first element >= value."},
+  {q:"lower_bound() requires the range to be:",opts:["Any order","Sorted (ascending by default)","Unique elements only","Non-empty"],ans:1,exp:"lower_bound uses binary search ΓÇö requires sorted range. Returns iterator to first element >= value."},
   {q:"In virtual inheritance, construction order for W : Y, Z (both Y,Z : virtual X):",opts:["X Y Z W","Y Z X W","W Y Z X","Z Y X W"],ans:0,exp:"Virtual base X constructed first, then bases in declaration order (Y, Z), then W."},
   {q:"What does std::unique() do to a container?",opts:["Removes all duplicates and resizes","Moves consecutive duplicates to end, returns new logical end","Sorts unique elements","Counts unique elements"],ans:1,exp:"unique() only removes CONSECUTIVE duplicates. Sort first if needed. Must erase() the tail separately."},
   {q:"Member initialization in initializer list order is determined by:",opts:["Order in initializer list","Order of base class constructors","Declaration order in class body","Alphabetical order"],ans:2,exp:"Members are always initialized in their DECLARATION ORDER in the class body, regardless of initializer list order."},
-  {q:"std::optional<T>'s value() throws what if empty?",opts:["std::runtime_error","std::bad_optional_access","std::bad_alloc","Nothing — returns default T"],ans:1,exp:"Calling value() on empty optional throws std::bad_optional_access. Use value_or() to provide default."},
-  {q:"Which cast is used for safe polymorphic downcasting?",opts:["static_cast","reinterpret_cast","dynamic_cast","const_cast"],ans:2,exp:"dynamic_cast performs runtime type checking — returns nullptr (ptr) or throws bad_cast (ref) on failure."},
+  {q:"std::optional<T>'s value() throws what if empty?",opts:["std::runtime_error","std::bad_optional_access","std::bad_alloc","Nothing ΓÇö returns default T"],ans:1,exp:"Calling value() on empty optional throws std::bad_optional_access. Use value_or() to provide default."},
+  {q:"Which cast is used for safe polymorphic downcasting?",opts:["static_cast","reinterpret_cast","dynamic_cast","const_cast"],ans:2,exp:"dynamic_cast performs runtime type checking ΓÇö returns nullptr (ptr) or throws bad_cast (ref) on failure."},
   {q:"fold expression (... + args) is which type of fold?",opts:["Right fold","Left fold","Binary fold","None"],ans:1,exp:"(... op pack) is unary left fold: ((pack1 op pack2) op pack3)..."},
-  {q:"if constexpr differs from if in that:",opts:["It runs at runtime","The non-matching branch is not compiled (only syntactically checked)","It requires templates","It prevents exceptions"],ans:1,exp:"if constexpr discards non-matching branches at compile time — they don't need to be valid code for that instantiation."},
+  {q:"if constexpr differs from if in that:",opts:["It runs at runtime","The non-matching branch is not compiled (only syntactically checked)","It requires templates","It prevents exceptions"],ans:1,exp:"if constexpr discards non-matching branches at compile time ΓÇö they don't need to be valid code for that instantiation."},
   {q:"What is the vtable overhead per object?",opts:["0 bytes","4 bytes","8 bytes (on 64-bit)","Size of vtable"],ans:2,exp:"vptr = 1 pointer = 8 bytes on 64-bit systems. One per object with virtual functions."},
   {q:"std::string_view vs std::string:",opts:["string_view owns data","string_view is a non-owning view, string owns data","They are identical","string_view is mutable"],ans:1,exp:"string_view is a non-owning view (pointer + length). Faster to pass than string but doesn't own data."},
-  {q:"catch(Base& b) before catch(Derived& d) — what happens when Derived thrown?",opts:["Derived handler matches","Base handler matches (first match wins)","Both handlers run","Compile error"],ans:1,exp:"catch handlers checked in ORDER — Base& matches Derived (is-a). Put derived first! Base handler fires."},
+  {q:"catch(Base& b) before catch(Derived& d) ΓÇö what happens when Derived thrown?",opts:["Derived handler matches","Base handler matches (first match wins)","Both handlers run","Compile error"],ans:1,exp:"catch handlers checked in ORDER ΓÇö Base& matches Derived (is-a). Put derived first! Base handler fires."},
   {q:"std::variant vs C union:",opts:["Identical in behavior","variant is type-safe, tracks active member, destructs properly","Union is always safer","variant requires heap allocation"],ans:1,exp:"variant tracks which type is active, properly destructs it, and throws bad_variant_access on wrong access. C union is unsafe."},
-  {q:"PIMPL (Pointer to Implementation) primary benefit:",opts:["Faster virtual dispatch","Compilation firewall — reduces rebuild when implementation changes","Enables multiple inheritance","Replaces virtual functions"],ans:1,exp:"PIMPL hides implementation in .cpp; changing Impl doesn't recompile users of the header. ABI stability."},
+  {q:"PIMPL (Pointer to Implementation) primary benefit:",opts:["Faster virtual dispatch","Compilation firewall ΓÇö reduces rebuild when implementation changes","Enables multiple inheritance","Replaces virtual functions"],ans:1,exp:"PIMPL hides implementation in .cpp; changing Impl doesn't recompile users of the header. ABI stability."},
   {q:"What does structured binding auto [x,y] = pair{1,2} do?",opts:["Creates a tuple","Binds x to first, y to second element of the pair","Copies the pair","Requires C++20"],ans:1,exp:"Structured bindings (C++17) decompose aggregates, pairs, tuples, arrays into named variables."},
   {q:"std::function<void(int)> can store:",opts:["Only function pointers","Only lambdas","Any callable: lambda, functor, bind result, function pointer","Only member functions"],ans:2,exp:"std::function uses type erasure to store any callable with matching signature."},
   {q:"Guaranteed copy elision in C++17 applies to:",opts:["Named local variables returned","All return statements","Prvalue initialization (return T{}, T w = T{})","Only with -O2"],ans:2,exp:"C++17 guarantees elision for prvalues. NRVO (named variable return) is still optional."},
-  {q:"What is the NVI (Non-Virtual Interface) pattern?",opts:["Non-virtual classes only","Public non-virtual functions call private virtual functions — base controls pre/post","Virtual functions must be non-public","Same as CRTP"],ans:1,exp:"NVI: public non-virtual interface calls private virtual customization points. Base maintains invariants."},
+  {q:"What is the NVI (Non-Virtual Interface) pattern?",opts:["Non-virtual classes only","Public non-virtual functions call private virtual functions ΓÇö base controls pre/post","Virtual functions must be non-public","Same as CRTP"],ans:1,exp:"NVI: public non-virtual interface calls private virtual customization points. Base maintains invariants."},
 ];
 
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 //  MAIN APP
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 export default function App() {
   const [tab, setTab] = useState("practice");
   const [filter, setFilter] = useState("all");
@@ -3039,7 +3039,7 @@ export default function App() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:50,background:"rgba(10,14,26,0.95)",backdropFilter:"blur(16px)",borderBottom:"1px solid #1e2d4a",padding:"0 24px",display:"flex",alignItems:"center",height:56,gap:8}}>
         <div style={{fontFamily:"Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:"#00d4ff",marginRight:16}}>C++<span style={{color:"#e2e8f0"}}> OOP</span></div>
-        {[["practice","📚 Practice"],["summaries","📖 Summaries"],["test","🎯 Tests"],["ai","🤖 AI Tutor"]].map(([id,label])=>(
+        {[["practice","≡ƒôÜ Practice"],["summaries","≡ƒôû Summaries"],["test","≡ƒÄ» Tests"],["ai","≡ƒñû AI Tutor"]].map(([id,label])=>(
           <button key={id} onClick={()=>setTab(id)} style={{background:tab===id?"rgba(0,212,255,0.1)":"none",border:"none",borderBottom:tab===id?"2px solid #00d4ff":"2px solid transparent",color:tab===id?"#00d4ff":"#64748b",fontFamily:"inherit",fontSize:"0.75rem",fontWeight:600,padding:"0 14px",height:"100%",cursor:"pointer",letterSpacing:"0.05em",textTransform:"uppercase",transition:"all 0.2s"}}>
             {label}
           </button>
@@ -3051,11 +3051,11 @@ export default function App() {
 
       <div style={{position:"relative",zIndex:1,maxWidth:1100,margin:"0 auto",padding:"28px 20px"}}>
 
-        {/* ── PRACTICE TAB ── */}
+        {/* ΓöÇΓöÇ PRACTICE TAB ΓöÇΓöÇ */}
         {tab==="practice" && (
           <>
             <div style={{marginBottom:20,display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
-              <input value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} placeholder="🔍 Search questions..." style={{background:"rgba(0,212,255,0.04)",border:"1px solid #1e2d4a",borderRadius:8,padding:"8px 14px",color:"#e2e8f0",fontFamily:"inherit",fontSize:13,outline:"none",minWidth:200,flex:1}}/>
+              <input value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} placeholder="≡ƒöì Search questions..." style={{background:"rgba(0,212,255,0.04)",border:"1px solid #1e2d4a",borderRadius:8,padding:"8px 14px",color:"#e2e8f0",fontFamily:"inherit",fontSize:13,outline:"none",minWidth:200,flex:1}}/>
               <span style={{fontSize:12,color:"#64748b",fontFamily:"monospace",whiteSpace:"nowrap"}}>{filtered.length} shown</span>
             </div>
             <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:24}}>
@@ -3077,14 +3077,14 @@ export default function App() {
                       <div style={{flex:1}}>
                         <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:7}}>
                           <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:`${tc}18`,color:tc,border:`1px solid ${tc}30`}}>{topicLabels[q.topic]}</span>
-                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.type==="output"?"rgba(16,185,129,0.1)":"rgba(236,72,153,0.1)",color:q.type==="output"?"#6ee7b7":"#f9a8d4",border:`1px solid ${q.type==="output"?"rgba(16,185,129,0.2)":"rgba(236,72,153,0.2)"}`}}>{q.type==="output"?"⚙ Output":"📖 Theory"}</span>
-                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.diff==="hard"?"rgba(239,68,68,0.1)":"rgba(245,158,11,0.1)",color:q.diff==="hard"?"#f87171":"#fbbf24",border:`1px solid ${q.diff==="hard"?"rgba(239,68,68,0.2)":"rgba(245,158,11,0.2)"}`}}>{q.diff==="hard"?"🔴 Hard":"🟡 Medium"}</span>
+                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.type==="output"?"rgba(16,185,129,0.1)":"rgba(236,72,153,0.1)",color:q.type==="output"?"#6ee7b7":"#f9a8d4",border:`1px solid ${q.type==="output"?"rgba(16,185,129,0.2)":"rgba(236,72,153,0.2)"}`}}>{q.type==="output"?"ΓÜÖ Output":"≡ƒôû Theory"}</span>
+                          <span style={{fontSize:"0.6rem",fontWeight:700,padding:"2px 7px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.06em",background:q.diff==="hard"?"rgba(239,68,68,0.1)":"rgba(245,158,11,0.1)",color:q.diff==="hard"?"#f87171":"#fbbf24",border:`1px solid ${q.diff==="hard"?"rgba(239,68,68,0.2)":"rgba(245,158,11,0.2)"}`}}>{q.diff==="hard"?"≡ƒö┤ Hard":"≡ƒƒí Medium"}</span>
                         </div>
                         <div style={{fontSize:"0.9rem",fontWeight:600,lineHeight:1.5,color:"#e2e8f0"}}>{q.q}</div>
                       </div>
                       <div style={{display:"flex",gap:6,alignItems:"center",flexShrink:0}}>
-                        <button onClick={e=>{e.stopPropagation();setBookmarks(b=>{const n=new Set(b);n.has(q.id)?n.delete(q.id):n.add(q.id);return n;})}} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,opacity:isBookmarked?1:0.3,color:"#f59e0b"}}>★</button>
-                        <span style={{color:"#64748b",transition:"transform 0.3s",transform:isOpen?"rotate(180deg)":"none",fontSize:12}}>▼</span>
+                        <button onClick={e=>{e.stopPropagation();setBookmarks(b=>{const n=new Set(b);n.has(q.id)?n.delete(q.id):n.add(q.id);return n;})}} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,opacity:isBookmarked?1:0.3,color:"#f59e0b"}}>Γÿà</button>
+                        <span style={{color:"#64748b",transition:"transform 0.3s",transform:isOpen?"rotate(180deg)":"none",fontSize:12}}>Γû╝</span>
                       </div>
                     </div>
                     {isOpen&&(
@@ -3097,7 +3097,7 @@ export default function App() {
                           </div>
                         )}
                         <div style={{background:"rgba(16,185,129,0.05)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:8,padding:"12px 14px"}}>
-                          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#10b981",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:7}}>✦ Answer</div>
+                          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#10b981",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:7}}>Γ£ª Answer</div>
                           <div style={{fontSize:"0.84rem",color:"#94a3b8",lineHeight:1.75,whiteSpace:"pre-line"}}>{q.answer_text||q.explanation}</div>
                         </div>
                       </div>
@@ -3109,11 +3109,11 @@ export default function App() {
           </>
         )}
 
-        {/* ── SUMMARIES TAB ── */}
+        {/* ΓöÇΓöÇ SUMMARIES TAB ΓöÇΓöÇ */}
         {tab==="summaries" && (
           <>
             <div style={{marginBottom:24}}>
-              <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}}>📖 Topic Summaries & Key Points</div>
+              <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}}>≡ƒôû Topic Summaries & Key Points</div>
               <div style={{color:"#64748b",fontSize:13}}>Comprehensive theory summaries for quick revision before your exam.</div>
             </div>
             {!summaryTopic ? (
@@ -3124,15 +3124,15 @@ export default function App() {
                     onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(0,212,255,0.1)";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
                     <div style={{fontWeight:700,fontSize:"1.05rem",color:s.color,marginBottom:8}}>{s.title}</div>
                     <div style={{fontSize:12,color:"#64748b",marginBottom:10}}>{s.points.length} key points</div>
-                    <div style={{fontSize:11,color:s.color,opacity:0.7}}>View Summary →</div>
+                    <div style={{fontSize:11,color:s.color,opacity:0.7}}>View Summary ΓåÆ</div>
                   </button>
                 ))}
               </div>
             ):(
               <div>
-                <button onClick={()=>setSummaryTopic(null)} style={{background:"rgba(0,212,255,0.06)",border:"1px solid rgba(0,212,255,0.2)",color:"#00d4ff",padding:"7px 14px",borderRadius:7,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,marginBottom:20}}>← Back to Topics</button>
+                <button onClick={()=>setSummaryTopic(null)} style={{background:"rgba(0,212,255,0.06)",border:"1px solid rgba(0,212,255,0.2)",color:"#00d4ff",padding:"7px 14px",borderRadius:7,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,marginBottom:20}}>ΓåÉ Back to Topics</button>
                 <div style={{background:"#0f1629",border:`1px solid ${SUMMARIES[summaryTopic].color}30`,borderRadius:14,padding:28}}>
-                  <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,color:SUMMARIES[summaryTopic].color,marginBottom:20}}>{SUMMARIES[summaryTopic].title} — Key Points</div>
+                  <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,color:SUMMARIES[summaryTopic].color,marginBottom:20}}>{SUMMARIES[summaryTopic].title} ΓÇö Key Points</div>
                   {SUMMARIES[summaryTopic].points.map((pt,i)=>(
                     <div key={i} style={{display:"flex",gap:12,marginBottom:14,padding:"12px 14px",borderRadius:9,background:"rgba(0,212,255,0.02)",border:"1px solid rgba(0,212,255,0.06)"}}>
                       <span style={{fontFamily:"monospace",fontSize:11,color:SUMMARIES[summaryTopic].color,minWidth:24,paddingTop:2,fontWeight:700}}>{String(i+1).padStart(2,"0")}</span>
@@ -3155,12 +3155,12 @@ export default function App() {
           </>
         )}
 
-        {/* ── TEST TAB ── */}
+        {/* ΓöÇΓöÇ TEST TAB ΓöÇΓöÇ */}
         {tab==="test" && (
           <QuizSection questions={QUIZ_QS}/>
         )}
 
-        {/* ── AI TAB ── */}
+        {/* ΓöÇΓöÇ AI TAB ΓöÇΓöÇ */}
         {tab==="ai" && (
           <AITutor/>
         )}
@@ -3169,9 +3169,9 @@ export default function App() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 //  QUIZ COMPONENT
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function QuizSection({questions}) {
   const [phase, setPhase] = useState("setup");
   const [qs, setQs] = useState([]);
@@ -3219,7 +3219,7 @@ function QuizSection({questions}) {
 
   if(phase==="setup") return (
     <div style={{maxWidth:560,margin:"0 auto"}}>
-      <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:20}}>🎯 C++ OOP Test Series</div>
+      <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:20}}>≡ƒÄ» C++ OOP Test Series</div>
       <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:14,padding:28,marginBottom:20}}>
         <div style={{marginBottom:20}}>
           <label style={{display:"block",fontSize:12,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>Number of Questions</label>
@@ -3232,17 +3232,17 @@ function QuizSection({questions}) {
         <div style={{marginBottom:24}}>
           <label style={{display:"block",fontSize:12,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>Timer (90s per question)</label>
           <div style={{display:"flex",gap:8}}>
-            {[[true,"Timed ⏱"],[false,"Untimed"]].map(([v,l])=>(
+            {[[true,"Timed ΓÅ▒"],[false,"Untimed"]].map(([v,l])=>(
               <button key={l} onClick={()=>setTimed(v)} style={{padding:"8px 18px",borderRadius:8,fontFamily:"inherit",fontSize:13,fontWeight:600,cursor:"pointer",background:timed===v?"rgba(0,212,255,0.12)":"transparent",color:timed===v?"#00d4ff":"#64748b",border:`1px solid ${timed===v?"#00d4ff":"#1e2d4a"}`}}>{l}</button>
             ))}
           </div>
         </div>
-        <button onClick={start} style={{width:"100%",padding:"14px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:"0.95rem",fontWeight:700,letterSpacing:"0.05em"}}>Start Test →</button>
+        <button onClick={start} style={{width:"100%",padding:"14px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:"0.95rem",fontWeight:700,letterSpacing:"0.05em"}}>Start Test ΓåÆ</button>
       </div>
       <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:12,padding:18}}>
         <div style={{fontWeight:700,fontSize:"0.8rem",color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>Topics Covered</div>
         {["OOP Core (RAII, constructors, operators)","Inheritance (virtual, LSP, diamond)","Polymorphism (vtable, CRTP, dispatch)","Templates (SFINAE, variadic, concepts)","STL (containers, algorithms, lambdas)","Exception Handling (safety guarantees)"].map((t,i)=>(
-          <div key={i} style={{fontSize:13,color:"#7da8c4",padding:"4px 0",borderBottom:"1px solid rgba(0,212,255,0.05)"}}>• {t}</div>
+          <div key={i} style={{fontSize:13,color:"#7da8c4",padding:"4px 0",borderBottom:"1px solid rgba(0,212,255,0.05)"}}>ΓÇó {t}</div>
         ))}
       </div>
     </div>
@@ -3254,8 +3254,8 @@ function QuizSection({questions}) {
     return (
       <div style={{maxWidth:680,margin:"0 auto"}}>
         <div style={{background:"#0f1629",border:"1px solid #1e2d4a",borderRadius:14,padding:36,textAlign:"center",marginBottom:20}}>
-          <div style={{fontSize:48,marginBottom:12}}>🎓</div>
-          <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,marginBottom:6}}>{pct>=85?"Outstanding! 🏆":pct>=65?"Great Job! 🎯":"Keep Practicing 📚"}</div>
+          <div style={{fontSize:48,marginBottom:12}}>≡ƒÄô</div>
+          <div style={{fontFamily:"Georgia,serif",fontSize:"1.4rem",fontWeight:700,marginBottom:6}}>{pct>=85?"Outstanding! ≡ƒÅå":pct>=65?"Great Job! ≡ƒÄ»":"Keep Practicing ≡ƒôÜ"}</div>
           <div style={{fontFamily:"monospace",fontSize:"3.5rem",fontWeight:700,color,margin:"16px 0"}}>{pct}%</div>
           <div style={{display:"flex",gap:32,justifyContent:"center",marginBottom:24}}>
             {[[score,"Correct","#10b981"],[qs.length-score,"Wrong","#ef4444"],[qs.length,"Total","#00d4ff"]].map(([v,l,c])=>(
@@ -3270,8 +3270,8 @@ function QuizSection({questions}) {
         <div style={{fontWeight:700,fontSize:"0.85rem",color:"#64748b",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:14}}>Answer Review</div>
         {log.map((item,i)=>(
           <div key={i} style={{background:"#0f1629",border:`1px solid ${item.ok?"rgba(16,185,129,0.2)":"rgba(239,68,68,0.15)"}`,borderRadius:10,padding:"14px 16px",marginBottom:10}}>
-            <div style={{fontSize:13,fontWeight:600,marginBottom:8}}>{item.ok?"✅":"❌"} Q{i+1}: {item.q.q}</div>
-            {!item.ok&&<div style={{fontSize:12,color:"#10b981",marginBottom:4}}>✓ Correct: {item.q.opts[item.q.ans]}</div>}
+            <div style={{fontSize:13,fontWeight:600,marginBottom:8}}>{item.ok?"Γ£à":"Γ¥î"} Q{i+1}: {item.q.q}</div>
+            {!item.ok&&<div style={{fontSize:12,color:"#10b981",marginBottom:4}}>Γ£ô Correct: {item.q.opts[item.q.ans]}</div>}
             <div style={{fontSize:12,color:"#64748b",lineHeight:1.6}}>{item.q.exp}</div>
           </div>
         ))}
@@ -3309,24 +3309,24 @@ function QuizSection({questions}) {
           })}
         </div>
         {answered&&<div style={{marginTop:16,padding:"12px 14px",borderRadius:8,background:sel===q.ans?"rgba(16,185,129,0.06)":"rgba(239,68,68,0.06)",border:`1px solid ${sel===q.ans?"rgba(16,185,129,0.2)":"rgba(239,68,68,0.2)"}`}}>
-          <span style={{fontWeight:700,color:sel===q.ans?"#10b981":"#ef4444"}}>{sel===q.ans?"✅ Correct!":"❌ Wrong"}</span>
+          <span style={{fontWeight:700,color:sel===q.ans?"#10b981":"#ef4444"}}>{sel===q.ans?"Γ£à Correct!":"Γ¥î Wrong"}</span>
           <p style={{fontSize:13,color:"#64748b",marginTop:6,lineHeight:1.6}}>{q.exp}</p>
         </div>}
       </div>
       <div style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10}}>
         <button onClick={()=>setPhase("setup")} style={{padding:"9px 18px",borderRadius:8,background:"transparent",color:"#64748b",border:"1px solid #1e2d4a",cursor:"pointer",fontFamily:"inherit",fontSize:13}}>End</button>
-        {answered&&<button onClick={next} style={{padding:"9px 22px",borderRadius:8,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700}}>{cur+1>=qs.length?"Results →":"Next →"}</button>}
+        {answered&&<button onClick={next} style={{padding:"9px 22px",borderRadius:8,background:"linear-gradient(135deg,#7c3aed,#00d4ff)",color:"#fff",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:700}}>{cur+1>=qs.length?"Results ΓåÆ":"Next ΓåÆ"}</button>}
       </div>
     </div>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  AI TUTOR — powered by Anthropic API
-// ═══════════════════════════════════════════════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+//  AI TUTOR ΓÇö powered by Anthropic API
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function AITutor() {
   const [messages, setMessages] = useState([
-    {role:"assistant",content:"👋 Hi! I'm your C++ OOP AI Tutor. Ask me **anything** about C++ OOP — constructors, templates, STL, virtual functions, CRTP, SFINAE, exception safety, design patterns, code explanations, or anything else!\n\nTry: *\"Explain vtable with example\"* or *\"What is CRTP?\"* or *\"Show me a variadic template\"*"}
+    {role:"assistant",content:"≡ƒæï Hi! I'm your C++ OOP AI Tutor. Ask me **anything** about C++ OOP ΓÇö constructors, templates, STL, virtual functions, CRTP, SFINAE, exception safety, design patterns, code explanations, or anything else!\n\nTry: *\"Explain vtable with example\"* or *\"What is CRTP?\"* or *\"Show me a variadic template\"*"}
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -3378,7 +3378,7 @@ Rules:
       const reply = data.content?.[0]?.text || "Sorry, couldn't get a response.";
       setMessages(m=>[...m,{role:"assistant",content:reply}]);
     } catch(e) {
-      setMessages(m=>[...m,{role:"assistant",content:"⚠️ Connection error. Please try again."}]);
+      setMessages(m=>[...m,{role:"assistant",content:"ΓÜá∩╕Å Connection error. Please try again."}]);
     }
     setLoading(false);
   };
@@ -3405,8 +3405,8 @@ Rules:
   return (
     <div style={{maxWidth:780,margin:"0 auto"}}>
       <div style={{marginBottom:20}}>
-        <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:6}}>🤖 C++ OOP AI Tutor</div>
-        <div style={{fontSize:13,color:"#64748b"}}>Powered by Claude · Ask anything about C++ OOP, templates, STL, patterns</div>
+        <div style={{fontFamily:"Georgia,serif",fontSize:"1.5rem",fontWeight:700,marginBottom:6}}>≡ƒñû C++ OOP AI Tutor</div>
+        <div style={{fontSize:13,color:"#64748b"}}>Powered by Claude ┬╖ Ask anything about C++ OOP, templates, STL, patterns</div>
       </div>
 
       {/* Suggestions */}
@@ -3428,7 +3428,7 @@ Rules:
           {messages.map((m,i)=>(
             <div key={i} style={{marginBottom:18,display:"flex",flexDirection:"column",alignItems:m.role==="user"?"flex-end":"flex-start"}}>
               <div style={{maxWidth:"85%",padding:"12px 16px",borderRadius:m.role==="user"?"12px 12px 2px 12px":"2px 12px 12px 12px",background:m.role==="user"?"linear-gradient(135deg,rgba(124,58,237,0.25),rgba(0,212,255,0.15))":"rgba(15,22,41,0.95)",border:m.role==="user"?"1px solid rgba(124,58,237,0.3)":"1px solid #1e2d4a",fontSize:"0.87rem",lineHeight:1.7,color:"#e2e8f0"}}>
-                {m.role==="assistant"&&<div style={{fontSize:"0.68rem",color:"#00d4ff",fontWeight:700,letterSpacing:"0.1em",marginBottom:6,textTransform:"uppercase"}}>🤖 AI Tutor</div>}
+                {m.role==="assistant"&&<div style={{fontSize:"0.68rem",color:"#00d4ff",fontWeight:700,letterSpacing:"0.1em",marginBottom:6,textTransform:"uppercase"}}>≡ƒñû AI Tutor</div>}
                 {formatMsg(m.content)}
               </div>
             </div>
