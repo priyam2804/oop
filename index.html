@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ OOP Mastery | Advanced Practice Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Sora:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #0f1629;
+    --surface2: #141d35;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e2d4a;
+    --code-bg: #060d1f;
+    --glow: 0 0 20px rgba(0,212,255,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(124,58,237,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 90%, rgba(0,212,255,0.06) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ——— NAV ——— */
+  nav {
+    position:sticky; top:0; z-index:100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    height:60px;
+  }
+  .nav-brand {
+    display:flex; align-items:center; gap:10px;
+    font-family:'Playfair Display',serif;
+    font-size:1.2rem; font-weight:700;
+    color: var(--accent);
+  }
+  .nav-brand span { color: var(--text); }
+  .nav-tabs {
+    display:flex; gap:4px;
+    list-style:none;
+  }
+  .nav-tabs li button {
+    background:none; border:none; color: var(--muted);
+    font-family:'Sora',sans-serif; font-size:0.78rem; font-weight:600;
+    padding:6px 14px; border-radius:6px; cursor:pointer;
+    transition: all 0.2s; letter-spacing:0.05em; text-transform:uppercase;
+  }
+  .nav-tabs li button:hover, .nav-tabs li button.active {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+  }
+  .nav-tabs li button.active { border-bottom:2px solid var(--accent); border-radius:6px 6px 0 0; }
+
+  /* ——— PAGES ——— */
+  .page { display:none; animation: fadeIn 0.4s ease; }
+  .page.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ——— HERO ——— */
+  .hero {
+    position:relative; z-index:1;
+    padding: 80px 2rem 60px;
+    max-width:1200px; margin:0 auto;
+    text-align:center;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.25);
+    color: var(--accent); font-size:0.72rem; font-weight:700;
+    padding:5px 14px; border-radius:20px; letter-spacing:0.1em;
+    text-transform:uppercase; margin-bottom:24px;
+  }
+  .hero h1 {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2.2rem,5vw,3.8rem); font-weight:900;
+    line-height:1.1; margin-bottom:20px;
+    background: linear-gradient(135deg, #e2e8f0 30%, var(--accent));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero p {
+    color: var(--muted); font-size:1rem; max-width:600px; margin:0 auto 40px;
+    line-height:1.7;
+  }
+  .stats-row {
+    display:flex; justify-content:center; gap:40px; flex-wrap:wrap;
+    margin-bottom:50px;
+  }
+  .stat { text-align:center; }
+  .stat-num { font-family:'JetBrains Mono',monospace; font-size:1.8rem; font-weight:700; color:var(--accent); }
+  .stat-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-top:2px; }
+
+  /* ——— TOPIC GRID ——— */
+  .section { max-width:1200px; margin:0 auto; padding:0 2rem 60px; position:relative; z-index:1; }
+  .section-header {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:32px;
+  }
+  .section-header h2 {
+    font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700;
+  }
+  .section-header .line { flex:1; height:1px; background: linear-gradient(to right, var(--border), transparent); }
+
+  .topic-filter {
+    display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px;
+  }
+  .filter-btn {
+    background: var(--surface); border:1px solid var(--border);
+    color: var(--muted); font-family:'Sora',sans-serif; font-size:0.72rem;
+    font-weight:600; padding:6px 14px; border-radius:20px; cursor:pointer;
+    transition:all 0.2s; text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(0,212,255,0.12); border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .questions-list { display:flex; flex-direction:column; gap:16px; }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:12px; overflow:hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .q-card:hover { border-color: rgba(0,212,255,0.3); box-shadow: var(--glow); }
+
+  .q-header {
+    display:flex; align-items:flex-start; gap:14px;
+    padding:18px 22px; cursor:pointer;
+  }
+  .q-num {
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem;
+    color: var(--muted); min-width:28px; padding-top:2px;
+  }
+  .q-content { flex:1; }
+  .q-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .tag {
+    font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:4px;
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .tag-oop { background:rgba(124,58,237,0.2); color:#a78bfa; border:1px solid rgba(124,58,237,0.3); }
+  .tag-inherit { background:rgba(0,212,255,0.12); color:var(--accent); border:1px solid rgba(0,212,255,0.25); }
+  .tag-poly { background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.25); }
+  .tag-template { background:rgba(16,185,129,0.12); color:#34d399; border:1px solid rgba(16,185,129,0.25); }
+  .tag-stl { background:rgba(239,68,68,0.12); color:#f87171; border:1px solid rgba(239,68,68,0.25); }
+  .tag-exception { background:rgba(251,191,36,0.12); color:#fcd34d; border:1px solid rgba(251,191,36,0.25); }
+  .tag-file { background:rgba(99,102,241,0.15); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); }
+  .tag-output { background:rgba(16,185,129,0.1); color:#6ee7b7; border:1px solid rgba(16,185,129,0.2); }
+  .tag-theory { background:rgba(236,72,153,0.12); color:#f9a8d4; border:1px solid rgba(236,72,153,0.25); }
+  .diff-med { background:rgba(245,158,11,0.12); color:#fbbf24; border:1px solid rgba(245,158,11,0.2); }
+  .diff-hard { background:rgba(239,68,68,0.12); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+
+  .q-title { font-size:0.92rem; font-weight:600; line-height:1.5; color:var(--text); }
+  .q-toggle { font-size:1.1rem; color:var(--muted); transition:transform 0.3s; flex-shrink:0; margin-top:2px; }
+  .q-card.open .q-toggle { transform:rotate(180deg); }
+
+  .q-body {
+    display:none; padding:0 22px 20px 64px;
+    border-top:1px solid var(--border);
+    padding-top:18px;
+  }
+  .q-card.open .q-body { display:block; animation: fadeIn 0.3s ease; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius:8px; padding:16px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem; line-height:1.6;
+    overflow-x:auto; margin:12px 0;
+    position:relative;
+  }
+  .kw { color:#7c3aed; }
+  .kw2 { color:#00d4ff; }
+  .str { color:#f59e0b; }
+  .cmt { color:#4a5568; font-style:italic; }
+  .num { color:#10b981; }
+  .type { color:#a78bfa; }
+  .fn { color:#60a5fa; }
+
+  .answer-box {
+    background: rgba(16,185,129,0.06);
+    border:1px solid rgba(16,185,129,0.2);
+    border-radius:8px; padding:14px 16px; margin-top:14px;
+  }
+  .answer-box h4 {
+    color: var(--green); font-size:0.75rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .answer-box p, .answer-box li {
+    font-size:0.85rem; color:#94a3b8; line-height:1.7;
+  }
+  .answer-box ul { padding-left:18px; }
+  .output-box {
+    background: var(--code-bg); border:1px solid rgba(0,212,255,0.2);
+    border-radius:8px; padding:12px 16px; margin-top:10px;
+    font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--accent);
+  }
+  .output-label {
+    font-size:0.68rem; color:var(--muted); text-transform:uppercase;
+    letter-spacing:0.1em; margin-bottom:6px; font-weight:700;
+  }
+
+  /* ——— TEST PAGE ——— */
+  .test-hero {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,212,255,0.08));
+    border-bottom:1px solid var(--border);
+    padding:50px 2rem;
+    text-align:center; position:relative; z-index:1;
+  }
+  .test-hero h1 { font-family:'Playfair Display',serif; font-size:2.2rem; margin-bottom:10px; }
+  .test-hero p { color:var(--muted); font-size:0.9rem; }
+
+  .test-config { max-width:800px; margin:40px auto; padding:0 2rem; position:relative; z-index:1; }
+  .config-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:28px; }
+  .config-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:18px;
+  }
+  .config-card label {
+    display:block; font-size:0.72rem; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; font-weight:700;
+  }
+  .config-card select, .config-card input[type=number] {
+    width:100%; background:var(--code-bg); border:1px solid var(--border);
+    color:var(--text); font-family:'Sora',sans-serif; font-size:0.85rem;
+    padding:8px 10px; border-radius:6px; outline:none;
+    transition:border-color 0.2s;
+  }
+  .config-card select:focus, .config-card input:focus { border-color:var(--accent); }
+
+  .topic-checkboxes { display:flex; flex-wrap:wrap; gap:8px; }
+  .topic-check {
+    display:flex; align-items:center; gap:6px;
+    background:var(--surface2); border:1px solid var(--border);
+    padding:6px 12px; border-radius:6px; cursor:pointer;
+    transition:all 0.2s; font-size:0.78rem;
+  }
+  .topic-check input { accent-color: var(--accent); }
+  .topic-check:has(input:checked) {
+    background:rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.35);
+    color:var(--accent);
+  }
+
+  .btn-start {
+    display:block; width:100%; max-width:320px; margin:0 auto;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color:#fff; border:none; font-family:'Sora',sans-serif;
+    font-size:0.95rem; font-weight:700; padding:14px 28px;
+    border-radius:8px; cursor:pointer; letter-spacing:0.05em;
+    transition:opacity 0.2s, transform 0.15s;
+  }
+  .btn-start:hover { opacity:0.9; transform:translateY(-1px); }
+
+  /* Test in progress */
+  #test-arena { display:none; max-width:900px; margin:0 auto; padding:0 2rem 60px; position:relative; z-index:1; }
+  .test-top-bar {
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:14px 20px; margin:24px 0 28px;
+    flex-wrap:wrap; gap:12px;
+  }
+  .timer { font-family:'JetBrains Mono',monospace; font-size:1.1rem; color:var(--accent3); font-weight:700; }
+  .progress-info { font-size:0.82rem; color:var(--muted); }
+  .progress-bar { height:4px; background:var(--border); border-radius:2px; margin-bottom:28px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(to right,var(--accent2),var(--accent)); border-radius:2px; transition:width 0.4s; }
+
+  .test-q-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:28px; margin-bottom:20px;
+    animation: fadeIn 0.3s ease;
+  }
+  .test-q-num { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--muted); margin-bottom:10px; }
+  .test-q-text { font-size:0.95rem; font-weight:600; line-height:1.6; margin-bottom:6px; }
+  .test-q-meta { display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+
+  .options { display:flex; flex-direction:column; gap:10px; }
+  .option {
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; padding:12px 16px; cursor:pointer;
+    transition:all 0.18s; font-size:0.87rem; line-height:1.5;
+  }
+  .option:hover { border-color:rgba(0,212,255,0.3); background:rgba(0,212,255,0.05); }
+  .option.selected { border-color:var(--accent); background:rgba(0,212,255,0.1); }
+  .option.correct { border-color:var(--green)!important; background:rgba(16,185,129,0.1)!important; }
+  .option.wrong { border-color:var(--red)!important; background:rgba(239,68,68,0.08)!important; }
+  .opt-letter {
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:700;
+    color:var(--accent); min-width:20px; padding-top:1px;
+  }
+  .opt-text { flex:1; }
+  .opt-text pre { margin:0; padding:8px 10px; font-size:0.75rem; }
+
+  .test-nav { display:flex; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; gap:12px; }
+  .btn-nav {
+    background:var(--surface2); border:1px solid var(--border);
+    color:var(--text); font-family:'Sora',sans-serif; font-size:0.82rem;
+    font-weight:600; padding:10px 20px; border-radius:6px; cursor:pointer;
+    transition:all 0.18s;
+  }
+  .btn-nav:hover { border-color:var(--accent); color:var(--accent); }
+  .btn-submit {
+    background: linear-gradient(135deg,#ef4444,#dc2626);
+    border:none; color:#fff; font-family:'Sora',sans-serif;
+    font-size:0.82rem; font-weight:700; padding:10px 24px;
+    border-radius:6px; cursor:pointer; transition:opacity 0.18s;
+  }
+  .btn-submit:hover { opacity:0.88; }
+
+  /* Results */
+  #results-panel { display:none; max-width:800px; margin:0 auto; padding:30px 2rem 60px; position:relative; z-index:1; }
+  .score-circle {
+    width:180px; height:180px; border-radius:50%;
+    border:6px solid var(--border); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; margin:0 auto 36px;
+    position:relative; overflow:hidden;
+    background: conic-gradient(var(--accent) var(--pct,0%), var(--surface) 0%);
+    transition: --pct 1s;
+  }
+  .score-inner {
+    width:148px; height:148px; border-radius:50%;
+    background:var(--bg); display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    position:absolute;
+  }
+  .score-pct { font-family:'JetBrains Mono',monospace; font-size:2.2rem; font-weight:700; color:var(--text); }
+  .score-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .result-stats { display:flex; justify-content:center; gap:32px; flex-wrap:wrap; margin-bottom:36px; }
+  .r-stat { text-align:center; }
+  .r-stat-num { font-family:'JetBrains Mono',monospace; font-size:1.5rem; font-weight:700; }
+  .r-stat-num.green { color:var(--green); }
+  .r-stat-num.red { color:var(--red); }
+  .r-stat-num.yellow { color:var(--accent3); }
+  .r-stat-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+
+  .review-list { display:flex; flex-direction:column; gap:14px; }
+  .review-item {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:18px;
+  }
+  .review-item.correct-item { border-color:rgba(16,185,129,0.25); }
+  .review-item.wrong-item { border-color:rgba(239,68,68,0.2); }
+  .review-q { font-size:0.88rem; font-weight:600; margin-bottom:10px; line-height:1.5; }
+  .review-ans { font-size:0.82rem; display:flex; flex-direction:column; gap:4px; }
+  .review-ans span { padding:4px 10px; border-radius:4px; }
+  .your-ans-right { background:rgba(16,185,129,0.1); color:#34d399; }
+  .your-ans-wrong { background:rgba(239,68,68,0.1); color:#f87171; }
+  .correct-ans { background:rgba(16,185,129,0.08); color:#6ee7b7; font-size:0.78rem; }
+  .explanation { font-size:0.8rem; color:var(--muted); margin-top:8px; line-height:1.6; padding-left:4px; border-left:2px solid var(--border); padding-left:10px; }
+
+  .btn-retry {
+    display:block; width:100%; max-width:260px; margin:32px auto 0;
+    background:var(--surface); border:1px solid var(--border);
+    color:var(--text); font-family:'Sora',sans-serif; font-size:0.85rem;
+    font-weight:700; padding:12px; border-radius:8px; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .btn-retry:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* Scroll */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+  /* Responsive */
+  @media(max-width:640px) {
+    nav { padding:0 1rem; }
+    .nav-tabs li button { font-size:0.68rem; padding:5px 8px; }
+    .hero { padding:50px 1rem 40px; }
+    .section, .test-config, #test-arena, #results-panel { padding-left:1rem; padding-right:1rem; }
+    .stats-row { gap:24px; }
+    .q-body { padding-left:22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">C++<span>&nbsp;OOP Mastery</span></div>
+  <ul class="nav-tabs">
+    <li><button class="active" onclick="showPage('practice')">📚 Practice</button></li>
+    <li><button onclick="showPage('test')">🎯 Test Series</button></li>
+  </ul>
+</nav>
+
+<!-- ══════════ PRACTICE PAGE ══════════ -->
+<div id="page-practice" class="page active">
+
+  <div class="hero">
+    <div class="hero-badge">⚡ Intermediate to Advanced</div>
+    <h1>C++ OOP Practice Hub</h1>
+    <p>Sharpen your C++ skills with carefully crafted output-based and theoretical questions. No beginner fluff — every question makes you think.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">80+</div><div class="stat-label">Questions</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">Topics</div></div>
+      <div class="stat"><div class="stat-num">2</div><div class="stat-label">Difficulty Levels</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2>All Questions</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="topic-filter">
+      <button class="filter-btn active" onclick="filterQ('all',this)">All</button>
+      <button class="filter-btn" onclick="filterQ('oop',this)">OOP Core</button>
+      <button class="filter-btn" onclick="filterQ('inherit',this)">Inheritance</button>
+      <button class="filter-btn" onclick="filterQ('poly',this)">Polymorphism</button>
+      <button class="filter-btn" onclick="filterQ('template',this)">Templates</button>
+      <button class="filter-btn" onclick="filterQ('stl',this)">STL</button>
+      <button class="filter-btn" onclick="filterQ('exception',this)">Exception</button>
+      <button class="filter-btn" onclick="filterQ('file',this)">File Handling</button>
+    </div>
+
+    <div class="questions-list" id="questions-list"></div>
+  </div>
+</div>
+
+<!-- ══════════ TEST PAGE ══════════ -->
+<div id="page-test" class="page">
+
+  <div class="test-hero">
+    <h1>🎯 Test Series</h1>
+    <p>Auto-graded quizzes covering OOP, Templates, STL, File Handling & Exception Handling</p>
+  </div>
+
+  <div id="test-setup" class="test-config">
+    <div style="text-align:center;margin-bottom:32px;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:8px;">Configure Your Test</h2>
+      <p style="color:var(--muted);font-size:0.85rem;">Select topics, difficulty, and number of questions</p>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;">
+      <label style="display:block;font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;font-weight:700;">Select Topics</label>
+      <div class="topic-checkboxes" id="topic-checks">
+        <label class="topic-check"><input type="checkbox" value="oop" checked> OOP Core</label>
+        <label class="topic-check"><input type="checkbox" value="inherit" checked> Inheritance</label>
+        <label class="topic-check"><input type="checkbox" value="poly" checked> Polymorphism</label>
+        <label class="topic-check"><input type="checkbox" value="template" checked> Templates</label>
+        <label class="topic-check"><input type="checkbox" value="stl" checked> STL</label>
+        <label class="topic-check"><input type="checkbox" value="exception" checked> Exception Handling</label>
+        <label class="topic-check"><input type="checkbox" value="file" checked> File Handling</label>
+      </div>
+    </div>
+
+    <div class="config-grid">
+      <div class="config-card">
+        <label>Number of Questions</label>
+        <input type="number" id="num-q" value="15" min="5" max="40">
+      </div>
+      <div class="config-card">
+        <label>Difficulty</label>
+        <select id="diff-select">
+          <option value="all">All Levels</option>
+          <option value="medium">Medium Only</option>
+          <option value="hard">Hard Only</option>
+        </select>
+      </div>
+      <div class="config-card">
+        <label>Time per Question</label>
+        <select id="time-select">
+          <option value="60">60 seconds</option>
+          <option value="90" selected>90 seconds</option>
+          <option value="120">120 seconds</option>
+          <option value="0">No Limit</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startTest()">🚀 Start Test</button>
+  </div>
+
+  <div id="test-arena">
+    <div class="test-top-bar">
+      <div>
+        <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Question</div>
+        <div class="progress-info"><span id="q-counter">1 / 15</span></div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;text-align:center;">Time Left</div>
+        <div class="timer" id="timer-display">1:30</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Score</div>
+        <div style="font-family:'JetBrains Mono',monospace;color:var(--green);" id="live-score">0</div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div id="test-q-area"></div>
+    <div class="test-nav">
+      <button class="btn-nav" onclick="prevQ()">← Previous</button>
+      <button class="btn-nav" onclick="nextQ()">Next →</button>
+      <button class="btn-submit" onclick="confirmSubmit()">Submit Test</button>
+    </div>
+  </div>
+
+  <div id="results-panel">
+    <div style="text-align:center;margin-bottom:32px;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:6px;">Test Results</h2>
+      <p id="grade-msg" style="color:var(--muted);font-size:0.9rem;"></p>
+    </div>
+    <div class="score-circle" id="score-circle">
+      <div class="score-inner">
+        <div class="score-pct" id="score-pct">0%</div>
+        <div class="score-label">Score</div>
+      </div>
+    </div>
+    <div class="result-stats">
+      <div class="r-stat"><div class="r-stat-num green" id="res-correct">0</div><div class="r-stat-label">Correct</div></div>
+      <div class="r-stat"><div class="r-stat-num red" id="res-wrong">0</div><div class="r-stat-label">Wrong</div></div>
+      <div class="r-stat"><div class="r-stat-num yellow" id="res-skipped">0</div><div class="r-stat-label">Skipped</div></div>
+      <div class="r-stat"><div class="r-stat-num" id="res-time" style="color:var(--accent)">0s</div><div class="r-stat-label">Time Taken</div></div>
+    </div>
+    <div class="section-header" style="max-width:800px;margin:0 auto 20px;padding:0;">
+      <h2 style="font-size:1.1rem;">Review Answers</h2>
+      <div class="line"></div>
+    </div>
+    <div class="review-list" id="review-list"></div>
+    <button class="btn-retry" onclick="retryTest()">🔄 Take Another Test</button>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  QUESTION BANK
+// ════════════════════════════════════════
+const QUESTIONS = [
+
+// ─── OOP CORE ─────────────────────────
+{
+  topic:'oop', type:'output', diff:'medium',
+  q:'What is the output of the following code?',
+  code:`#include &lt;iostream&gt;
+<span class="kw">using namespace</span> <span class="type">std</span>;
+<span class="kw">class</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="type">Base</span>() { cout &lt;&lt; <span class="str">"B"</span>; }
+    ~<span class="type">Base</span>() { cout &lt;&lt; <span class="str">"~B"</span>; }
+};
+<span class="kw">class</span> <span class="type">Derived</span> : <span class="kw">public</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="type">Derived</span>() { cout &lt;&lt; <span class="str">"D"</span>; }
+    ~<span class="type">Derived</span>() { cout &lt;&lt; <span class="str">"~D"</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Derived</span> d;
+    <span class="kw">return</span> <span class="num">0</span>;
+}`,
+  output:'BD~D~B',
+  explanation:'Constructor order: Base → Derived. Destructor order is reversed: ~Derived → ~Base.',
+  options:['BD~B~D','DB~B~D','BD~D~B','BD~D'],
+  answer:2
+},
+{
+  topic:'oop', type:'theory', diff:'medium',
+  q:'What is the difference between shallow copy and deep copy? When does the default copy constructor cause problems?',
+  answer_text:`A <strong>shallow copy</strong> copies the pointer value (address) but not the pointed-to data. A <strong>deep copy</strong> allocates new memory and copies the actual data.\n\nProblems occur when a class holds a raw pointer:\n• Double-free: both copies point to same heap memory; deleting one leaves the other with a dangling pointer.\n• Unintended mutations: modifying data through one object affects the other.\n\nRule of Three: if you define a destructor, you should also define copy constructor and copy assignment operator.`,
+  options:[
+    'Shallow copy duplicates all data recursively; deep copy only copies addresses',
+    'Shallow copy copies pointer values (not heap data), causing double-free and aliasing bugs when the class owns heap memory',
+    'Both are identical for primitive types; deep copy is only needed for virtual classes',
+    'Shallow copy is always sufficient; deep copy wastes memory'
+  ],
+  answer:1
+},
+{
+  topic:'oop', type:'output', diff:'hard',
+  q:'What does this program print?',
+  code:`<span class="kw">class</span> <span class="type">A</span> {
+<span class="kw">public</span>:
+    <span class="kw">int</span> x;
+    <span class="type">A</span>(<span class="kw">int</span> v) : x(v) { cout &lt;&lt; <span class="str">"A"</span> &lt;&lt; v; }
+};
+<span class="kw">class</span> <span class="type">B</span> {
+<span class="kw">public</span>:
+    <span class="type">A</span> a1, a2;
+    <span class="type">B</span>() : a2(<span class="num">2</span>), a1(<span class="num">1</span>) {}
+};
+<span class="kw">int</span> <span class="fn">main</span>() { <span class="type">B</span> b; }`,
+  output:'A1A2',
+  explanation:'Members are initialized in declaration order (a1 then a2), regardless of the order in the initializer list. So A1 is constructed first, then A2.',
+  options:['A2A1','A1A2','A1','Undefined behavior'],
+  answer:1
+},
+{
+  topic:'oop', type:'output', diff:'medium',
+  q:'What is the output?',
+  code:`<span class="kw">class</span> <span class="type">Counter</span> {
+    <span class="kw">static int</span> count;
+<span class="kw">public</span>:
+    <span class="type">Counter</span>() { count++; }
+    ~<span class="type">Counter</span>() { count--; }
+    <span class="kw">static int</span> <span class="fn">getCount</span>() { <span class="kw">return</span> count; }
+};
+<span class="kw">int</span> <span class="type">Counter</span>::count = <span class="num">0</span>;
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Counter</span> a, b;
+    {
+        <span class="type">Counter</span> c;
+        cout &lt;&lt; <span class="type">Counter</span>::<span class="fn">getCount</span>() &lt;&lt; <span class="str">" "</span>;
+    }
+    cout &lt;&lt; <span class="type">Counter</span>::<span class="fn">getCount</span>();
+}`,
+  output:'3 2',
+  explanation:'Inside inner block: a, b, c exist → count=3. After block, c destroyed → count=2.',
+  options:['2 3','3 2','3 3','2 2'],
+  answer:1
+},
+{
+  topic:'oop', type:'theory', diff:'hard',
+  q:'Explain the "Diamond Problem" in C++ and how virtual inheritance resolves it.',
+  answer_text:'The Diamond Problem occurs in multiple inheritance when two parent classes inherit from the same grandparent, causing ambiguity and duplicate copies of the grandparent\'s data members.\n\nExample: D inherits from B and C, both of which inherit from A. Without virtual inheritance, D contains two copies of A\'s members.\n\nSolution: declare the base class as virtual in the intermediate classes:\n  class B : virtual public A {};\n  class C : virtual public A {};\n\nVirtual inheritance ensures only ONE shared copy of A exists in D. The most-derived class (D) is responsible for constructing the virtual base.',
+  options:[
+    'Diamond problem is a compile error fixed by renaming conflicting methods',
+    'It occurs with multiple inheritance from a common base; virtual inheritance ensures a single shared copy of the base, with the most-derived class constructing it',
+    'It is avoided by using abstract classes only',
+    'Virtual inheritance creates multiple vtables to resolve ambiguity'
+  ],
+  answer:1
+},
+
+// ─── INHERITANCE ────────────────────────
+{
+  topic:'inherit', type:'output', diff:'medium',
+  q:'What is the output?',
+  code:`<span class="kw">class</span> <span class="type">Animal</span> {
+<span class="kw">public</span>:
+    <span class="type">Animal</span>() { cout &lt;&lt; <span class="str">"Animal "</span>; }
+    <span class="kw">virtual</span> ~<span class="type">Animal</span>() { cout &lt;&lt; <span class="str">"~Animal "</span>; }
+};
+<span class="kw">class</span> <span class="type">Dog</span> : <span class="kw">public</span> <span class="type">Animal</span> {
+<span class="kw">public</span>:
+    <span class="type">Dog</span>() { cout &lt;&lt; <span class="str">"Dog "</span>; }
+    ~<span class="type">Dog</span>() { cout &lt;&lt; <span class="str">"~Dog "</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Animal</span>* p = <span class="kw">new</span> <span class="type">Dog</span>();
+    <span class="kw">delete</span> p;
+}`,
+  output:'Animal Dog ~Dog ~Animal ',
+  explanation:'Virtual destructor ensures ~Dog() is called first, then ~Animal(). Without virtual destructor, only ~Animal() would be called — undefined behavior.',
+  options:['Animal Dog ~Animal ','Animal Dog ~Dog ~Animal ','Dog Animal ~Animal ~Dog ','Animal Dog ~Dog '],
+  answer:1
+},
+{
+  topic:'inherit', type:'output', diff:'hard',
+  q:'What does this print? (Note: no virtual keyword)',
+  code:`<span class="kw">class</span> <span class="type">Shape</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">draw</span>() { cout &lt;&lt; <span class="str">"Shape"</span>; }
+};
+<span class="kw">class</span> <span class="type">Circle</span> : <span class="kw">public</span> <span class="type">Shape</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">draw</span>() { cout &lt;&lt; <span class="str">"Circle"</span>; }
+};
+<span class="kw">void</span> <span class="fn">render</span>(<span class="type">Shape</span> s) { s.<span class="fn">draw</span>(); }
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Circle</span> c;
+    <span class="fn">render</span>(c);
+}`,
+  output:'Shape',
+  explanation:'Object slicing: Circle is passed by value as Shape, losing the Circle part. Since draw() is not virtual and the parameter is Shape (not pointer/reference), Shape::draw() is called.',
+  options:['Circle','Shape','ShapeCircle','Compile error'],
+  answer:1
+},
+{
+  topic:'inherit', type:'theory', diff:'medium',
+  q:'What is the difference between public, protected, and private inheritance in C++?',
+  answer_text:'Access specifier in inheritance changes the maximum access level of inherited members:\n\n• public inheritance (is-a): public→public, protected→protected. Maintains the original interface. Liskov Substitution applies.\n• protected inheritance: public→protected, protected→protected. Used when derived class uses base\'s implementation but doesn\'t expose it.\n• private inheritance (has-a via inheritance): public→private, protected→private. All inherited members become private. Derived class cannot further share base\'s interface.',
+  options:[
+    'They control whether the derived class constructor can call the base constructor',
+    'They determine the maximum visibility of inherited members: public keeps original access, protected caps at protected, private caps everything at private',
+    'They only affect whether virtual functions can be overridden',
+    'There is no practical difference; all three allow access to public base members'
+  ],
+  answer:1
+},
+{
+  topic:'inherit', type:'output', diff:'hard',
+  q:'What is printed?',
+  code:`<span class="kw">class</span> <span class="type">X</span> { <span class="kw">public</span>: <span class="type">X</span>() { cout &lt;&lt; <span class="str">"X"</span>; } };
+<span class="kw">class</span> <span class="type">Y</span> : <span class="kw">virtual public</span> <span class="type">X</span> { <span class="kw">public</span>: <span class="type">Y</span>() { cout &lt;&lt; <span class="str">"Y"</span>; } };
+<span class="kw">class</span> <span class="type">Z</span> : <span class="kw">virtual public</span> <span class="type">X</span> { <span class="kw">public</span>: <span class="type">Z</span>() { cout &lt;&lt; <span class="str">"Z"</span>; } };
+<span class="kw">class</span> <span class="type">W</span> : <span class="kw">public</span> <span class="type">Y</span>, <span class="kw">public</span> <span class="type">Z</span> {
+<span class="kw">public</span>: <span class="type">W</span>() { cout &lt;&lt; <span class="str">"W"</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() { <span class="type">W</span> w; }`,
+  output:'XYZW',
+  explanation:'With virtual inheritance, X is constructed once. Construction order: virtual base X first, then Y, then Z, then W.',
+  options:['XYZW','XZYW','YXZW','XYWZ'],
+  answer:0
+},
+
+// ─── POLYMORPHISM ───────────────────────
+{
+  topic:'poly', type:'output', diff:'medium',
+  q:'What is the output?',
+  code:`<span class="kw">class</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual void</span> <span class="fn">show</span>() { cout &lt;&lt; <span class="str">"Base"</span>; }
+    <span class="kw">void</span> <span class="fn">print</span>() { <span class="fn">show</span>(); }  <span class="cmt">// calls virtual</span>
+};
+<span class="kw">class</span> <span class="type">Derived</span> : <span class="kw">public</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">show</span>() <span class="kw">override</span> { cout &lt;&lt; <span class="str">"Derived"</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Derived</span> d;
+    d.<span class="fn">print</span>();
+}`,
+  output:'Derived',
+  explanation:'print() calls show() which is virtual. Even though print() is defined in Base, this pointer is of type Derived at runtime, so Derived::show() is dispatched.',
+  options:['Base','Derived','BaseDerived','Compile error'],
+  answer:1
+},
+{
+  topic:'poly', type:'output', diff:'hard',
+  q:'What does this print?',
+  code:`<span class="kw">struct</span> <span class="type">Base</span> {
+    <span class="kw">virtual void</span> <span class="fn">f</span>() { cout &lt;&lt; <span class="str">"B"</span>; }
+    <span class="kw">void</span> <span class="fn">g</span>() { <span class="fn">f</span>(); }
+};
+<span class="kw">struct</span> <span class="type">D1</span> : <span class="type">Base</span> {
+    <span class="kw">void</span> <span class="fn">f</span>() <span class="kw">override</span> { cout &lt;&lt; <span class="str">"D1"</span>; }
+};
+<span class="kw">struct</span> <span class="type">D2</span> : <span class="type">D1</span> {
+    <span class="kw">void</span> <span class="fn">f</span>() <span class="kw">override</span> { cout &lt;&lt; <span class="str">"D2"</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Base</span>* p = <span class="kw">new</span> <span class="type">D2</span>;
+    p-&gt;<span class="fn">g</span>();
+}`,
+  output:'D2',
+  explanation:'g() calls f() virtually. p points to D2, so the vtable resolves to D2::f(). Runtime polymorphism goes to the most-derived override.',
+  options:['B','D1','D2','BD2'],
+  answer:2
+},
+{
+  topic:'poly', type:'theory', diff:'medium',
+  q:'What is the difference between function overloading and function overriding? Can both be used with virtual functions?',
+  answer_text:'Overloading: same function name, different parameter signatures, resolved at compile time (static dispatch). Applies within the same class or scope.\n\nOverriding: derived class redefines a virtual function with the EXACT same signature. Resolved at runtime (dynamic dispatch) via vtable.\n\nA virtual function CAN be overloaded in a base class (multiple signatures). If a derived class overrides only one signature, the others are hidden (not accessible through derived pointer unless using "using Base::f;"). This is called name hiding.',
+  options:[
+    'Overloading is runtime, overriding is compile-time',
+    'Overloading is compile-time dispatch on different signatures in the same scope; overriding is runtime dispatch of same-signature virtual functions in derived classes',
+    'They are the same thing with different syntax',
+    'Overriding requires the same return type; overloading does not, but neither works with virtual functions'
+  ],
+  answer:1
+},
+{
+  topic:'poly', type:'output', diff:'hard',
+  q:'What is the output? (pure virtual class instantiation attempt)',
+  code:`<span class="kw">class</span> <span class="type">Abstract</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual void</span> <span class="fn">work</span>() = <span class="num">0</span>;
+    <span class="kw">void</span> <span class="fn">run</span>() { cout &lt;&lt; <span class="str">"run-"</span>; <span class="fn">work</span>(); }
+};
+<span class="kw">class</span> <span class="type">Concrete</span> : <span class="kw">public</span> <span class="type">Abstract</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">work</span>() <span class="kw">override</span> { cout &lt;&lt; <span class="str">"work"</span>; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Abstract</span>* p = <span class="kw">new</span> <span class="type">Concrete</span>;
+    p-&gt;<span class="fn">run</span>();
+}`,
+  output:'run-work',
+  explanation:'Abstract classes can hold pointers to concrete objects. run() calls work() virtually, dispatching to Concrete::work(). Abstract base methods (non-pure) can call pure virtual methods via polymorphism.',
+  options:['Compile error: cannot use Abstract*','run-','work','run-work'],
+  answer:3
+},
+{
+  topic:'poly', type:'output', diff:'medium',
+  q:'What is printed by this covariant return type example?',
+  code:`<span class="kw">class</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="type">Base</span>* <span class="fn">clone</span>() {
+        cout &lt;&lt; <span class="str">"BaseClone"</span>;
+        <span class="kw">return new</span> <span class="type">Base</span>();
+    }
+};
+<span class="kw">class</span> <span class="type">Child</span> : <span class="kw">public</span> <span class="type">Base</span> {
+<span class="kw">public</span>:
+    <span class="type">Child</span>* <span class="fn">clone</span>() <span class="kw">override</span> {
+        cout &lt;&lt; <span class="str">"ChildClone"</span>;
+        <span class="kw">return new</span> <span class="type">Child</span>();
+    }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Base</span>* p = <span class="kw">new</span> <span class="type">Child</span>;
+    <span class="type">Base</span>* c = p-&gt;<span class="fn">clone</span>();
+}`,
+  output:'ChildClone',
+  explanation:'Covariant return types allow Child* to override a function returning Base*. The override is valid. Calling clone() on Base* pointing to Child dispatches to Child::clone().',
+  options:['BaseClone','ChildClone','BaseCloneChildClone','Compile error'],
+  answer:1
+},
+
+// ─── TEMPLATES ──────────────────────────
+{
+  topic:'template', type:'output', diff:'medium',
+  q:'What is the output?',
+  code:`<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+T <span class="fn">maxVal</span>(T a, T b) { <span class="kw">return</span> (a &gt; b) ? a : b; }
+
+<span class="kw">template</span>&lt;&gt;
+<span class="kw">const char</span>* <span class="fn">maxVal</span>(<span class="kw">const char</span>* a, <span class="kw">const char</span>* b) {
+    <span class="kw">return</span> (<span class="fn">strcmp</span>(a, b) &gt; <span class="num">0</span>) ? a : b;
+}
+<span class="kw">int</span> <span class="fn">main</span>() {
+    cout &lt;&lt; <span class="fn">maxVal</span>(<span class="num">3</span>, <span class="num">5</span>) &lt;&lt; <span class="str">" "</span>;
+    cout &lt;&lt; <span class="fn">maxVal</span>(<span class="str">"apple"</span>, <span class="str">"banana"</span>);
+}`,
+  output:'5 banana',
+  explanation:'maxVal(3,5) uses generic template → 5. maxVal("apple","banana") uses explicit specialization with strcmp → "banana" (b > a lexicographically).',
+  options:['5 apple','5 banana','3 banana','Compile error'],
+  answer:1
+},
+{
+  topic:'template', type:'theory', diff:'hard',
+  q:'What is SFINAE in C++ templates? Give a brief example of its use.',
+  answer_text:'SFINAE = "Substitution Failure Is Not An Error". When the compiler substitutes template arguments and encounters an invalid expression, it silently discards that overload instead of issuing a compile error.\n\nUse case: enable/disable function templates based on type traits.\n\nExample:\n  template<typename T,\n    typename = enable_if_t<is_integral_v<T>>>\n  void process(T val) { /* only for integral types */ }\n\nIf T is float, substitution fails silently and another overload (or error if none) is used. This enables compile-time dispatch without runtime overhead.',
+  options:[
+    'SFINAE means template errors are always ignored silently',
+    'Substitution Failure Is Not An Error — invalid template substitutions are silently dropped, enabling compile-time type-based overload selection via enable_if and type traits',
+    'SFINAE is a runtime mechanism for resolving template ambiguity',
+    'SFINAE only applies to class templates, not function templates'
+  ],
+  answer:1
+},
+{
+  topic:'template', type:'output', diff:'hard',
+  q:'What does this variadic template print?',
+  code:`<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+<span class="kw">void</span> <span class="fn">print</span>(T val) { cout &lt;&lt; val &lt;&lt; <span class="str">"\n"</span>; }
+
+<span class="kw">template</span>&lt;<span class="kw">typename</span> T, <span class="kw">typename</span>... Args&gt;
+<span class="kw">void</span> <span class="fn">print</span>(T first, Args... rest) {
+    cout &lt;&lt; first &lt;&lt; <span class="str">" "</span>;
+    <span class="fn">print</span>(rest...);
+}
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">print</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>);
+}`,
+  output:'1 2 3\n',
+  explanation:'Recursive variadic template: prints 1, then calls print(2,3) → prints 2, calls print(3) → base case prints 3 with newline.',
+  options:['1 2 3','1 2 3\n(newline at end)','3 2 1\n','Compile error: ambiguous'],
+  answer:1
+},
+{
+  topic:'template', type:'output', diff:'medium',
+  q:'What is the output of this class template with non-type parameter?',
+  code:`<span class="kw">template</span>&lt;<span class="kw">typename</span> T, <span class="kw">int</span> N&gt;
+<span class="kw">class</span> <span class="type">Array</span> {
+    T data[N];
+<span class="kw">public</span>:
+    <span class="kw">int</span> <span class="fn">size</span>() { <span class="kw">return</span> N; }
+    T&amp; <span class="kw">operator</span>[](<span class="kw">int</span> i) { <span class="kw">return</span> data[i]; }
+};
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">Array</span>&lt;<span class="kw">int</span>,<span class="num">5</span>&gt; a;
+    a[<span class="num">2</span>] = <span class="num">42</span>;
+    cout &lt;&lt; a.<span class="fn">size</span>() &lt;&lt; <span class="str">" "</span> &lt;&lt; a[<span class="num">2</span>];
+}`,
+  output:'5 42',
+  explanation:'Non-type template parameter N=5 defines compile-time array size. size() returns N=5. a[2]=42 sets element. Output: 5 42.',
+  options:['5 42','5 0','4 42','Compile error'],
+  answer:0
+},
+
+// ─── STL ────────────────────────────────
+{
+  topic:'stl', type:'output', diff:'medium',
+  q:'What is the output?',
+  code:`#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+<span class="kw">int</span> <span class="fn">main</span>() {
+    vector&lt;<span class="kw">int</span>&gt; v = {<span class="num">5</span>,<span class="num">1</span>,<span class="num">4</span>,<span class="num">2</span>,<span class="num">3</span>};
+    <span class="fn">sort</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>());
+    <span class="kw">auto</span> it = <span class="fn">lower_bound</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>(), <span class="num">3</span>);
+    cout &lt;&lt; *it &lt;&lt; <span class="str">" "</span> &lt;&lt; (it - v.<span class="fn">begin</span>());
+}`,
+  output:'3 2',
+  explanation:'After sort: {1,2,3,4,5}. lower_bound for 3 returns iterator to first element ≥ 3, which is 3 at index 2.',
+  options:['3 2','2 1','3 3','4 3'],
+  answer:0
+},
+{
+  topic:'stl', type:'theory', diff:'medium',
+  q:'What is the difference between std::map and std::unordered_map? When would you choose one over the other?',
+  answer_text:'std::map: red-black tree. Ordered by key. O(log n) insert/search/delete. Iterators remain valid after insert.\n\nstd::unordered_map: hash table. No ordering. Average O(1) insert/search; O(n) worst case on hash collisions. Requires hashable key type.\n\nChoose map: when you need sorted order, range queries (lower_bound, etc.), or stable iteration order.\nChoose unordered_map: when you need maximum average-case speed and don\'t care about order. Typical for frequency counts, caches, and lookup tables.',
+  options:[
+    'unordered_map is always faster; map is only used for legacy code',
+    'map is a sorted red-black tree with O(log n) ops; unordered_map is a hash table with O(1) average ops — choose map for order/range needs, unordered_map for raw speed',
+    'They are identical except map uses more memory',
+    'map supports duplicate keys; unordered_map does not'
+  ],
+  answer:1
+},
+{
+  topic:'stl', type:'output', diff:'hard',
+  q:'What does this code print?',
+  code:`#include &lt;map&gt;
+<span class="kw">int</span> <span class="fn">main</span>() {
+    map&lt;string,<span class="kw">int</span>&gt; m;
+    m[<span class="str">"a"</span>] = <span class="num">1</span>; m[<span class="str">"b"</span>] = <span class="num">2</span>;
+    <span class="kw">auto</span> it = m.<span class="fn">find</span>(<span class="str">"c"</span>);
+    <span class="kw">if</span> (it == m.<span class="fn">end</span>()) cout &lt;&lt; <span class="str">"not found "</span>;
+    cout &lt;&lt; m[<span class="str">"c"</span>] &lt;&lt; <span class="str">" "</span> &lt;&lt; m.<span class="fn">size</span>();
+}`,
+  output:'not found 0 3',
+  explanation:'find("c") returns end() since "c" is not in map. Then m["c"] uses operator[] which DEFAULT-INSERTS "c" with value 0, so size becomes 3.',
+  options:['not found','not found 0 3','0 3','not found 3'],
+  answer:1
+},
+{
+  topic:'stl', type:'output', diff:'medium',
+  q:'What is the output of this priority_queue usage?',
+  code:`#include &lt;queue&gt;
+<span class="kw">int</span> <span class="fn">main</span>() {
+    priority_queue&lt;<span class="kw">int</span>&gt; pq;
+    <span class="kw">for</span>(<span class="kw">int</span> x : {<span class="num">3</span>,<span class="num">1</span>,<span class="num">4</span>,<span class="num">1</span>,<span class="num">5</span>}) pq.<span class="fn">push</span>(x);
+    <span class="kw">while</span>(!pq.<span class="fn">empty</span>(... (34 KB left)
